@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+ 
+    <property name="ROOT_LEVEL" value="INFO" />
+    <timestamp key="byDate" datePattern="yyyyMMdd"/>
+ 
+ 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%-25(%d{yyyy-MMM-dd HH:mm:ss} [%-10.10thread]) [%-5level] - %msg \(%logger\)%n</Pattern>
+        </layout>
+    </appender>
+ 
+    <appender name="ASYNC_STDOUT" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT"/>
+    </appender>
+ 
+    <logger name="com.buildria.restmock" level="DEBUG" />
+
+    <root level="${ROOT_LEVEL}">
+        <appender-ref ref="ASYNC_STDOUT"/>
+    </root>
+
+</configuration>
