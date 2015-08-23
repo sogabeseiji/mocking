@@ -1,8 +1,14 @@
 package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.Function;
+import com.google.common.net.HttpHeaders;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import java.nio.charset.Charset;
+import java.util.Map;
 import org.hamcrest.Matcher;
 
 /**
@@ -60,4 +66,31 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
 
     }
 
+    public static class Body extends Scenario {
+
+        private final String content;
+
+        private final Charset charset;
+
+        public Body(Matcher<?> uri, String content, Charset charset) {
+            super(uri);
+            this.content = content;
+            this.charset = charset;
+        }
+
+        @Override
+        public HttpResponse apply(HttpResponse response) {
+            byte[] body = content.getBytes(charset);
+            ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(body.length);
+            buffer.writeBytes(body);
+            HttpResponse r
+                    = new DefaultFullHttpResponse(response.getProtocolVersion(), response.getStatus(), buffer);
+            for (Map.Entry<String, String> entry : response.headers()) {
+                r.headers().add(entry.getKey(), entry.getValue());
+            }
+            r.headers().add(HttpHeaders.CONTENT_LENGTH, body.length);
+            return r;
+        }
+
+    }
 }

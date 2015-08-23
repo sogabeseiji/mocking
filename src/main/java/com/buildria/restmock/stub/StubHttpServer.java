@@ -11,7 +11,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.DefaultHttpResponse;
+import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
@@ -19,6 +19,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.Logger;
@@ -75,6 +76,10 @@ public class StubHttpServer {
         scenarios.add(scenario);
     }
 
+    public List<Scenario> getScenarios() {
+        return Collections.unmodifiableList(scenarios);
+    }
+
     public void stop() {
         if (workerGroup != null) {
             workerGroup.shutdownGracefully();
@@ -102,7 +107,7 @@ public class StubHttpServer {
         @Override
         public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
             HttpRequest req = (HttpRequest) msg;
-            HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+            HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             boolean proceed = false;
             for (Scenario scenario : scenarios) {
                 if (scenario.isApplicable(req.getUri())) {
