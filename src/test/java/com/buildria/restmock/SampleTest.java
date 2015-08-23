@@ -2,6 +2,7 @@ package com.buildria.restmock;
 
 import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
+import com.google.common.net.MediaType;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -37,7 +38,7 @@ public class SampleTest {
                 uri(Matchers.containsString("/api/p")).
         then().
                 status(HttpStatus.OK).
-                contentType("application/json");
+                contentType(MediaType.JSON_UTF_8);
 
        when(server).
                 uri("/api/q").
