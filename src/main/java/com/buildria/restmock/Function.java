@@ -1,4 +1,4 @@
-package com.buildria.restmock.builder;
+package com.buildria.restmock;
 
 /**
  *

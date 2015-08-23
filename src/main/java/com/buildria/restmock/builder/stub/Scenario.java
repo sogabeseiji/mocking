@@ -1,6 +1,6 @@
 package com.buildria.restmock.builder.stub;
 
-import com.buildria.restmock.builder.Function;
+import com.buildria.restmock.Function;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.hamcrest.Matcher;
