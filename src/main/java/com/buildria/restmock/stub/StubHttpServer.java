@@ -101,14 +101,11 @@ public class StubHttpServer {
 
         @Override
         public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
-            LOG.info("### req {}", msg.getClass().getName());
             HttpRequest req = (HttpRequest) msg;
-            LOG.debug("### called. Request: {}", req.toString());
             HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             boolean proceed = false;
             for (Scenario scenario : scenarios) {
                 if (scenario.isApplicable(req.getUri())) {
-                    LOG.debug("### {} matched", req.getUri());
                     proceed = true;
                     response = scenario.apply(response);
                 }
@@ -117,14 +114,13 @@ public class StubHttpServer {
                 response.setStatus(HttpResponseStatus.NOT_FOUND);
             }
 
-            LOG.debug("### Response: {}", response.toString());
             ctx.writeAndFlush(response);
             ctx.channel().close();
         }
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            super.exceptionCaught(ctx, cause); 
+            super.exceptionCaught(ctx, cause);
         }
 
     }

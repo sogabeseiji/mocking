@@ -3,13 +3,15 @@ package com.buildria.restmock;
 import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.net.MediaType;
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.http.ContentType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
-import static org.hamcrest.Matchers.containsString;
+import static com.jayway.restassured.RestAssured.given;
 
 /**
  *
@@ -19,12 +21,16 @@ public class SampleTest {
 
     private StubHttpServer server;
 
+    private static final int PORT = 8888;
+
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
     @Before
     public void setUp() throws Exception {
-        server = new StubHttpServer(8080).run();
+        // ポート番号
+        RestAssured.port = PORT;
+        server = new StubHttpServer(PORT).run();
     }
 
     @After
@@ -35,17 +41,20 @@ public class SampleTest {
     @Test
     public void testSample() throws Exception {
         when(server).
-                uri(containsString("/api/p")).
-        then().
+                uri("/api/p").
+                then().
                 status(HttpStatus.SC_200_OK).
                 contentType(MediaType.JSON_UTF_8);
 
-       when(server).
-                uri("/api/q").
+        given().
+                log().all().
+                accept(ContentType.JSON).
+        when().
+                get("/api/p").
         then().
-                status(HttpStatus.SC_404_NOT_FOUND).
-                contentType("application/xml");
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON);
 
-        Thread.sleep(1000 * 60);
     }
 }
