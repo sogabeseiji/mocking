@@ -37,13 +37,13 @@ public class SampleTest {
         when(server).
                 uri(containsString("/api/p")).
         then().
-                status(HttpStatus.SC_OK).
+                status(HttpStatus.SC_200_OK).
                 contentType(MediaType.JSON_UTF_8);
 
        when(server).
                 uri("/api/q").
         then().
-                status(HttpStatus.SC_NOT_FOUND).
+                status(HttpStatus.SC_404_NOT_FOUND).
                 contentType("application/xml");
 
         Thread.sleep(1000 * 60);
