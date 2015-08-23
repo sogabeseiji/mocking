@@ -26,12 +26,12 @@ public class ResponseSpec {
         this.uri = uri;
     }
 
-    public ResponseSpec status(int code) {
+    public ResponseSpec statusCode(int code) {
         server.addScenario(new Status(uri, code));
         return this;
     }
 
-    public ResponseSpec status(HttpStatus status) {
+    public ResponseSpec statusCode(HttpStatus status) {
         server.addScenario(new Status(uri, status.getCode()));
         return this;
     }

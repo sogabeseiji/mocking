@@ -49,8 +49,8 @@ public class SampleTest {
 
         when(server).
                 uri("/api/p").
-                then().
-                status(HttpStatus.SC_200_OK).
+        then().
+                statusCode(HttpStatus.SC_200_OK).
                 body(json, Charset.defaultCharset()).
                 contentType(MediaType.JSON_UTF_8);
 
@@ -62,6 +62,7 @@ public class SampleTest {
         then().
                 log().all().
                 statusCode(200).
+                contentType(ContentType.JSON).
                 body("name", is("hoge")).
                 body("old", is(19));
 
