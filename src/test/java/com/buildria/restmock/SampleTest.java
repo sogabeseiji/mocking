@@ -1,5 +1,6 @@
 package com.buildria.restmock;
 
+import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -35,7 +36,7 @@ public class SampleTest {
         when(server).
                 uri(Matchers.containsString("/api/p")).
         then().
-                status(200).
+                status(HttpStatus.OK).
                 contentType("application/json");
 
        when(server).

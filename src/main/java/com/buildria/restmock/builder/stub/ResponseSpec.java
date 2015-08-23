@@ -2,6 +2,7 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.builder.stub.Scenario.Header;
 import com.buildria.restmock.builder.stub.Scenario.Status;
+import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import org.hamcrest.Matcher;
 
@@ -20,8 +21,13 @@ public class ResponseSpec {
         this.uri = uri;
     }
 
-    public ResponseSpec status(final int code) {
+    public ResponseSpec status(int code) {
         server.addScenario(new Status(uri, code));
+        return this;
+    }
+
+    public ResponseSpec status(HttpStatus status) {
+        server.addScenario(new Status(uri, status.getCode()));
         return this;
     }
 
