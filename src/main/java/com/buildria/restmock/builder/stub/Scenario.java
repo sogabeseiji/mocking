@@ -1,5 +1,6 @@
 package com.buildria.restmock.builder.stub;
 
+import com.buildria.restmock.builder.Function;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.hamcrest.Matcher;
@@ -8,7 +9,7 @@ import org.hamcrest.Matcher;
  *
  * @author sogabe
  */
-public abstract class Scenario implements ResponseActionable {
+public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
 
     protected final Matcher<?> uri;
 
