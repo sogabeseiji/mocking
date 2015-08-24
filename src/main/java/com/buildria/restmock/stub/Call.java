@@ -1,5 +1,6 @@
 package com.buildria.restmock.stub;
 
+import com.google.common.io.BaseEncoding;
 import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpContent;
@@ -42,10 +43,10 @@ public class Call {
         if (req instanceof HttpContent) {
             ByteBuf buf = ((HttpContent) req).content();
             if (buf != null) {
-                call.body = buf.array();
+                call.body = buf.copy().array();
             }
         }
-        
+
         return call;
     }
 
@@ -61,7 +62,7 @@ public class Call {
     public String toString() {
         return "Call{" + "uri=" + uri + ", method=" + method +
                 ", contentType=" + contentType + ", accept=" + accept +
-                ", headers=" + headers + ", body=" + body + '}';
+                ", headers=" + headers + ", body=" + BaseEncoding.base16().encode(body)+ '}';
     }
 
 

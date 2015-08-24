@@ -167,6 +167,34 @@ public class SampleTest {
                 body("old", is(19));
     }
 
+    @Test
+    public void testReqestBody() throws Exception {
+        Person p = new Person("hoge", 19);
+        ObjectMapper mapper = new ObjectMapper();
+        byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
+
+        when(server).
+                uri("/api/p").
+                then().
+                statusCode(HttpStatus.SC_200_OK).
+                body(json).
+                contentType(MediaType.JSON_UTF_8);
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+                contentType(ContentType.JSON).
+                body(json).
+        when().
+                put("/api/p").
+        then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                body("name", is("hoge")).
+                body("old", is(19));
+    }
+
     private static class Person {
 
         private final String name;
