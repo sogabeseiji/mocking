@@ -26,8 +26,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * StubHttpServer
  *
- * @author sogabe
+ * @author Seiji Sogabe
  */
 public class StubHttpServer {
 
@@ -117,7 +118,7 @@ public class StubHttpServer {
     private class Handler extends SimpleChannelInboundHandler<Object> {
 
         @Override
-        public void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
+        public void channelRead0(final ChannelHandlerContext ctx, Object msg) throws Exception {
             HttpRequest req = (HttpRequest) msg;
             HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             boolean proceed = false;
@@ -131,8 +132,14 @@ public class StubHttpServer {
                 response.setStatus(HttpResponseStatus.NOT_FOUND);
             }
 
-            ctx.writeAndFlush(response);
-            ctx.channel().close();
+            final HttpResponse r = response;
+            ctx.channel().eventLoop().execute(new Runnable() {
+                @Override
+                public void run() {
+                    ctx.writeAndFlush(r);
+                }
+            });
+
         }
 
         @Override
