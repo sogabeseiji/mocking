@@ -42,7 +42,7 @@ public class SampleTest {
     }
 
     @Test
-    public void testSample() throws Exception {
+    public void testOneUri() throws Exception {
         Person p = new Person("hoge", 19);
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
@@ -68,6 +68,55 @@ public class SampleTest {
 
     }
 
+    @Test
+    public void testTwoUri() throws Exception {
+        Person p = new Person("hoge", 19);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(p);
+
+        when(server).
+                uri("/api/p").
+        then().
+                statusCode(HttpStatus.SC_200_OK).
+                body(json, Charset.defaultCharset()).
+                header("X-header", "restmock1").
+                contentType(MediaType.JSON_UTF_8);
+
+        when(server).
+                uri("/api/q").
+        then().
+                statusCode(HttpStatus.SC_200_OK).
+                body(json).
+                header("X-header", "restmock2").
+                contentType(MediaType.JSON_UTF_8);
+
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+        when().
+                post("/api/p").
+        then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                header("X-header", "restmock1").
+                body("name", is("hoge")).
+                body("old", is(19));
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+        when().
+                get("/api/q").
+        then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                header("X-header", "restmock2").
+                body("name", is("hoge")).
+                body("old", is(19));
+    }
 
     private static class Person {
 
