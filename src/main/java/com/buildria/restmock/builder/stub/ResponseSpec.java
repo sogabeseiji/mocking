@@ -2,8 +2,11 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
+import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
+import java.io.IOException;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.hamcrest.Matcher;
@@ -58,4 +61,7 @@ public class ResponseSpec {
         return this;
     }
 
+    public ResponseSpec body(URL url) throws IOException {
+        return body(Resources.toByteArray(url));
+    }
 }
