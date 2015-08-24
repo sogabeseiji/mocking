@@ -1,8 +1,5 @@
 package com.buildria.restmock.builder.stub;
 
-import com.buildria.restmock.builder.stub.Scenario.Body;
-import com.buildria.restmock.builder.stub.Scenario.Header;
-import com.buildria.restmock.builder.stub.Scenario.Status;
 import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.net.HttpHeaders;
@@ -27,13 +24,12 @@ public class ResponseSpec {
     }
 
     public ResponseSpec statusCode(int code) {
-        server.addScenario(new Status(uri, code));
+        server.addScenario(Scenario.status(uri, code));
         return this;
     }
 
     public ResponseSpec statusCode(HttpStatus status) {
-        server.addScenario(new Status(uri, status.getCode()));
-        return this;
+        return statusCode(status.getCode());
     }
 
     public ResponseSpec contentType(String contentType) {
@@ -45,7 +41,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec header(String name, String value) {
-        server.addScenario(new Header(uri, name, value));
+        server.addScenario(Scenario.header(uri, name, value));
         return this;
     }
 
@@ -54,12 +50,12 @@ public class ResponseSpec {
     }
 
     public ResponseSpec body(String content, Charset charset) {
-        server.addScenario(new Body(uri, content, charset));
+        server.addScenario(Scenario.body(uri, content, charset));
         return this;
     }
 
     public ResponseSpec body(byte[] content) {
-        server.addScenario(new Body(uri, content));
+        server.addScenario(Scenario.body(uri, content));
         return this;
     }
 

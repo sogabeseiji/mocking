@@ -30,69 +30,46 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
     @Override
     public abstract HttpResponse apply(HttpResponse input);
 
-    public static class Status extends Scenario {
-
-        private final int code;
-
-        public Status(Matcher<?> uri, int code) {
-            super(uri);
-            this.code = code;
-        }
-
-        @Override
-        public HttpResponse apply(HttpResponse response) {
-            response.setStatus(HttpResponseStatus.valueOf(code));
-            return response;
-        }
-    }
-
-    public static class Header extends Scenario {
-
-        private final String header;
-
-        private final String value;
-
-        public Header(Matcher<?> uri, String header, String value) {
-            super(uri);
-            this.header = header;
-            this.value = value;
-        }
-
-        @Override
-        public HttpResponse apply(HttpResponse response) {
-            response.headers().add(header, value);
-            return response;
-        }
-
-    }
-
-    public static class Body extends Scenario {
-
-        private final byte[] body;
-
-        public Body(Matcher<?> uri, String content, Charset charset) {
-            super(uri);
-            this.body = content.getBytes(charset);
-        }
-
-        public Body(Matcher<?> uri, byte[] content) {
-            super(uri);
-            this.body = content;
-        }
-
-        @Override
-        public HttpResponse apply(HttpResponse response) {
-            ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(body.length);
-            buffer.writeBytes(body);
-            HttpResponse r
-                    = new DefaultFullHttpResponse(response.getProtocolVersion(),
-                            response.getStatus(), buffer);
-            for (Map.Entry<String, String> entry : response.headers()) {
-                r.headers().add(entry.getKey(), entry.getValue());
+    public static Scenario status(Matcher<?> uri, final int code) {
+        return new Scenario(uri) {
+           @Override
+            public HttpResponse apply(HttpResponse response) {
+               response.setStatus(HttpResponseStatus.valueOf(code));
+                return response;
             }
-            r.headers().add(HttpHeaders.CONTENT_LENGTH, body.length);
-            return r;
-        }
+        };
+    }
 
+    public static Scenario header(Matcher<?> uri, final String header, final String value) {
+        return new Scenario(uri) {
+            @Override
+            public HttpResponse apply(HttpResponse response) {
+                response.headers().add(header, value);
+                return response;
+            }
+        };
+    }
+
+    public static Scenario body(Matcher<?> uri, final String content, final Charset charset) {
+        byte[] body = content.getBytes(charset);
+        return body(uri, body);
+    }
+
+    public static Scenario body(Matcher<?> uri, final byte[] content) {
+        return new Scenario(uri) {
+            @Override
+            public HttpResponse apply(HttpResponse response) {
+                ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
+                buffer.writeBytes(content);
+                HttpResponse r
+                        = new DefaultFullHttpResponse(response.getProtocolVersion(),
+                                response.getStatus(), buffer);
+                for (Map.Entry<String, String> entry : response.headers()) {
+                    r.headers().add(entry.getKey(), entry.getValue());
+                }
+                r.headers().add(HttpHeaders.CONTENT_LENGTH, content.length);
+                return r;
+            }
+        };
     }
 }
