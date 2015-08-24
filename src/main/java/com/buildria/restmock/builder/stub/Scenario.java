@@ -7,7 +7,6 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import java.nio.charset.Charset;
 import java.util.Map;
 import org.hamcrest.Matcher;
 
@@ -48,11 +47,6 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
                 return response;
             }
         };
-    }
-
-    public static Scenario body(Matcher<?> uri, final String content, final Charset charset) {
-        byte[] body = content.getBytes(charset);
-        return body(uri, body);
     }
 
     public static Scenario body(Matcher<?> uri, final byte[] content) {

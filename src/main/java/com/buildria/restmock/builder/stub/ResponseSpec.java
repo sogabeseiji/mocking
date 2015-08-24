@@ -50,8 +50,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec body(String content, Charset charset) {
-        server.addScenario(Scenario.body(uri, content, charset));
-        return this;
+        return body(content.getBytes(charset));
     }
 
     public ResponseSpec body(byte[] content) {
