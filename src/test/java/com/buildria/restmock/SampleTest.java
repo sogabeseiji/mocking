@@ -7,8 +7,9 @@ import com.google.common.net.MediaType;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import java.nio.charset.Charset;
-import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -22,23 +23,28 @@ import static org.hamcrest.Matchers.is;
  */
 public class SampleTest {
 
-    private StubHttpServer server;
+    private static StubHttpServer server;
 
     private static final int PORT = 8888;
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void beforeClass() throws Exception {
         // ポート番号
         RestAssured.port = PORT;
         server = new StubHttpServer(PORT).run();
     }
 
-    @After
-    public void tearDown() throws Exception {
+    @AfterClass
+    public static void afterClass() throws Exception {
         server.stop();
+    }
+
+    @Before
+    public void setUp() throws Exception {
+        server.clear();
     }
 
     @Test

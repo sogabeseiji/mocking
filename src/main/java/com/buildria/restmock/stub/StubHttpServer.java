@@ -39,6 +39,8 @@ public class StubHttpServer {
 
     private final List<Scenario> scenarios = new CopyOnWriteArrayList<>();
 
+    private final Object lockObj = new Object();
+
     public StubHttpServer() {
         this(8080);
     }
@@ -73,11 +75,21 @@ public class StubHttpServer {
     }
 
     public void addScenario(Scenario scenario) {
-        scenarios.add(scenario);
+        synchronized (lockObj) {
+            scenarios.add(scenario);
+        }
     }
 
     public List<Scenario> getScenarios() {
-        return Collections.unmodifiableList(scenarios);
+        synchronized (lockObj) {
+            return Collections.unmodifiableList(scenarios);
+        }
+    }
+
+    public void clear() {
+        synchronized (lockObj) {
+            scenarios.clear();
+        }
     }
 
     public void stop() {
