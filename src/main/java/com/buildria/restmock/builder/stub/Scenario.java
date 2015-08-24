@@ -31,9 +31,9 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
 
     public static Scenario status(Matcher<?> uri, final int code) {
         return new Scenario(uri) {
-           @Override
+            @Override
             public HttpResponse apply(HttpResponse response) {
-               response.setStatus(HttpResponseStatus.valueOf(code));
+                response.setStatus(HttpResponseStatus.valueOf(code));
                 return response;
             }
         };
