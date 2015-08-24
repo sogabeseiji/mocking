@@ -40,6 +40,8 @@ public class StubHttpServer {
 
     private final List<Scenario> scenarios = new CopyOnWriteArrayList<>();
 
+    private final List<Call> calls = new CopyOnWriteArrayList<>();
+
     private final Object lockObj = new Object();
 
     public StubHttpServer() {
@@ -75,6 +77,10 @@ public class StubHttpServer {
         return this;
     }
 
+    public List<Call> getCalls() {
+        return Collections.unmodifiableList(calls);
+    }
+
     public void addScenario(Scenario scenario) {
         synchronized (lockObj) {
             scenarios.add(scenario);
@@ -94,6 +100,10 @@ public class StubHttpServer {
     }
 
     public void stop() {
+        for (Call call : calls) {
+            LOG.debug(call.toString());
+        }
+
         if (workerGroup != null) {
             workerGroup.shutdownGracefully();
         }
@@ -119,7 +129,13 @@ public class StubHttpServer {
 
         @Override
         public void channelRead0(final ChannelHandlerContext ctx, Object msg) throws Exception {
+            if (!(msg instanceof HttpRequest)) {
+                return;
+            }
+
             HttpRequest req = (HttpRequest) msg;
+            calls.add(Call.fromRequest(req));
+
             HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             boolean proceed = false;
             for (Scenario scenario : scenarios) {
