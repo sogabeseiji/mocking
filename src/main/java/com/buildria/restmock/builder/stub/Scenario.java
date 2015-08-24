@@ -68,23 +68,25 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
 
     public static class Body extends Scenario {
 
-        private final String content;
-
-        private final Charset charset;
+        private final byte[] body;
 
         public Body(Matcher<?> uri, String content, Charset charset) {
             super(uri);
-            this.content = content;
-            this.charset = charset;
+            this.body = content.getBytes(charset);
+        }
+
+        public Body(Matcher<?> uri, byte[] content) {
+            super(uri);
+            this.body = content;
         }
 
         @Override
         public HttpResponse apply(HttpResponse response) {
-            byte[] body = content.getBytes(charset);
             ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(body.length);
             buffer.writeBytes(body);
             HttpResponse r
-                    = new DefaultFullHttpResponse(response.getProtocolVersion(), response.getStatus(), buffer);
+                    = new DefaultFullHttpResponse(response.getProtocolVersion(),
+                            response.getStatus(), buffer);
             for (Map.Entry<String, String> entry : response.headers()) {
                 r.headers().add(entry.getKey(), entry.getValue());
             }

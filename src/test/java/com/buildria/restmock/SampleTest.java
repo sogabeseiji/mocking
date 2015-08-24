@@ -7,6 +7,7 @@ import com.google.common.net.MediaType;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -114,6 +115,32 @@ public class SampleTest {
                 statusCode(200).
                 contentType(ContentType.JSON).
                 header("X-header", "restmock2").
+                body("name", is("hoge")).
+                body("old", is(19));
+    }
+
+    @Test
+    public void testByteBody() throws Exception {
+        Person p = new Person("hoge", 19);
+        ObjectMapper mapper = new ObjectMapper();
+        byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
+
+        when(server).
+                uri("/api/p").
+        then().
+                statusCode(HttpStatus.SC_200_OK).
+                body(json).
+                contentType(MediaType.JSON_UTF_8);
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+        when().
+                get("/api/p").
+        then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
                 body("name", is("hoge")).
                 body("old", is(19));
     }

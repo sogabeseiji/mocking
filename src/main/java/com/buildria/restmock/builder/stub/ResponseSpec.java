@@ -58,4 +58,9 @@ public class ResponseSpec {
         return this;
     }
 
+    public ResponseSpec body(byte[] content) {
+        server.addScenario(new Body(uri, content));
+        return this;
+    }
+
 }
