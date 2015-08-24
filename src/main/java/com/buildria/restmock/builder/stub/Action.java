@@ -10,15 +10,11 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.Map;
 import org.hamcrest.Matcher;
 
-/**
- *
- * @author sogabe
- */
-public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
+public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
     protected final Matcher<?> uri;
 
-    public Scenario(Matcher<?> uri) {
+    public Action(Matcher<?> uri) {
         this.uri = uri;
     }
 
@@ -29,8 +25,8 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
     @Override
     public abstract HttpResponse apply(HttpResponse input);
 
-    public static Scenario status(Matcher<?> uri, final int code) {
-        return new Scenario(uri) {
+    public static Action status(Matcher<?> uri, final int code) {
+        return new Action(uri) {
             @Override
             public HttpResponse apply(HttpResponse response) {
                 response.setStatus(HttpResponseStatus.valueOf(code));
@@ -39,8 +35,8 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
         };
     }
 
-    public static Scenario header(Matcher<?> uri, final String header, final String value) {
-        return new Scenario(uri) {
+    public static Action header(Matcher<?> uri, final String header, final String value) {
+        return new Action(uri) {
             @Override
             public HttpResponse apply(HttpResponse response) {
                 response.headers().add(header, value);
@@ -49,8 +45,8 @@ public abstract class Scenario implements Function<HttpResponse, HttpResponse> {
         };
     }
 
-    public static Scenario body(Matcher<?> uri, final byte[] content) {
-        return new Scenario(uri) {
+    public static Action body(Matcher<?> uri, final byte[] content) {
+        return new Action(uri) {
             @Override
             public HttpResponse apply(HttpResponse response) {
                 ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);

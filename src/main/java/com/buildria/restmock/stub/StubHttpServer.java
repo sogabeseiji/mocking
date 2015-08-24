@@ -1,6 +1,6 @@
 package com.buildria.restmock.stub;
 
-import com.buildria.restmock.builder.stub.Scenario;
+import com.buildria.restmock.builder.stub.Action;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,7 +38,7 @@ public class StubHttpServer {
 
     private EventLoopGroup workerGroup;
 
-    private final List<Scenario> scenarios = new CopyOnWriteArrayList<>();
+    private final List<Action> actions = new CopyOnWriteArrayList<>();
 
     private final List<Call> calls = new CopyOnWriteArrayList<>();
 
@@ -81,29 +81,25 @@ public class StubHttpServer {
         return Collections.unmodifiableList(calls);
     }
 
-    public void addScenario(Scenario scenario) {
+    public void addAction(Action action) {
         synchronized (lockObj) {
-            scenarios.add(scenario);
+            actions.add(action);
         }
     }
 
-    public List<Scenario> getScenarios() {
+    public List<Action> getActions() {
         synchronized (lockObj) {
-            return Collections.unmodifiableList(scenarios);
+            return Collections.unmodifiableList(actions);
         }
     }
 
     public void clear() {
         synchronized (lockObj) {
-            scenarios.clear();
+            actions.clear();
         }
     }
 
     public void stop() {
-        for (Call call : calls) {
-            LOG.debug(call.toString());
-        }
-
         if (workerGroup != null) {
             workerGroup.shutdownGracefully();
         }
@@ -138,10 +134,10 @@ public class StubHttpServer {
 
             HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             boolean proceed = false;
-            for (Scenario scenario : scenarios) {
-                if (scenario.isApplicable(req.getUri())) {
+            for (Action action : actions) {
+                if (action.isApplicable(req.getUri())) {
                     proceed = true;
-                    response = scenario.apply(response);
+                    response = action.apply(response);
                 }
             }
             if (!proceed) {
