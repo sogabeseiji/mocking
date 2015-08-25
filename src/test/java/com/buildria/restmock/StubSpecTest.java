@@ -47,7 +47,7 @@ public class StubSpecTest {
 
         when(server).
                 uri("/api/p").
-                then().
+        then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(json, Charset.defaultCharset()).
                 contentType(MediaType.JSON_UTF_8);
@@ -57,7 +57,7 @@ public class StubSpecTest {
                 accept(ContentType.JSON).
                 when().
                 get("/api/p").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
@@ -74,7 +74,7 @@ public class StubSpecTest {
 
         when(server).
                 uri("/api/p").
-                then().
+        then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(json, Charset.defaultCharset()).
                 header("X-header", "restmock1").
@@ -82,7 +82,7 @@ public class StubSpecTest {
 
         when(server).
                 uri("/api/q").
-                then().
+        then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(json).
                 header("X-header", "restmock2").
@@ -91,9 +91,9 @@ public class StubSpecTest {
         given().
                 log().all().
                 accept(ContentType.JSON).
-                when().
+        when().
                 post("/api/p").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
@@ -104,9 +104,9 @@ public class StubSpecTest {
         given().
                 log().all().
                 accept(ContentType.JSON).
-                when().
+        when().
                 get("/api/q").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
@@ -123,7 +123,7 @@ public class StubSpecTest {
 
         when(server).
                 uri("/api/p").
-                then().
+        then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(json).
                 contentType(MediaType.JSON_UTF_8);
@@ -131,9 +131,9 @@ public class StubSpecTest {
         given().
                 log().all().
                 accept(ContentType.JSON).
-                when().
+        when().
                 get("/api/p").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
@@ -145,7 +145,7 @@ public class StubSpecTest {
     public void testResourceBody() throws Exception {
         when(server).
                 uri("/api/p").
-                then().
+        then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(Resources.getResource("com/buildria/restmock/person.json")).
                 contentType(MediaType.JSON_UTF_8);
@@ -153,9 +153,9 @@ public class StubSpecTest {
         given().
                 log().all().
                 accept(ContentType.JSON).
-                when().
+        when().
                 get("/api/p").
-                then().
+        then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
@@ -171,7 +171,7 @@ public class StubSpecTest {
 
         when(server).
                 uri("/api/p").
-                then().
+        then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(json).
                 contentType(MediaType.JSON_UTF_8);
