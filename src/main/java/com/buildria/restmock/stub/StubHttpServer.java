@@ -1,6 +1,7 @@
 package com.buildria.restmock.stub;
 
 import com.buildria.restmock.builder.stub.Action;
+import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.google.common.base.Stopwatch.createStarted;
 
 /**
  * StubHttpServer
@@ -53,6 +56,7 @@ public class StubHttpServer {
     }
 
     public StubHttpServer run() throws Exception {
+        Stopwatch sw = createStarted();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
 
@@ -74,6 +78,8 @@ public class StubHttpServer {
         // Bind and start to accept incoming connections.
         ChannelFuture f = b.bind(port).sync();
         f.awaitUninterruptibly();
+        sw.stop();
+        LOG.debug("### StubHttpServer(port:{}) started. It took {}", port, sw);
         return this;
     }
 
@@ -106,6 +112,7 @@ public class StubHttpServer {
         if (bossGroup != null) {
             bossGroup.shutdownGracefully();
         }
+        LOG.debug("### StubHttpServer stopped.");
     }
 
     public static void main(String[] args) throws Exception {
