@@ -1,12 +1,13 @@
 package com.buildria.restmock.stub;
 
-import com.google.common.io.BaseEncoding;
+import com.google.common.base.MoreObjects;
 import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpRequest;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.bind.DatatypeConverter;
 
 public class Call {
 
@@ -60,10 +61,10 @@ public class Call {
 
     @Override
     public String toString() {
-        return "Call{" + "uri=" + uri + ", method=" + method +
-                ", contentType=" + contentType + ", accept=" + accept +
-                ", headers=" + headers + ", body=" + BaseEncoding.base16().encode(body)+ '}';
+        return MoreObjects.toStringHelper(this)
+                .add("uri", uri).add("method", method).add("contentType", contentType)
+                .add("accept", accept).add("headers", headers).add("body", DatatypeConverter.printHexBinary(body))
+                .toString();
     }
-
 
 }
