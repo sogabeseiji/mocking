@@ -1,5 +1,8 @@
 package com.buildria.restmock.builder.stub;
 
+import com.buildria.restmock.builder.stub.Action.BodyAction;
+import com.buildria.restmock.builder.stub.Action.HeaderAction;
+import com.buildria.restmock.builder.stub.Action.StatusCodeAction;
 import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.io.Resources;
@@ -27,7 +30,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec statusCode(int code) {
-        server.addAction(Action.status(server, uri, code));
+        server.addAction(new StatusCodeAction(server, uri, code));
         return this;
     }
 
@@ -44,7 +47,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec header(String name, String value) {
-        server.addAction(Action.header(server, uri, name, value));
+        server.addAction(new HeaderAction(server, uri, name, value));
         return this;
     }
 
@@ -57,11 +60,11 @@ public class ResponseSpec {
     }
 
     public ResponseSpec body(byte[] content) {
-        server.addAction(Action.body(server, uri, content));
+        server.addAction(new BodyAction(server, uri, content));
         return this;
     }
 
     public ResponseSpec body(URL url) throws IOException {
         return body(Resources.toByteArray(url));
     }
-}
+ }

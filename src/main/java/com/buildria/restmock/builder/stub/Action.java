@@ -10,6 +10,8 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.Map;
 import org.hamcrest.Matcher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
@@ -29,41 +31,74 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
     @Override
     public abstract HttpResponse apply(HttpResponse input);
 
-    public static Action status(StubHttpServer server, Matcher<?> uri, final int code) {
-        return new Action(server, uri) {
-            @Override
-            public HttpResponse apply(HttpResponse response) {
-                response.setStatus(HttpResponseStatus.valueOf(code));
-                return response;
-            }
-        };
+    /**
+     * StausCodeAction.
+     */
+    public static class StatusCodeAction extends Action {
+
+        private final int code;
+
+        public StatusCodeAction(StubHttpServer server, Matcher<?> uri, int code) {
+            super(server, uri);
+            this.code = code;
+        }
+
+        @Override
+        public HttpResponse apply(HttpResponse response) {
+            response.setStatus(HttpResponseStatus.valueOf(code));
+            return response;
+        }
     }
 
-    public static Action header(StubHttpServer server, Matcher<?> uri, final String header, final String value) {
-        return new Action(server, uri) {
-            @Override
-            public HttpResponse apply(HttpResponse response) {
-                response.headers().add(header, value);
-                return response;
-            }
-        };
+    /**
+     * HeaderAction.
+     */
+    public static class HeaderAction extends Action {
+
+        private final String header;
+
+        private final String value;
+
+        public HeaderAction(StubHttpServer server, Matcher<?> uri, String header, String value) {
+            super(server, uri);
+            this.header = header;
+            this.value = value;
+        }
+
+        @Override
+        public HttpResponse apply(HttpResponse response) {
+            response.headers().add(header, value);
+            return response;
+        }
     }
 
-    public static Action body(StubHttpServer server, Matcher<?> uri, final byte[] content) {
-        return new Action(server, uri) {
-            @Override
-            public HttpResponse apply(HttpResponse response) {
-                ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
-                buffer.writeBytes(content);
-                HttpResponse r
-                        = new DefaultFullHttpResponse(response.getProtocolVersion(),
-                                response.getStatus(), buffer);
-                for (Map.Entry<String, String> entry : response.headers()) {
-                    r.headers().add(entry.getKey(), entry.getValue());
-                }
-                r.headers().add(HttpHeaders.CONTENT_LENGTH, content.length);
-                return r;
+    /**
+     * BodyAction.
+     */
+    public static class BodyAction extends Action {
+
+        private final byte[] content;
+
+        public BodyAction(StubHttpServer server, Matcher<?> uri, byte[] content) {
+            super(server, uri);
+            this.content = content;
+        }
+
+        @Override
+        public HttpResponse apply(HttpResponse response) {
+            byte[] body = (byte[]) content;
+            ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(body.length);
+            buffer.writeBytes(body);
+            HttpResponse r
+                    = new DefaultFullHttpResponse(response.getProtocolVersion(),
+                            response.getStatus(), buffer);
+            for (Map.Entry<String, String> entry : response.headers()) {
+                r.headers().add(entry.getKey(), entry.getValue());
             }
-        };
+            r.headers().add(HttpHeaders.CONTENT_LENGTH, body.length);
+            return r;
+        }
     }
+
+    private static final Logger LOG = LoggerFactory.getLogger(Action.class);
 }
