@@ -2,6 +2,8 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.Function;
 import com.buildria.restmock.stub.StubHttpServer;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.MoreObjects.ToStringHelper;
 import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -9,6 +11,7 @@ import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.Map;
+import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +38,17 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
     @Override
     public abstract HttpResponse apply(HttpResponse input);
 
+    public ToStringHelper objects() {
+        return MoreObjects.toStringHelper(this).add("uri", uri);
+    }
+
+    @Override
+    public String toString() {
+         return objects().toString();
+    }
+
     /**
-     * StausCodeAction.
+     * StatusCodeAction.
      */
     public static class StatusCodeAction extends Action {
 
@@ -51,6 +63,11 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         public HttpResponse apply(HttpResponse response) {
             response.setStatus(HttpResponseStatus.valueOf(code));
             return response;
+        }
+
+        @Override
+        public ToStringHelper objects() {
+            return super.objects().add("code", code);
         }
     }
 
@@ -81,6 +98,11 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         public HttpResponse apply(HttpResponse response) {
             response.headers().add(header, value);
             return response;
+        }
+
+        @Override
+        public ToStringHelper objects() {
+            return super.objects().add("header", header).add("value", value);
         }
     }
 
@@ -113,6 +135,11 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
             }
             r.headers().add(HttpHeaders.CONTENT_LENGTH, body.length);
             return r;
+        }
+
+        @Override
+        public ToStringHelper objects() {
+            return super.objects().add("content", DatatypeConverter.printHexBinary(content));
         }
     }
 
