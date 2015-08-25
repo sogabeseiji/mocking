@@ -24,6 +24,10 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         this.uri = uri;
     }
 
+    public Matcher<?> getUri() {
+        return uri;
+    }
+
     public boolean isApplicable(String uri) {
         return this.uri.matches(uri);
     }
@@ -65,6 +69,14 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
             this.value = value;
         }
 
+        public String getHeader() {
+            return header;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
         @Override
         public HttpResponse apply(HttpResponse response) {
             response.headers().add(header, value);
@@ -82,6 +94,10 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         public BodyAction(StubHttpServer server, Matcher<?> uri, byte[] content) {
             super(server, uri);
             this.content = content;
+        }
+
+        public byte[] getContent() {
+            return content;
         }
 
         @Override
