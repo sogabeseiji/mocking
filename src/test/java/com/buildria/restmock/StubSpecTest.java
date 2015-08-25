@@ -18,11 +18,7 @@ import static com.buildria.restmock.builder.stub.RequestSpec.when;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
-/**
- *
- * @author sogabe
- */
-public class SampleTest {
+public class StubSpecTest {
 
     private StubHttpServer server;
 
@@ -168,7 +164,7 @@ public class SampleTest {
     }
 
     @Test
-    public void testReqestBody() throws Exception {
+    public void testRequestBody() throws Exception {
         Person p = new Person("hoge", 19);
         ObjectMapper mapper = new ObjectMapper();
         byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
