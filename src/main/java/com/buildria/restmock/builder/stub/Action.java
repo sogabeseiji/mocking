@@ -1,6 +1,7 @@
 package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.Function;
+import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -14,7 +15,10 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
     protected final Matcher<?> uri;
 
-    public Action(Matcher<?> uri) {
+    protected final StubHttpServer server;
+
+    public Action(StubHttpServer server, Matcher<?> uri) {
+        this.server = server;
         this.uri = uri;
     }
 
@@ -25,8 +29,8 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
     @Override
     public abstract HttpResponse apply(HttpResponse input);
 
-    public static Action status(Matcher<?> uri, final int code) {
-        return new Action(uri) {
+    public static Action status(StubHttpServer server, Matcher<?> uri, final int code) {
+        return new Action(server, uri) {
             @Override
             public HttpResponse apply(HttpResponse response) {
                 response.setStatus(HttpResponseStatus.valueOf(code));
@@ -35,8 +39,8 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         };
     }
 
-    public static Action header(Matcher<?> uri, final String header, final String value) {
-        return new Action(uri) {
+    public static Action header(StubHttpServer server, Matcher<?> uri, final String header, final String value) {
+        return new Action(server, uri) {
             @Override
             public HttpResponse apply(HttpResponse response) {
                 response.headers().add(header, value);
@@ -45,8 +49,8 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         };
     }
 
-    public static Action body(Matcher<?> uri, final byte[] content) {
-        return new Action(uri) {
+    public static Action body(StubHttpServer server, Matcher<?> uri, final byte[] content) {
+        return new Action(server, uri) {
             @Override
             public HttpResponse apply(HttpResponse response) {
                 ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);

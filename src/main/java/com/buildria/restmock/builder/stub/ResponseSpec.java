@@ -27,7 +27,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec statusCode(int code) {
-        server.addAction(Action.status(uri, code));
+        server.addAction(Action.status(server, uri, code));
         return this;
     }
 
@@ -44,7 +44,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec header(String name, String value) {
-        server.addAction(Action.header(uri, name, value));
+        server.addAction(Action.header(server, uri, name, value));
         return this;
     }
 
@@ -57,7 +57,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec body(byte[] content) {
-        server.addAction(Action.body(uri, content));
+        server.addAction(Action.body(server, uri, content));
         return this;
     }
 
