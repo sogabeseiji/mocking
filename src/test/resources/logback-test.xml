@@ -2,8 +2,6 @@
 <configuration>
  
     <property name="ROOT_LEVEL" value="INFO" />
-    <timestamp key="byDate" datePattern="yyyyMMdd"/>
- 
  
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
