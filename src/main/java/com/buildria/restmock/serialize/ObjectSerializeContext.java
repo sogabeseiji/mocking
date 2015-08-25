@@ -1,5 +1,7 @@
 package com.buildria.restmock.serialize;
 
+import java.util.Objects;
+
 public class ObjectSerializeContext {
 
     private final Object objectToSerialize;
@@ -8,7 +10,7 @@ public class ObjectSerializeContext {
 
     public ObjectSerializeContext(Object target, String contentType) {
         this.objectToSerialize = target;
-        this.contentType = contentType;
+        this.contentType = Objects.requireNonNull(contentType);
     }
 
     public Object getObjectToSerialize() {

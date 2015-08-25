@@ -1,8 +1,10 @@
 package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.stub.StubHttpServer;
+import java.util.Objects;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+
+import static org.hamcrest.Matchers.equalTo;
 
 /**
  *
@@ -15,7 +17,7 @@ public class RequestSpec {
     private Matcher<?>  uri;
 
     public RequestSpec(StubHttpServer server) {
-        this.server = server;
+        this.server = Objects.requireNonNull(server);
     }
 
     public static RequestSpec when(StubHttpServer server) {
@@ -23,12 +25,11 @@ public class RequestSpec {
     }
 
     public RequestSpec uri(String uri) {
-        this.uri = Matchers.equalTo(uri);
-        return this;
+        return uri(equalTo(Objects.requireNonNull(uri)));
     }
 
     public RequestSpec uri(Matcher<?> uri) {
-        this.uri = uri;
+        this.uri = Objects.requireNonNull(uri);
         return this;
     }
 

@@ -7,6 +7,7 @@ import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import javax.xml.bind.DatatypeConverter;
 
 public class Call {
@@ -28,6 +29,7 @@ public class Call {
     }
 
     public static Call fromRequest(HttpRequest req) {
+        Objects.requireNonNull(req);
         Call call = new Call();
         call.uri = req.getUri();
         call.method = req.getMethod().name();
