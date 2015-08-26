@@ -35,7 +35,8 @@ public class ObjectSerializerStrategyTest {
     @Test
     public void testCreateObjectSerializerXml() {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx = new ObjectSerializeContext(person, MediaType.XML_UTF_8.toString());
+        ObjectSerializeContext ctx = new ObjectSerializeContext(person,
+                MediaType.XML_UTF_8.toString());
         ObjectSerializer os = ObjectSerializerStrategy.createObjectSerializer(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JAXBXmlSerializer.class));
