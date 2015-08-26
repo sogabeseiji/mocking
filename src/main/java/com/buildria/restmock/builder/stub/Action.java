@@ -18,10 +18,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
@@ -30,8 +29,8 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
     protected final StubHttpServer server;
 
     public Action(StubHttpServer server, Matcher<?> uri) {
-        this.server = server;
-        this.uri = uri;
+        this.server = Objects.requireNonNull(server);
+        this.uri = Objects.requireNonNull(uri);
     }
 
     public Matcher<?> getUri() {
@@ -81,6 +80,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         @Override
         public HttpResponse apply(HttpResponse response) {
+            Objects.requireNonNull(response);
             response.setStatus(HttpResponseStatus.valueOf(code));
             return response;
         }
@@ -102,7 +102,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         public HeaderAction(StubHttpServer server, Matcher<?> uri, String header, String value) {
             super(server, uri);
-            this.header = header;
+            this.header = Objects.requireNonNull(header);
             this.value = value;
         }
 
@@ -116,6 +116,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         @Override
         public HttpResponse apply(HttpResponse response) {
+            Objects.requireNonNull(response);
             response.headers().add(header, value);
             return response;
         }
@@ -135,7 +136,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         public RawBodyAction(StubHttpServer server, Matcher<?> uri, byte[] content) {
             super(server, uri);
-            this.content = content;
+            this.content = Objects.requireNonNull(content);
         }
 
         public byte[] getContent() {
@@ -144,6 +145,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         @Override
         public HttpResponse apply(HttpResponse response) {
+            Objects.requireNonNull(response);
             ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
             buffer.writeBytes(content);
             HttpResponse r
@@ -171,7 +173,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         public BodyAction(StubHttpServer server, Matcher<?> uri, Object content) {
             super(server, uri);
-            this.content = content;
+            this.content = Objects.requireNonNull(content);
         }
 
         public Object getContent() {
@@ -180,6 +182,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         @Override
         public HttpResponse apply(HttpResponse response) {
+            Objects.requireNonNull(response);
             HeaderAction contentType = getContentType();
             if (contentType == null) {
                 throw new RestMockException("No Content-Type found.");
@@ -198,6 +201,4 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
             return super.objects().add("content", content.toString());
         }
     }
-
-    private static final Logger LOG = LoggerFactory.getLogger(Action.class);
 }
