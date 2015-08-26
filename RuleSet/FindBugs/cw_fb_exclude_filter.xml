@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) NTT COMWARE 2012 -->
+<FindBugsFilter>
+  <Match>
+    <Class name="~.*Tests?$" />
+  </Match>
+  <Match>
+    <Class name="~.*\.Mock\w+" />
+  </Match>
+  <Match>
+    <Class name="~.*Mock$" />
+  </Match>
+  <Match>
+    <Class name="~.*.R$" />
+  </Match>
+  <Match>
+    <Class name="~.*.R\$.*" />
+  </Match>
+</FindBugsFilter>

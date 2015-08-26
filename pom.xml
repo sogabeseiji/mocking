@@ -38,29 +38,54 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.5.201505241946</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.4</version>
                 <configuration>
-                    <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
-                    <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
+                    <locales>ja</locales>
+                    <inputEncoding>${project.build.sourceEncoding}</inputEncoding>
+                    <outputEncoding>${project.build.sourceEncoding}</outputEncoding>
+                    <reportPlugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-project-info-reports-plugin</artifactId>
+                            <version>2.7</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.codehaus.mojo</groupId>
+                            <artifactId>findbugs-maven-plugin</artifactId>
+                            <version>3.0.1</version>
+                            <configuration>
+                                <findbugsXmlOutput>true</findbugsXmlOutput>
+                                <xmlOutput>true</xmlOutput>
+                                <debug>false</debug>
+                                <effort>Max</effort>
+                                <onlyAnalyze>com.buildria.*</onlyAnalyze>
+                                <includeFilterFile>RuleSet/FindBugs/cw_developer_fb_include_filter.xml</includeFilterFile>
+                            </configuration>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-checkstyle-plugin</artifactId>
+                            <version>2.15</version>
+                            <configuration>
+                                <configLocation>RuleSet/Checkstyle/cw_developer_cs_utf8.xml</configLocation>
+                                <encoding>${project.build.sourceEncoding}</encoding>
+                            </configuration>                        
+                        </plugin>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-pmd-plugin</artifactId>
+                            <version>3.4</version>
+                            <configuration>
+                                <linkXref>false</linkXref>
+                                <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
+                                <targetJdk>${maven.compiler.target}</targetJdk>
+                            </configuration>
+                        </plugin>
+                    </reportPlugins>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>pre-unit-test</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>post-unit-test</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>                    
-                </executions>
-            </plugin>            
+            </plugin>     
         </plugins>
     </build>
 

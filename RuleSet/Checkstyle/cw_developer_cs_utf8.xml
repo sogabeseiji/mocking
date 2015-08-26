@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Puppy Crawl//DTD Check Configuration 1.3//EN" "http://www.puppycrawl.com/dtds/configuration_1_3.dtd">
+
+<!--
+    This configuration file was written by the eclipse-cs plugin configuration editor
+-->
+<module name="Checker">
+    <property name="severity" value="warning"/>
+    <property name="localeCountry" value="JP"/>
+    <property name="localeLanguage" value="ja"/>
+    <property name="charset" value="UTF-8"/>
+    <module name="TreeWalker">
+        <module name="FileContentsHolder"/>
+        <property name="tabWidth" value="4"/>
+        <module name="JavadocMethod">
+            <property name="severity" value="ignore"/>
+            <property name="allowUndeclaredRTE" value="true"/>
+            <property name="suppressLoadErrors" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="JavadocType">
+            <property name="severity" value="ignore"/>
+            <property name="authorFormat" value="\S"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="JavadocVariable">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="JavadocStyle">
+            <property name="severity" value="ignore"/>
+            <property name="checkEmptyJavadoc" value="true"/>
+            <property name="checkFirstSentence" value="false"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="ConstantName"/>
+        <module name="LocalFinalVariableName"/>
+        <module name="LocalVariableName"/>
+        <module name="MemberName"/>
+        <module name="MethodName"/>
+        <module name="PackageName"/>
+        <module name="ParameterName"/>
+        <module name="StaticVariableName"/>
+        <module name="TypeName"/>
+        <module name="AvoidStarImport">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="IllegalImport"/>
+        <module name="RedundantImport">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="UnusedImports">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="ParameterNumber">
+            <property name="max" value="5"/>
+        </module>
+        <module name="NoWhitespaceAfter">
+            <property name="severity" value="ignore"/>
+            <property name="tokens" value="BNOT,DEC,DOT,INC,LNOT,UNARY_MINUS,UNARY_PLUS"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="NoWhitespaceBefore">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="OperatorWrap">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="ParenPad">
+            <property name="severity" value="ignore"/>
+            <property name="tokens" value="CTOR_CALL,METHOD_CALL,RPAREN,SUPER_CTOR_CALL"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="TypecastParenPad">
+            <property name="severity" value="ignore"/>
+            <property name="tokens" value="RPAREN,TYPECAST"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="WhitespaceAfter">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="WhitespaceAround">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="ModifierOrder"/>
+        <module name="LeftCurly">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="NeedBraces">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RightCurly">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="EmptyStatement">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="HiddenField">
+            <property name="tokens" value="VARIABLE_DEF"/>
+            <property name="ignoreConstructorParameter" value="true"/>
+            <property name="ignoreSetter" value="true"/>
+            <property name="ignoreAbstractMethods" value="true"/>
+        </module>
+        <module name="InnerAssignment"/>
+        <module name="MagicNumber">
+            <property name="ignoreNumbers" value="-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10"/>
+            <property name="ignoreHashCodeMethod" value="true"/>
+            <property name="ignoreAnnotation" value="true"/>
+        </module>
+        <module name="MissingSwitchDefault">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RedundantThrows">
+            <property name="severity" value="ignore"/>
+            <property name="suppressLoadErrors" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="HideUtilityClassConstructor"/>
+        <module name="InterfaceIsType"/>
+        <module name="VisibilityModifier">
+            <property name="packageAllowed" value="true"/>
+            <property name="protectedAllowed" value="true"/>
+        </module>
+        <module name="ArrayTypeStyle"/>
+        <module name="TodoComment">
+            <property name="format" value="TODO"/>
+        </module>
+        <module name="AbstractClassName"/>
+        <module name="DefaultComesLast"/>
+        <module name="ExplicitInitialization"/>
+        <module name="IllegalCatch">
+            <property name="illegalClassNames" value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException, java.lang.NullPointerException, java.lang.Error"/>
+        </module>
+        <module name="IllegalType">
+            <property name="tokens" value="METHOD_DEF,PARAMETER_DEF,VARIABLE_DEF"/>
+            <property name="illegalClassNames" value="java.util.Hashtable, java.util.HashSet, java.util.HashMap, java.util.ArrayList, java.util.LinkedList, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap, java.util.Vector"/>
+        </module>
+        <module name="ModifiedControlVariable"/>
+        <module name="MultipleVariableDeclarations"/>
+        <module name="NestedIfDepth">
+            <property name="max" value="5"/>
+        </module>
+        <module name="NestedTryDepth">
+            <property name="max" value="3"/>
+        </module>
+        <module name="PackageDeclaration"/>
+        <module name="ParameterAssignment">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="StringLiteralEquality">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="CyclomaticComplexity">
+            <property name="max" value="20"/>
+        </module>
+        <module name="DescendantToken">
+            <metadata name="net.sf.eclipsecs.core.comment" value="finallyブロックでreturnを上書きしてはいけません。"/>
+            <property name="tokens" value="LITERAL_FINALLY"/>
+            <property name="limitedTokens" value="LITERAL_RETURN"/>
+            <property name="maximumNumber" value="0"/>
+            <property name="minimumMessage" value="finallyブロックでreturnを上書きしてはいけません。"/>
+            <property name="maximumMessage" value="finallyブロックでreturnを上書きしてはいけません。"/>
+        </module>
+        <module name="DescendantToken">
+            <metadata name="net.sf.eclipsecs.core.comment" value="finallyブロックでthrowを上書きしてはいけません。"/>
+            <property name="tokens" value="LITERAL_FINALLY"/>
+            <property name="limitedTokens" value="LITERAL_THROW"/>
+            <property name="maximumNumber" value="0"/>
+            <property name="minimumMessage" value="finallyブロックでthrowを上書きしてはいけません。"/>
+            <property name="maximumMessage" value="finallyブロックでthrowを上書きしてはいけません。"/>
+        </module>
+        <module name="DescendantToken">
+            <metadata name="net.sf.eclipsecs.core.comment" value="tryブロックのループの中での使用を避ける。"/>
+            <property name="tokens" value="LITERAL_FOR,LITERAL_WHILE,LITERAL_DO"/>
+            <property name="limitedTokens" value="LITERAL_TRY"/>
+            <property name="maximumNumber" value="0"/>
+            <property name="minimumMessage" value="tryブロックのループの中での使用を避ける。"/>
+            <property name="maximumMessage" value="tryブロックのループの中での使用を避ける。"/>
+        </module>
+        <module name="TrailingComment">
+            <property name="legalComment" value="NON-NLS"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="Security:Statementクラスを使用してはいけません。"/>
+            <property name="severity" value="ignore"/>
+            <property name="format" value="\sStatement\s"/>
+            <property name="message" value="Statementクラスを使用してはいけません。"/>
+            <property name="ignoreComments" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="レガシーコレクションクラスの使用を避ける。"/>
+            <property name="format" value="\sVector[\s&lt;]|\sHashtable[\s&lt;]|\sEnumeration[\s&lt;]"/>
+            <property name="message" value="レガシーコレクションクラスの使用を避ける。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="レガシークラスの使用を避ける。"/>
+            <property name="format" value="\sStringTokenizer\s"/>
+            <property name="message" value="レガシークラスの使用を避ける。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="ProcessBuilderの使用を避ける。"/>
+            <property name="format" value="\sProcessBuilder\s|Runtime\.getRuntime\(\)\.exec"/>
+            <property name="message" value="コマンド実行を避ける。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="半角カナ、全角英数の使用を避ける。"/>
+            <property name="format" value="[｡-ﾟＡ-ｚ０-９]"/>
+            <property name="message" value="半角カナ、全角英数の使用を避ける。"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="文字エンコーディングがWindows-31Jではありません。"/>
+            <property name="severity" value="ignore"/>
+            <property name="format" value="[sS][hH][iI][fF][tT].?[jJ][iI][sS]|[mM][sS]932|[sS][jJ][iI][sS]"/>
+            <property name="message" value="文字エンコーディングがWindows-31Jではありません。"/>
+            <property name="ignoreComments" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="補助文字に対応していないAPIを使用しています。"/>
+            <property name="severity" value="ignore"/>
+            <property name="format" value="\W[^A-Z]*\.charAt\W|\W[^A-Z]*\.length\W|\W[^A-Z]*\.substring\W|\W[^A-Z]*\.minLength\W|\W[^A-Z]*\.maxLength\W"/>
+            <property name="message" value="補助文字に対応していないAPIを使用しています。"/>
+            <property name="ignoreComments" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="文字エンコーディングがUTF-8ではありません。"/>
+            <property name="severity" value="ignore"/>
+            <property name="format" value="[sS][hH][iI][fF][tT].?[jJ][iI][sS]|[mM][sS]932|[sS][jJ][iI][sS]|[wW]indows.?31[jJ]|[eE][uU][cC].?[jJ][pP]"/>
+            <property name="message" value="文字エンコーディングがUTF-8ではありません。"/>
+            <property name="ignoreComments" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="ClassTypeParameterName"/>
+        <module name="MethodTypeParameterName"/>
+        <module name="GenericWhitespace">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="EqualsAvoidNull"/>
+        <module name="NoFinalizer">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="SuperClone">
+            <property name="severity" value="ignore"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="MultipleStringLiterals">
+            <property name="allowedDuplicates" value="3"/>
+            <property name="ignoreStringsRegexp" value="^((&quot;&quot;)|(&quot;, &quot;)|(&quot;.&quot;))$"/>
+            <property name="ignoreOccurrenceContext" value="LITERAL_ASSERT,ANNOTATION"/>
+        </module>
+        <module name="SimplifyBooleanExpression"/>
+        <module name="DescendantToken">
+            <metadata name="net.sf.eclipsecs.core.comment" value="forループには、条件文、インクリメントを使用する。"/>
+            <property name="tokens" value="FOR_INIT,FOR_CONDITION,FOR_ITERATOR"/>
+            <property name="limitedTokens" value="EXPR"/>
+            <property name="minimumNumber" value="1"/>
+            <property name="maximumNumber" value="3"/>
+            <property name="sumTokenCounts" value="true"/>
+            <property name="minimumMessage" value="forループには、条件文、インクリメントを使用する。"/>
+            <property name="maximumMessage" value="forループには、条件文、インクリメントを使用する。"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="ThreadGroupを使用してはいけません。"/>
+            <property name="severity" value="ignore"/>
+            <property name="format" value="\sThreadGroup\s"/>
+            <property name="message" value="ThreadGroupを使用してはいけません。"/>
+            <property name="ignoreComments" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="volatileを使用しています。"/>
+            <property name="format" value="\svolatile\s"/>
+            <property name="message" value="volatileの使用を避ける。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <module name="IllegalThrows">
+            <property name="illegalClassNames" value="java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException, java.lang.NullPointerException, java.lang.Error"/>
+        </module>
+        <module name="OneStatementPerLine"/>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="Security:System.err または System.out の print メソッドの使用を避ける。"/>
+            <property name="format" value="System\s*\.\s*(out|err)"/>
+            <property name="message" value="System.err または System.out の print メソッドの使用を避ける。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="Thread.yield()を呼び出してはいけません。"/>
+            <property name="severity" value="ignore"/>
+            <property name="format" value="\sThread\.yield\(\)"/>
+            <property name="message" value="Thread.yield()を呼び出してはいけません。"/>
+            <property name="ignoreComments" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="Security:Throwable オブジェクトの 'printStackTrace()' メソッドを呼び出してはいけません。"/>
+            <property name="format" value="\.\s*printStackTrace\s*\(\s*\)"/>
+            <property name="message" value="Throwable オブジェクトの 'printStackTrace()' メソッドを呼び出してはいけません。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="ErrorおよびThrowableのサブクラスを定義してはいけません。"/>
+            <property name="format" value="\sextends\s+(?:Error|Throwable)"/>
+            <property name="message" value="ErrorおよびThrowableのサブクラスを定義してはいけません。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="Exceptionをスローしてはいけません。"/>
+            <property name="severity" value="ignore"/>
+            <property name="format" value="\sthrow\s+new\s+(?:Exception|Throwable|RuntimeException|NullPointerException|Error)"/>
+            <property name="message" value="Exceptionをスローしてはいけません。"/>
+            <property name="ignoreComments" value="true"/>
+            <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        <module name="RegexpSinglelineJava">
+            <metadata name="net.sf.eclipsecs.core.comment" value="Threadクラスを継承してはいけません。"/>
+            <property name="format" value="\Wextends\s+Thread\W"/>
+            <property name="message" value="Threadクラスを継承してはいけません。"/>
+            <property name="ignoreComments" value="true"/>
+        </module>
+        <!--    
+        <module name="AvoidConstantAsFirstOperandInConditionCheck">
+          <property name="severity" value="ignore"/>
+          <property name="targetConstantTypes" value="LITERAL_NULL,LITERAL_TRUE,LITERAL_FALSE,NUM_INT,NUM_DOUBLE,NUM_LONG,NUM_FLOAT"/>
+          <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        -->
+        <!--    
+            <module name="AvoidHidingCauseException">
+              <property name="severity" value="ignore"/>
+              <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+            </module>
+        -->
+        <!--    
+        <module name="AvoidNotShortCircuitOperatorsForBoolean">
+          <property name="severity" value="ignore"/>
+          <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        -->
+        <!--    
+        <module name="ConfusingConditionCheck">
+          <property name="severity" value="ignore"/>
+          <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+        </module>
+        -->
+        <!--
+           <module name="ReturnNullInsteadOfBoolean"/>
+           <module name="ReturnBooleanFromTernary"/>
+           <module name="LogicConditionNeedOptimizationCheck"/>
+           <module name="SimpleAccessorNameNotation">
+             <property name="severity" value="ignore"/>
+             <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+           </module>
+           <module name="ForbidWildcardAsReturnType">
+             <property name="severity" value="ignore"/>
+             <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+           </module>
+           <module name="MapIterationInForEachLoop">
+             <property name="proposeKeySetUsage" value="true"/>
+             <property name="proposeEntrySetUsage" value="true"/>
+           </module>
+           <module name="AvoidDefaultSerializableInInnerClasses">
+             <property name="severity" value="ignore"/>
+             <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+           </module>
+        -->   
+    </module>
+    <module name="JavadocPackage">
+        <property name="allowLegacy" value="true"/>
+    </module>
+    <module name="RegexpMultiline">
+        <metadata name="net.sf.eclipsecs.core.comment" value="空のブロックにコメントがありません。"/>
+        <property name="format" value="[^\]=]\s+\{\s*[;]*?\s*\}[\s)]"/>
+        <property name="message" value="空のブロックにコメントがありません。"/>
+    </module>
+    <module name="FileTabCharacter">
+        <property name="severity" value="ignore"/>
+        <metadata name="net.sf.eclipsecs.core.lastEnabledSeverity" value="inherit"/>
+    </module>
+    <module name="SuppressionCommentFilter"/>
+    <module name="SuppressionFilter">
+        <property name="file" value="RuleSet/Checkstyle/suppressions.xml"/>
+    </module>
+</module>

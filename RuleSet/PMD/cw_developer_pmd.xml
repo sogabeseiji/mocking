@@ -1,0 +1,862 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ruleset xmlns="http://pmd.sf.net/ruleset/1.0.0" name="cw_developer_pmd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd">
+   <description>NTT COMWARE Developer Rule Set   Copyright (c) NTT COMWARE 2012</description>
+   <exclude-pattern>.*/.*Tests?\.java</exclude-pattern>
+   <exclude-pattern>.*/Mock.*</exclude-pattern>
+   <exclude-pattern>.*/\..*</exclude-pattern>
+   <exclude-pattern>.*/.*Mock\.java</exclude-pattern>
+   <exclude-pattern>.*/R\.java</exclude-pattern>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UnconditionalIfStatement" message="UnconditionalIfStatement:常にtrueまたはfalseになるif文を使用してはいけません。" name="UnconditionalIfStatement" since="1.5" typeResolution="true">
+      <description>
+Do not use "if" statements that are always true or always false.
+      </description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[
+ 
+//IfStatement/Expression
+ [count(PrimaryExpression)=1]
+ /PrimaryExpression/PrimaryPrefix/Literal/BooleanLiteral
+
+                ]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+  
+public class Foo {
+ public void close() {
+  if (true) {
+       // ...
+   }
+ }
+}
+
+      ]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.UselessOverridingMethod" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UselessOverridingMethod" message="UnconditionalIfStatement:super()を呼び出しているだけのオーバーライドメソッドです。" name="UselessOverridingMethod" since="3.3" typeResolution="true">
+      <description>The overriding method merely calls the same method defined in a superclass</description>
+      <priority>3</priority>
+      <properties>
+         <property name="ignoreAnnotations" value="false"/>
+      </properties>
+      <example><![CDATA[
+public void foo(String bar) {
+    super.foo(bar);      //Why bother overriding?
+}
+        ]]></example>
+      <example><![CDATA[
+public String foo() {
+    return super.foo();  //Why bother overriding?
+}
+        ]]></example>
+      <example><![CDATA[
+@Id
+public Long getId() {
+    return super.getId();  //OK if 'ignoreAnnotations' is false, which is the default behavior
+}
+        ]]></example>
+      <example><![CDATA[public void foo(String bar) {
+
+    super.foo(bar);      //Why bother overriding?
+
+}
+
+
+
+public String foo() {
+
+    return super.foo();  //Why bother overriding?
+
+}
+
+
+
+@Id
+
+public Long getId() {
+
+    return super.getId();  //OK if 'ignoreAnnotations' is false, which is the default behavior
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/clone.html#CloneThrowsCloneNotSupportedException" message="CloneThrowsCloneNotSupportedException:clone() メソッドはCloneNotSupportedExceptionをスローすべきです。" name="CloneThrowsCloneNotSupportedException" since="1.9" typeResolution="true">
+      <description>The method clone() should throw a CloneNotSupportedException.</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//MethodDeclaration
+
+[
+
+MethodDeclarator/@Image = 'clone'
+
+and count(MethodDeclarator/FormalParameters/*) = 0
+
+and count(NameList/Name[contains
+
+(@Image,'CloneNotSupportedException')]) = 0
+
+]
+
+[
+
+../../../../ClassOrInterfaceDeclaration[@Final = 'false']
+
+]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+             
+ public class MyClass implements Cloneable{
+     public Object clone() { // will cause an error
+          MyClass clone = (MyClass)super.clone();
+          return clone;
+     }
+ }
+    
+         ]]></example>
+      <example><![CDATA[public class MyClass implements Cloneable{
+
+     public Object clone() { // will cause an error
+
+          MyClass clone = (MyClass)super.clone();
+
+          return clone;
+
+     }
+
+ }]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/controversial.html#UnnecessaryConstructor" message="CloneThrowsCloneNotSupportedException:不要なコンストラクタです。" name="UnnecessaryConstructor" since="1.0" typeResolution="true">
+      <description>This rule detects when a constructor is not necessary; i.e., when there's only one constructor,&#13;
+it's public, has an empty body, and takes no arguments.</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//ClassOrInterfaceBody[count(ClassOrInterfaceBodyDeclaration/ConstructorDeclaration)=1]
+
+/ClassOrInterfaceBodyDeclaration/ConstructorDeclaration
+
+[@Public='true']
+
+[not(FormalParameters/*)]
+
+[not(BlockStatement)]
+
+[not(NameList)]
+
+[count(ExplicitConstructorInvocation/Arguments/ArgumentList/Expression)=0]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+  
+public class Foo {
+ public Foo() {}
+}
+  
+      ]]></example>
+      <example><![CDATA[public class Foo {
+
+ public Foo() {}
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/controversial.html#CallSuperInConstructor" message="CallSuperInConstructor:このコンストラクタはsuper()を呼び出したほうが良い。" name="CallSuperInConstructor" since="3.0" typeResolution="true">
+      <description>It is a good practice to call super() in a constructor. If super() is not called but&#13;
+ another constructor (such as an overloaded constructor) is called, this rule will not report it.</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//ClassOrInterfaceDeclaration[ count (ExtendsList/*) > 0 ]
+
+/ClassOrInterfaceBody
+
+ /ClassOrInterfaceBodyDeclaration
+
+ /ConstructorDeclaration[ count (.//ExplicitConstructorInvocation)=0 ]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+
+public class Foo extends Bar{
+ public Foo() {
+  // call the constructor of Bar
+  super();
+ }
+ public Foo(int code) {
+  // do something with code
+  this();
+  // no problem with this
+ }
+}
+
+      ]]></example>
+      <example><![CDATA[public class Foo extends Bar{
+
+ public Foo() {
+
+  // call the constructor of Bar
+
+  super();
+
+ }
+
+ public Foo(int code) {
+
+  // do something with code
+
+  this();
+
+  // no problem with this
+
+ }
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.CloseResource" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#CloseResource" message="CloseResource:{0} オブジェクトをクローズしていません。" name="CloseResource" since="1.2.2" typeResolution="true">
+      <description>Ensure that resources (like Connection, Statement, and ResultSet objects) are always closed after use.</description>
+      <priority>3</priority>
+      <properties>
+		  <property name="types" value="XMLDecoder,XMLEncoder,InputStream,OutputStream,Reader,Writer,DatagramSocket,DatagramSocketImpl,MulticastSocket,Socket,ServerSocket,SocketImpl,URLClassLoader,AsynchronousByteChannel,AsynchronousChannel,AsynchronousFileChannel,AsynchronousServerSocketChannel,AsynchronousSocketChannel,ByteChannel,Channel,GatheringByteChannel,InterruptibleChannel,MulticastChannel,NetworkChannel,ReadableByteChannel,ScatteringByteChannel,SeekableByteChannel,WritableByteChannel,DatagramChannel,FileChannel,Pipe.SinkChannel,Pipe.SourceChannel,SelectableChannel,Selector,ServerSocketChannel,SocketChannel,AbstractInterruptibleChannel,AbstractSelectableChannel,DirectoryStream,SecureDirectoryStream,WatchService,FileSystem,LogStream,DigestInputStream,DigestOutputStream,Formatter,Scanner,JarFile,JarInputStream,JarOutputStream,CheckedInputStream,CheckedOutputStream,DeflaterInputStream,DeflaterOutputStream,GZIPInputStream,GZIPOutputStream,InflaterInputStream,InflaterOutputStream,ZipInputStream,ZipOutputStream,ZipFile,CipherInputStream,CipherOutputStream,ImageInputStream,ImageOutputStream,FileCacheImageInputStream,FileCacheImageOutputStream,FileImageInputStream,FileImageOutputStream,ImageInputStreamImpl,ImageOutputStreamImpl,MemoryCacheImageInputStream,MemoryCacheImageOutputStream,FileCacheImageOutputStream,FileImageOutputStream,ImageOutputStreamImpl,MemoryCacheImageOutputStream,QueueConnection,TopicConnection,XAConnection,XAQueueConnection,XATopicConnection,Service,Store,Transport,SharedInputStream,SharedByteArrayInputStream,SharedFileInputStream,MLet,PrivateMLet,JMXConnector,RMIConnector,RMIConnection,RMIConnectionImpl,RMIConnectionImpl_Stub,RMIConnector,RMIIIOPServerImpl,RMIJRMPServerImpl,RMIServerImpl,Context,InitialContext,InitialDirContext,InitialLdapContext,SSLServerSocket,SSLSocket,EntityManager,ServletInputStream,ServletOutputStream,RowSet,CachedRowSet,FilteredRowSet,JdbcRowSet,JoinRowSet,WebRowSet,SyncResolver,AudioInputStream,Clip,DataLine,Mixer,Port,SourceDataLine,TargetDataLine,ProgressMonitorInputStream,JavaFileManager,StandardJavaFileManager,ForwardingJavaFileManager,SOAPConnection,XMLStreamReader,XMLStreamWriter,StreamReaderDelegate,PoolingConnection"/>
+      </properties>
+      <example><![CDATA[
+
+public class Bar {
+ public void foo() {
+  Connection c = pool.getConnection();
+  try {
+    // do stuff
+  } catch (SQLException ex) {
+    // handle exception
+  } finally {
+    // oops, should close the connection using 'close'!
+    // c.close();
+  }
+ }
+}
+
+    ]]></example>
+      <example><![CDATA[public class Bar {
+
+ public void foo() {
+
+  Connection c = pool.getConnection();
+
+  try {
+
+    // do stuff
+
+  } catch (SQLException ex) {
+
+    // handle exception
+
+  } finally {
+
+    // oops, should close the connection using 'close'!
+
+    // c.close();
+
+  }
+
+ }
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#AvoidSynchronizedAtMethodLevel" message="AvoidSynchronizedAtMethodLevel:メソッド宣言でsynchronized修飾子を使用してはいけません。" name="AvoidSynchronizedAtMethodLevel" since="3.0" typeResolution="true">
+      <description>Method level synchronization can backfire when new code is added to the method.  Block-level&#13;
+  synchronization helps to ensure that only the code that needs synchronization gets it.</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//MethodDeclaration[@Synchronized='true']]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+
+public class Foo {
+ // Try to avoid this
+ synchronized void foo() {
+ }
+ // Prefer this:
+ void bar() {
+  synchronized(this) {
+  }
+ }
+}
+
+      ]]></example>
+      <example><![CDATA[public class Foo {
+
+ // Try to avoid this
+
+ synchronized void foo() {
+
+ }
+
+ // Prefer this:
+
+ void bar() {
+
+  synchronized(this) {
+
+  }
+
+ }
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#AvoidInstanceofChecksInCatchClause" message="AvoidInstanceofChecksInCatchClause:instanceof演算子でキャッチした例外を振り分けています。" name="AvoidInstanceofChecksInCatchClause" since="3.0" typeResolution="true">
+      <description>Each caught exception type should be handled in its own catch clause.</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//CatchStatement/FormalParameter
+
+ /following-sibling::Block//InstanceOfExpression/PrimaryExpression/PrimaryPrefix
+
+  /Name[
+
+   @Image = ./ancestor::Block/preceding-sibling::FormalParameter
+
+    /VariableDeclaratorId/@Image
+
+  ]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+
+try { // Avoid this
+ // do something
+} catch (Exception ee) {
+ if (ee instanceof IOException) {
+  cleanup();
+ }
+}
+try {  // Prefer this:
+ // do something
+} catch (IOException ee) {
+ cleanup();
+}
+
+      ]]></example>
+      <example><![CDATA[try { // Avoid this
+
+ // do something
+
+} catch (Exception ee) {
+
+ if (ee instanceof IOException) {
+
+  cleanup();
+
+ }
+
+}
+
+try {  // Prefer this:
+
+ // do something
+
+} catch (IOException ee) {
+
+ cleanup();
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.design.CompareObjectsWithEquals" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#CompareObjectsWithEquals" message="CompareObjectsWithEquals:オブジェクト参照の比較にはequals()を使用する。" name="CompareObjectsWithEquals" since="3.2" typeResolution="true">
+      <description>Use equals() to compare object references; avoid comparing them with ==.</description>
+      <priority>3</priority>
+      <example><![CDATA[
+
+class Foo {
+ boolean bar(String a, String b) {
+  return a == b;
+ }
+}
+
+
+  ]]></example>
+      <example><![CDATA[class Foo {
+
+ boolean bar(String a, String b) {
+
+  return a == b;
+
+ }
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.design.PreserveStackTrace" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/design.html#PreserveStackTrace" message="PreserveStackTrace:catchブロックの中で生成した例外にキャッチした例外を渡していません。" name="PreserveStackTrace" since="3.7" typeResolution="true">
+      <description>Throwing a new exception from a catch block without passing the original exception into the&#13;
+new exception will cause the true stack trace to be lost, and can make it difficult to&#13;
+debug effectively.</description>
+      <priority>3</priority>
+      <example><![CDATA[
+    
+public class Foo {
+    void good() {
+        try{
+            Integer.parseInt("a");
+        } catch(Exception e){
+            throw new Exception(e);
+        }
+    }
+    void bad() {
+        try{
+            Integer.parseInt("a");
+        } catch(Exception e){
+            throw new Exception(e.getMessage());
+        }
+    }
+}
+    
+      ]]></example>
+      <example><![CDATA[public class Foo {
+
+    void good() {
+
+        try{
+
+            Integer.parseInt("a");
+
+        } catch(Exception e){
+
+            throw new Exception(e);
+
+        }
+
+    }
+
+    void bad() {
+
+        try{
+
+            Integer.parseInt("a");
+
+        } catch(Exception e){
+
+            throw new Exception(e.getMessage());
+
+        }
+
+    }
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/optimizations.html#UseArraysAsList" message="UseArraysAsList:配列からListへの変換にはArrays.asList()を使用する。" name="UseArraysAsList" since="3.5" typeResolution="true">
+      <description>The java.util.Arrays class has a "asList" method that&#13;
+   should be used when you want to create a new List from&#13;
+   an array of objects. It is faster than executing a loop to&#13;
+   copy all the elements of the array one by one</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//Statement[
+
+    (ForStatement) and (count(.//IfStatement)=0)
+
+   ]
+
+   //StatementExpression[
+
+    PrimaryExpression/PrimaryPrefix/Name[
+
+   substring-before(@Image,'.add') = ancestor::MethodDeclaration//LocalVariableDeclaration[
+
+      ./Type//ClassOrInterfaceType[
+
+       @Image = 'Collection' or 
+
+       @Image = 'List' or @Image='ArrayList'
+
+      ]
+
+     ]
+
+     /VariableDeclarator/VariableDeclaratorId[
+
+      count(..//AllocationExpression/ClassOrInterfaceType[
+
+       @Image="ArrayList"
+
+      ]
+
+      )=1
+
+     ]/@Image
+
+    ]
+
+   and
+
+   PrimaryExpression/PrimarySuffix/Arguments/ArgumentList/Expression/PrimaryExpression/PrimaryPrefix/Name
+
+   [@Image = ancestor::MethodDeclaration//LocalVariableDeclaration
+
+   [@Array="true"]/VariableDeclarator/VariableDeclaratorId/@Image]
+
+   /../..[count(.//PrimarySuffix)
+
+   =1]/PrimarySuffix/Expression/PrimaryExpression/PrimaryPrefix
+
+   /Name
+
+   ]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+   
+   public class Test {
+    public void foo(Integer[] ints) {
+    // could just use Arrays.asList(ints)
+     List l= new ArrayList(10);
+     for (int i=0; i< 100; i++) {
+      l.add(ints[i]);
+     }
+     for (int i=0; i< 100; i++) {
+      l.add(a[i].toString()); // won't trigger the rule
+     }
+    }
+   }
+   
+     ]]></example>
+      <example><![CDATA[public class Test {
+
+    public void foo(Integer[] ints) {
+
+    // could just use Arrays.asList(ints)
+
+     List l= new ArrayList(10);
+
+     for (int i=0; i< 100; i++) {
+
+      l.add(ints[i]);
+
+     }
+
+     for (int i=0; i< 100; i++) {
+
+      l.add(a[i].toString()); // won't trigger the rule
+
+     }
+
+    }
+
+   }]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/optimizations.html#AvoidArrayLoops" message="AvoidArrayLoops:配列のコピーにはArrays.copyOf /System.arraycopyを使用する。" name="AvoidArrayLoops" since="3.5" typeResolution="true">
+      <description>Instead of copying data between two arrays, use&#13;
+    System.arraycopy method</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//Statement[(ForStatement or WhileStatement) and
+
+count(*//AssignmentOperator[@Image = '='])=1
+
+and
+
+*/Statement
+
+[
+
+./Block/BlockStatement/Statement/StatementExpression/PrimaryExpression
+
+/PrimaryPrefix/Name/../../PrimarySuffix/Expression
+
+[(PrimaryExpression or AdditiveExpression) and count
+
+(.//PrimaryPrefix/Name)=1]//PrimaryPrefix/Name/@Image
+
+and
+
+./Block/BlockStatement/Statement/StatementExpression/Expression/PrimaryExpression
+
+/PrimaryPrefix/Name/../../PrimarySuffix[count
+
+(..//PrimarySuffix)=1]/Expression[(PrimaryExpression
+
+or AdditiveExpression) and count(.//PrimaryPrefix/Name)=1]
+
+//PrimaryPrefix/Name/@Image
+
+]]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[
+    
+public class Test {
+ public void bar() {
+  int[] a = new int[10];
+  int[] b = new int[10];
+  for (int i=0;i<10;i++) {
+   b[i]=a[i];
+  }
+ }
+}
+            // this will trigger the rule
+            for (int i=0;i<10;i++) {
+             b[i]=a[c[i]];
+            }
+
+        }
+    }
+    
+      ]]></example>
+      <example><![CDATA[public class Test {
+
+ public void bar() {
+
+  int[] a = new int[10];
+
+  int[] b = new int[10];
+
+  for (int i=0;i<10;i++) {
+
+   b[i]=a[i];
+
+  }
+
+ }
+
+}
+
+            // this will trigger the rule
+
+            for (int i=0;i<10;i++) {
+
+             b[i]=a[c[i]];
+
+            }
+
+
+
+        }
+
+    }]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.design.ExceptionAsFlowControl" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/strictexception.html#ExceptionAsFlowControl" message="ExceptionAsFlowControl:フロー制御文として例外を使用してはいけません。" name="ExceptionAsFlowControl" since="1.8" typeResolution="true">
+      <description>Using Exceptions as flow control leads to GOTOish code and obscures true exceptions when debugging.</description>
+      <priority>3</priority>
+      <example><![CDATA[
+  
+public class Foo {
+ void bar() {
+  try {
+   try {
+   } catch (Exception e) {
+    throw new WrapperException(e);
+    // this is essentially a GOTO to the WrapperException catch block
+   }
+  } catch (WrapperException e) {
+   // do some more stuff
+  }
+ }
+}
+  
+      ]]></example>
+      <example><![CDATA[public class Foo {
+
+ void bar() {
+
+  try {
+
+   try {
+
+   } catch (Exception e) {
+
+    throw new WrapperException(e);
+
+    // this is essentially a GOTO to the WrapperException catch block
+
+   }
+
+  } catch (WrapperException e) {
+
+   // do some more stuff
+
+  }
+
+ }
+
+}]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/strictexception.html#AvoidRethrowingException" message="AvoidRethrowingException:キャッチした例外を再スローしています。" name="AvoidRethrowingException" since="3.8" typeResolution="true">
+      <description>Catch blocks that merely rethrow a caught exception only add to code size and runtime complexity.</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//CatchStatement[FormalParameter
+
+ /VariableDeclaratorId/@Image = Block/BlockStatement/Statement
+
+ /ThrowStatement/Expression/PrimaryExpression[count(PrimarySuffix)=0]/PrimaryPrefix/Name/@Image
+
+ and count(Block/BlockStatement/Statement) =1]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[  
+  public class Foo {
+   void bar() {
+    try {
+    // do something
+    }  catch (SomeException se) {
+       throw se;
+    }
+   }
+  }
+  
+    ]]></example>
+      <example><![CDATA[public class Foo {
+
+   void bar() {
+
+    try {
+
+    // do something
+
+    }  catch (SomeException se) {
+
+       throw se;
+
+    }
+
+   }
+
+  }]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="http://pmd.sourceforge.net/rules/strictexception.html#AvoidThrowingNewInstanceOfSameException" message="AvoidThrowingNewInstanceOfSameException:キャッチした例外と同じ例外のインスタンスを生成して再スローしてはいけません。" name="AvoidThrowingNewInstanceOfSameException" since="4.2.5" typeResolution="true">
+      <description>Catch blocks that merely rethrow a caught exception wrapped inside a new instance of the same type only add to code size and runtime complexity.</description>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//CatchStatement[
+
+  count(Block/BlockStatement/Statement) = 1
+
+  and
+
+  FormalParameter/Type/ReferenceType/ClassOrInterfaceType/@Image = Block/BlockStatement/Statement/ThrowStatement/Expression/PrimaryExpression/PrimaryPrefix/AllocationExpression/ClassOrInterfaceType/@Image
+
+  and
+
+  count(Block/BlockStatement/Statement/ThrowStatement/Expression/PrimaryExpression/PrimaryPrefix/AllocationExpression/Arguments/ArgumentList/Expression) = 1
+
+  and
+
+  FormalParameter/VariableDeclaratorId = Block/BlockStatement/Statement/ThrowStatement/Expression/PrimaryExpression/PrimaryPrefix/AllocationExpression/Arguments/ArgumentList/Expression/PrimaryExpression/PrimaryPrefix/Name
+
+  ]]]></value>
+         </property>
+      </properties>
+      <example><![CDATA[  
+    public class Foo {
+     void bar() {
+      try {
+       // do something
+      }  catch (SomeException se) {
+         // harmless comment      
+           throw new SomeException(se);
+      }
+     }
+    }
+  
+    ]]></example>
+      <example><![CDATA[public class Foo {
+
+     void bar() {
+
+      try {
+
+       // do something
+
+      }  catch (SomeException se) {
+
+         // harmless comment      
+
+           throw new SomeException(se);
+
+      }
+
+     }
+
+    }]]></example>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="" message="AvoidExtendsThrowable:ErrorおよびThrowableのサブクラスを定義してはいけません。" name="AvoidExtendsThrowable" typeResolution="true">
+      <description/>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//ClassOrInterfaceDeclaration[ExtendsList/ClassOrInterfaceType
+
+[
+
+  typeof(@Image, 'java.lang.Error', 'Error') or
+
+  typeof(@Image, 'java.lang.Throwable', 'Throwable')
+
+]]]]></value>
+         </property>
+      </properties>
+      <example/>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="" message="AvoidThrowingException:Exceptionをスローしてはいけません。" name="AvoidThrowingException" typeResolution="true">
+      <description/>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//AllocationExpression/ClassOrInterfaceType
+
+[
+
+  @Image='Exception' or
+
+  @Image='Throwable' or
+
+  @Image='RuntimeException' or
+
+  @Image='NullPointerException' or
+
+  @Image='Error'
+
+]]]></value>
+         </property>
+      </properties>
+      <example/>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="" message="AvoidExtendsThread:Threadクラスを継承してはいけません。" name="AvoidExtendsThread" typeResolution="true">
+      <description/>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//ClassOrInterfaceDeclaration[ExtendsList/ClassOrInterfaceType[typeof(@Image, 'java.lang.Thread', 'Thread')]]]]></value>
+         </property>
+      </properties>
+      <example/>
+   </rule>
+   <rule class="net.sourceforge.pmd.rules.XPathRule" dfa="false" externalInfoUrl="" message="AvoidRuntimeExec:Runtime.exec()の使用を避ける。" name="AvoidRuntimeExec" typeResolution="true">
+      <description/>
+      <priority>3</priority>
+      <properties>
+         <property name="xpath">
+            <value><![CDATA[//PrimaryExpression
+
+[PrimaryPrefix
+
+    [
+
+        ./Name[ends-with(@Image, '.exec')]
+
+        and substring-before(Name/@Image, '.') =//VariableDeclarator/VariableDeclaratorId/@Image
+
+        [../../../Type/ReferenceType[ClassOrInterfaceType/@Image = 'Runtime']]
+
+    ]
+
+]]]></value>
+         </property>
+      </properties>
+      <example/>
+   </rule>
+</ruleset>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings id="workspace" codepro_version="7.1.0.r37x201109091135" platform_id="org.eclipse.ui">
+    <!--
+		Exported using EclipsePro Audit 7.1.0.r37x201109091206
+		Mon Oct 07 13:49:27 JST 2013
+	-->
+    <plugin id="com.instantiations.assist.eclipse.analysis" version="7.1.0.r37x201109091135">
+        <category id="codepro.code.audit">
+            <xmlfile id="audit.xml">
+                <auditRuleSets>
+                    <auditRuleSet name="Comware(Critical)" locked="false" active="true" ignoreDisableDirectives="false" autoResolutionEnabled="false" maximumViolationCount="20000" maximumViolationCountByType="2000" maximumViolationCountInResource="200" maximumViolationCountByTypeInResource="20" resourceFilterEnabled="false" default="true">
+                        <resourceFilter>
+                            <null/>
+                        </resourceFilter>
+                    
+                        #Mon Oct 07 13:49:27 JST 2013
+                        com.instantiations.assist.eclipse.audit.sessionbean.enabled=true
+                        com.instantiations.assist.eclipse.audit.disallowSleepInsideWhile.enabled=true
+                        com.instantiations.assist.eclipse.audit.doNotAccessModifySecurityConfigurationObjects.enabled=true
+                        com.instantiations.assist.eclipse.audit.manipulationWithXPath.enabled=true
+                        com.instantiations.assist.eclipse.audit.missingCatchOfException.enabled=true
+                        com.instantiations.assist.eclipse.audit.passwordInFile.enabled=true
+                        com.instantiations.assist.eclipse.hibernate.rollbackTransaction.enabled=true
+                        com.instantiations.assist.eclipse.analysis.pathManipulation.enabled=true
+                        com.instantiations.assist.eclipse.struts.declareAccessors.enabled=true
+                        com.instantiations.assist.eclipse.struts.formDoesNotExtendValidatorClass.enabled=true
+                        com.instantiations.assist.eclipse.spring.referencedClassNotDefined.enabled=true
+                        com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.obeyEqualsContract.obeyGeneralContractOfEquals.enabled=true
+                        com.instantiations.assist.eclipse.struts.invalidFormBeanClass.enabled=true
+                        com.instantiations.assist.eclipse.audit.redirectedWithPassword.enabled=true
+                        com.instantiations.assist.eclipse.analysis.audit.rule.effectivejava.avoidFinalizers.avoidFinalizers.enabled=true
+                        com.instantiations.assist.eclipse.audit.socketsInServlets.enabled=true
+                        com.instantiations.assist.eclipse.audit.avoidManagingThreads.enabled=true
+                        com.instantiations.assist.eclipse.audit.entitybean.enabled=true
+                        com.instantiations.assist.eclipse.analysis.httpResponseSplitting.enabled=true
+                        com.instantiations.assist.eclipse.audit.taintedInternetAddress.enabled=true
+                        com.instantiations.assist.eclipse.audit.expressionValue.enabled=true
+                        com.instantiations.assist.eclipse.spring.missingApplicationContextFile.enabled=true
+                        com.instantiations.assist.eclipse.audit.whiteSpaceBeforePropertyName.enabled=true
+                        com.instantiations.assist.eclipse.audit.base64EncodedPassword.enabled=true
+                        com.instantiations.assist.eclipse.audit.useOfBrokenOrRiskyCryptographicAlgorithm.enabled=true
+                        com.instantiations.assist.eclipse.audit.attributeInjection.enabled=true
+                        com.instantiations.assist.eclipse.analysis.crossSiteScripting.enabled=true
+                        com.instantiations.assist.eclipse.audit.constantConditionalExpression.enabled=true
+                        com.instantiations.assist.eclipse.analysis.processControl.enabled=true
+                        com.instantiations.assist.eclipse.audit.overridingSynchronizedMethod.enabled=true
+                        com.instantiations.assist.eclipse.audit.disallowHTMLComments.enabled=true
+                        com.instantiations.assist.eclipse.audit.closeInFinally.enabled=true
+                        com.instantiations.assist.eclipse.analysis.avoidQueriesFromUser.enabled=true
+                        com.instantiations.assist.eclipse.audit.messagebean.enabled=true
+                        com.instantiations.assist.eclipse.audit.plainTextPassword.enabled=true
+                        com.instantiations.assist.eclipse.analysis.sqlInjection.enabled=true
+                        com.instantiations.assist.eclipse.audit.closeOrder.enabled=true
+                        com.instantiations.assist.eclipse.audit.unatomicFileOperations.enabled=true
+                        com.instantiations.assist.eclipse.audit.requestParamsInSession.enabled=true
+                        com.instantiations.assist.eclipse.audit.anonymousLdapBinding.enabled=true
+                        com.instantiations.assist.eclipse.audit.resourceURLManipulation.enabled=true
+                        com.instantiations.assist.eclipse.audit.filenameGivenOut.enabled=true
+                        com.instantiations.assist.eclipse.hibernate.useInterfacesForCollectionAttributes.enabled=true
+                        com.instantiations.assist.eclipse.audit.disallowTemporarySessions.enabled=true
+                        com.instantiations.assist.eclipse.audit.taintedFilter.enabled=true
+                        com.instantiations.eclipse.analysis.audit.security.incompatibleTypesStoredInACollection.enabled=true
+                        com.instantiations.assist.eclipse.audit.avoidPassingThisReferenceAsArgument.enabled=true
+                        com.instantiations.assist.eclipse.audit.accidentalConcatenation.enabled=true
+                        com.instantiations.assist.eclipse.audit.duplicatePropertyName.enabled=true
+                        com.instantiations.assist.eclipse.javaserverfaces.invokeSuperRelease.enabled=true
+                        com.instantiations.assist.eclipse.audit.constantCondition.enabled=true
+                        com.instantiations.assist.eclipse.audit.disallowDeprecatedMethodUsage.enabled=true
+                        com.instantiations.assist.eclipse.hibernate.neverUseDatabaseIdentifier.enabled=true
+                        com.instantiations.assist.eclipse.analysis.codeInjection.enabled=true
+                        com.instantiations.assist.eclipse.audit.incorrectArgumentType.enabled=true
+                        com.instantiations.assist.eclipse.audit.disallowSleepUsage.enabled=true
+                        com.instantiations.assist.eclipse.analysis.commandInjection.enabled=true
+                        com.instantiations.assist.eclipse.spring.missingBeanDescription.enabled=true
+                        com.instantiations.assist.eclipse.analysis.useOfRandom.enabled=true
+                        com.instantiations.assist.eclipse.analysis.resourceInjection.enabled=true
+                        com.instantiations.assist.eclipse.hibernate.implementZeroArgConstructor.enabled=true
+                        com.instantiations.assist.eclipse.audit.deleteTemporaryFiles.enabled=true
+                        com.instantiations.assist.eclipse.audit.authenticationByHostname.enabled=true
+                        com.instantiations.assist.eclipse.audit.specifyAnErrorPage.enabled=true
+                        com.instantiations.assist.eclipse.audit.statementCreation.enabled=true
+                        com.instantiations.assist.eclipse.spring.undefinedPlaceholder.enabled=true
+                        com.instantiations.assist.eclipse.audit.anyoneMethodPermission.enabled=true
+                    </auditRuleSet>
+                </auditRuleSets>
+            </xmlfile>
+        </category>
+    </plugin>
+</settings>
