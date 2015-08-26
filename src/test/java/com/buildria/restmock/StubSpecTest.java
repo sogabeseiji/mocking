@@ -9,6 +9,9 @@ import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -47,17 +50,17 @@ public class StubSpecTest {
 
         when(server).
                 uri("/api/p").
-        then().
+         then().
                 statusCode(HttpStatus.SC_200_OK).
-                body(json, Charset.defaultCharset()).
+                rawBody(json, Charset.defaultCharset()).
                 contentType(MediaType.JSON_UTF_8);
 
         given().
                 log().all().
                 accept(ContentType.JSON).
-                when().
+         when().
                 get("/api/p").
-        then().
+         then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
@@ -76,7 +79,7 @@ public class StubSpecTest {
                 uri("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
-                body(json, Charset.defaultCharset()).
+                rawBody(json, Charset.defaultCharset()).
                 header("X-header", "restmock1").
                 contentType(MediaType.JSON_UTF_8);
 
@@ -84,7 +87,7 @@ public class StubSpecTest {
                 uri("/api/q").
         then().
                 statusCode(HttpStatus.SC_200_OK).
-                body(json).
+                rawBody(json).
                 header("X-header", "restmock2").
                 contentType(MediaType.JSON_UTF_8);
 
@@ -106,7 +109,7 @@ public class StubSpecTest {
                 accept(ContentType.JSON).
         when().
                 get("/api/q").
-        then().
+         then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
@@ -125,7 +128,7 @@ public class StubSpecTest {
                 uri("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
-                body(json).
+                rawBody(json).
                 contentType(MediaType.JSON_UTF_8);
 
         given().
@@ -147,7 +150,7 @@ public class StubSpecTest {
                 uri("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
-                body(Resources.getResource("com/buildria/restmock/person.json")).
+                rawBody(Resources.getResource("com/buildria/restmock/person.json")).
                 contentType(MediaType.JSON_UTF_8);
 
         given().
@@ -165,47 +168,77 @@ public class StubSpecTest {
 
     @Test
     public void testRequestBody() throws Exception {
-        Person p = new Person("hoge", 19);
-        ObjectMapper mapper = new ObjectMapper();
-        byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
+        Person p = new Person("あいうえお", 19);
 
         when(server).
                 uri("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
-                body(json).
+                body(p).
                 contentType(MediaType.JSON_UTF_8);
 
         given().
                 log().all().
                 accept(ContentType.JSON).
                 contentType(ContentType.JSON).
-                body(json).
+                body(p).
         when().
                 put("/api/p").
         then().
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
-                body("name", is("hoge")).
+                body("name", is("あいうえお")).
                 body("old", is(19));
     }
 
+    @Test
+    public void testRequestXmlBody() throws Exception {
+        Person p = new Person("あいうえお", 19);
+
+        when(server).
+                uri("/api/p").
+        then().
+                statusCode(HttpStatus.SC_200_OK).
+                body(p).
+                contentType(MediaType.XML_UTF_8);
+
+        given().
+                log().all().
+                accept(ContentType.XML).
+        when().
+                put("/api/p").
+        then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.XML).
+                body("persson.name", is("あいうえお")).
+                body("person.old", is("19"));
+    }
+
+    @XmlRootElement(name = "person")
+    @XmlType
     private static class Person {
 
-        private final String name;
+        private String name;
 
-        private final int old;
+        private int old;
+
+        public Person() {
+            //
+        }
 
         public Person(String name, int old) {
             this.name = name;
             this.old = old;
         }
 
+        @XmlElement
         public String getName() {
             return name;
         }
 
+        @XmlElement
         public int getOld() {
             return old;
         }

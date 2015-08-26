@@ -1,6 +1,10 @@
 package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.Function;
+import com.buildria.restmock.RestMockException;
+import com.buildria.restmock.serialize.ObjectSerializeContext;
+import com.buildria.restmock.serialize.ObjectSerializer;
+import com.buildria.restmock.serialize.ObjectSerializerStrategy;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.MoreObjects.ToStringHelper;
@@ -10,6 +14,9 @@ import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
@@ -35,6 +42,19 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         return this.uri.matches(uri);
     }
 
+    public HeaderAction getContentType() {
+        List<Action> actions = server.getActions();
+        for (Action action : actions) {
+            if (action instanceof HeaderAction) {
+                HeaderAction ha = (HeaderAction) action;
+                if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(ha.getHeader())) {
+                    return ha;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public abstract HttpResponse apply(HttpResponse input);
 
@@ -44,7 +64,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
     @Override
     public String toString() {
-         return objects().toString();
+        return objects().toString();
     }
 
     /**
@@ -107,13 +127,13 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
     }
 
     /**
-     * BodyAction.
+     * RawBodyAction.
      */
-    public static class BodyAction extends Action {
+    public static class RawBodyAction extends Action {
 
         private final byte[] content;
 
-        public BodyAction(StubHttpServer server, Matcher<?> uri, byte[] content) {
+        public RawBodyAction(StubHttpServer server, Matcher<?> uri, byte[] content) {
             super(server, uri);
             this.content = content;
         }
@@ -124,22 +144,58 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
 
         @Override
         public HttpResponse apply(HttpResponse response) {
-            byte[] body = (byte[]) content;
-            ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(body.length);
-            buffer.writeBytes(body);
+            ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
+            buffer.writeBytes(content);
             HttpResponse r
                     = new DefaultFullHttpResponse(response.getProtocolVersion(),
                             response.getStatus(), buffer);
             for (Map.Entry<String, String> entry : response.headers()) {
                 r.headers().add(entry.getKey(), entry.getValue());
             }
-            r.headers().add(HttpHeaders.CONTENT_LENGTH, body.length);
+            r.headers().add(HttpHeaders.CONTENT_LENGTH, content.length);
             return r;
         }
 
         @Override
         public ToStringHelper objects() {
             return super.objects().add("content", DatatypeConverter.printHexBinary(content));
+        }
+    }
+
+    /**
+     * BodyAction.
+     */
+    public static class BodyAction extends Action {
+
+        private final Object content;
+
+        public BodyAction(StubHttpServer server, Matcher<?> uri, Object content) {
+            super(server, uri);
+            this.content = content;
+        }
+
+        public Object getContent() {
+            return content;
+        }
+
+        @Override
+        public HttpResponse apply(HttpResponse response) {
+            HeaderAction contentType = getContentType();
+            if (contentType == null) {
+                throw new RestMockException("No Content-Type found.");
+            }
+            ObjectSerializeContext ctx = new ObjectSerializeContext(content, contentType.getValue());
+            ObjectSerializer os = ObjectSerializerStrategy.createObjectSerializer(ctx);
+            try {
+                return new RawBodyAction(server, uri, os.seriaize(ctx).getBytes(StandardCharsets.UTF_8)).apply(response);
+            } catch (IOException ex) {
+                throw new RestMockException("failed to serialize body.");
+            }
+        }
+
+        @Override
+        public ToStringHelper objects() {
+            return super.objects().add("content", content.toString());
         }
     }
 

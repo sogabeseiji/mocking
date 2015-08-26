@@ -2,6 +2,7 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.builder.stub.Action.BodyAction;
 import com.buildria.restmock.builder.stub.Action.HeaderAction;
+import com.buildria.restmock.builder.stub.Action.RawBodyAction;
 import com.buildria.restmock.builder.stub.Action.StatusCodeAction;
 import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
@@ -51,20 +52,26 @@ public class ResponseSpec {
         return this;
     }
 
-    public ResponseSpec body(String content) {
-        return body(content, StandardCharsets.UTF_8);
+    public ResponseSpec rawBody(String content) {
+        return rawBody(content, StandardCharsets.UTF_8);
     }
 
-    public ResponseSpec body(String content, Charset charset) {
-        return body(content.getBytes(charset));
+    public ResponseSpec rawBody(String content, Charset charset) {
+        return rawBody(content.getBytes(charset));
     }
 
-    public ResponseSpec body(byte[] content) {
+    public ResponseSpec rawBody(byte[] content) {
+        server.addAction(new RawBodyAction(server, uri, content));
+        return this;
+    }
+
+    public ResponseSpec rawBody(URL url) throws IOException {
+        return rawBody(Resources.toByteArray(url));
+    }
+
+    public ResponseSpec body(Object content) {
         server.addAction(new BodyAction(server, uri, content));
         return this;
     }
 
-    public ResponseSpec body(URL url) throws IOException {
-        return body(Resources.toByteArray(url));
-    }
- }
+}
