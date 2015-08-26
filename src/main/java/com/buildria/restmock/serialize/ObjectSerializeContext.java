@@ -9,7 +9,7 @@ public class ObjectSerializeContext {
     private final String contentType;
 
     public ObjectSerializeContext(Object target, String contentType) {
-        this.objectToSerialize = target;
+        this.objectToSerialize = Objects.requireNonNull(target);
         this.contentType = Objects.requireNonNull(contentType);
     }
 
