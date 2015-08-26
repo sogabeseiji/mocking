@@ -20,20 +20,19 @@ public class ObjectSerializerStrategy {
         String contentType = ctx.getContentType();
         MediaType type = MediaType.parse(contentType);
 
-        if (type.subtype().equalsIgnoreCase("json")) {
+        if ("json".equalsIgnoreCase(type.subtype())) {
             if (isJacksonEnabled()) {
                 return new JacksonJsonSerializer();
             } else if (isGsonEnabled()) {
                 return new GsonJsonSerializer();
             }
             throw new RestMockException("No Json library found.");
-        } else if (type.subtype().equalsIgnoreCase("xml")) {
+        } else if ("xml".equalsIgnoreCase(type.subtype())) {
             return new JAXBXmlSerializer();
         }
 
         throw new RestMockException("No valid Content-Type header found.");
     }
-
 
     private static boolean isJacksonEnabled() {
         return Resources.getResource(JACKSON_CLASS) != null;

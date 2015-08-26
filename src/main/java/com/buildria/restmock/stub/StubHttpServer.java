@@ -36,6 +36,7 @@ import static com.google.common.base.Stopwatch.createStarted;
  */
 public class StubHttpServer {
 
+    public static final int DEFAULT_PORT = 8080;
     private final int port;
 
     private EventLoopGroup bossGroup;
@@ -49,7 +50,7 @@ public class StubHttpServer {
     private final Object lockObj = new Object();
 
     public StubHttpServer() {
-        this(8080);
+        this(DEFAULT_PORT);
     }
 
     public StubHttpServer(int port) {
@@ -123,7 +124,7 @@ public class StubHttpServer {
         if (args.length > 0) {
             port = Integer.parseInt(args[0]);
         } else {
-            port = 8080;
+            port = DEFAULT_PORT;
         }
         StubHttpServer server = new StubHttpServer(port);
         server.run();
