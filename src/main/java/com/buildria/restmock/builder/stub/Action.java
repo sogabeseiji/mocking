@@ -187,11 +187,12 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
             if (contentType == null) {
                 throw new RestMockException("No Content-Type found.");
             }
-            ObjectSerializeContext ctx = new ObjectSerializeContext(content, contentType.getValue());
+            ObjectSerializeContext ctx =
+                    new ObjectSerializeContext(content, contentType.getValue());
             ObjectSerializer os = ObjectSerializerStrategy.createObjectSerializer(ctx);
             try {
-                return new RawBodyAction(server, uri, os.seriaize(ctx).getBytes(StandardCharsets.UTF_8)).
-                        apply(response);
+                return new RawBodyAction(server, uri,
+                        os.seriaize(ctx).getBytes(StandardCharsets.UTF_8)).apply(response);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");
             }
