@@ -12,20 +12,20 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * Test for GsonJsonSerializer.
+ * Test for JacksonJsonSerializzer.
  *
  * @author Seiji Sogabe
  */
-public class GsonJsonSerializerTest {
+public class JacksonJsonSerializerTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private GsonJsonSerializer target;
+    private JacksonJsonSerializer target;
 
     @Before
     public void setUp() {
-        target = new GsonJsonSerializer();
+        target = new JacksonJsonSerializer();
     }
 
     @Test(expected = NullPointerException.class)
@@ -46,5 +46,4 @@ public class GsonJsonSerializerTest {
         assertThat(js.getString("name"), is("Bob"));
         assertThat(js.getInt("old"), is(20));
     }
-
 }

@@ -1,5 +1,9 @@
 package com.buildria.restmock.serialize;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "person")
 public class Person {
 
     private String name;
@@ -15,10 +19,12 @@ public class Person {
         this.old = old;
     }
 
+    @XmlElement
     public String getName() {
         return name;
     }
 
+    @XmlElement
     public int getOld() {
         return old;
     }

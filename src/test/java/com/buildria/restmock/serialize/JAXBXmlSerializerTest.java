@@ -2,7 +2,7 @@ package com.buildria.restmock.serialize;
 
 import com.buildria.restmock.TestNameRule;
 import com.jayway.restassured.http.ContentType;
-import com.jayway.restassured.path.json.JsonPath;
+import com.jayway.restassured.path.xml.XmlPath;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -12,20 +12,20 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * Test for GsonJsonSerializer.
+ * Test for JAXBXmlSerializer.
  *
  * @author Seiji Sogabe
  */
-public class GsonJsonSerializerTest {
+public class JAXBXmlSerializerTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private GsonJsonSerializer target;
+    private JAXBXmlSerializer target;
 
     @Before
     public void setUp() {
-        target = new GsonJsonSerializer();
+        target = new JAXBXmlSerializer();
     }
 
     @Test(expected = NullPointerException.class)
@@ -36,15 +36,14 @@ public class GsonJsonSerializerTest {
     @Test
     public void testSerialize() throws Exception {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx =
-                new ObjectSerializeContext(person, ContentType.JSON.name());
+        ObjectSerializeContext ctx
+                = new ObjectSerializeContext(person, ContentType.XML.name());
 
-        String json = target.seriaize(ctx);
+        String xml = target.seriaize(ctx);
 
-        assertThat(json, notNullValue());
-        JsonPath js = new JsonPath(json);
-        assertThat(js.getString("name"), is("Bob"));
-        assertThat(js.getInt("old"), is(20));
+        assertThat(xml, notNullValue());
+        XmlPath xp = new XmlPath(xml);
+        assertThat(xp.getString("person.name"), is("Bob"));
+        assertThat(xp.getInt("person.old"), is(20));
     }
-
 }
