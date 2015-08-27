@@ -7,7 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-public class JAXBXmlSerializer implements ObjectSerializer {
+public class JAXBXmlSerializer extends ObjectSerializer {
 
     JAXBXmlSerializer() {
         //

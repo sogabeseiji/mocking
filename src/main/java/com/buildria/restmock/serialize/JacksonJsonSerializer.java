@@ -8,7 +8,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-public class JacksonJsonSerializer implements ObjectSerializer {
+public class JacksonJsonSerializer extends ObjectSerializer {
 
     JacksonJsonSerializer() {
         //

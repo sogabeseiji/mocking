@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.Objects;
 
-public class GsonJsonSerializer implements ObjectSerializer {
+public class GsonJsonSerializer extends ObjectSerializer {
 
     GsonJsonSerializer() {
         //

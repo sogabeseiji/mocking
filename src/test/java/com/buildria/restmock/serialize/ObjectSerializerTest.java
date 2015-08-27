@@ -11,25 +11,25 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * Test for ObjectSerializerFactory.
+ * Test for ObjectSerializer.
  *
  * @author Seiji Sogabe
  */
-public class ObjectSerializerFactoryTest {
+public class ObjectSerializerTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
     @Test(expected = NullPointerException.class)
     public void testCreate() {
-        ObjectSerializerFactory.create(null);
+        ObjectSerializer.create(null);
     }
 
     @Test(expected = RestMockException.class)
     public void testCreateInvalidContentType() {
         Person person = new Person("Bob", 20);
         ObjectSerializeContext ctx = new ObjectSerializeContext(person, MediaType.JPEG.toString());
-        ObjectSerializerFactory.create(ctx);
+        ObjectSerializer.create(ctx);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class ObjectSerializerFactoryTest {
         Person person = new Person("Bob", 20);
         ObjectSerializeContext ctx = new ObjectSerializeContext(person,
                 MediaType.XML_UTF_8.toString());
-        ObjectSerializer os = ObjectSerializerFactory.create(ctx);
+        ObjectSerializer os = ObjectSerializer.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JAXBXmlSerializer.class));
     }
@@ -47,11 +47,9 @@ public class ObjectSerializerFactoryTest {
         Person person = new Person("Bob", 20);
         ObjectSerializeContext ctx = new ObjectSerializeContext(person,
                 MediaType.JSON_UTF_8.toString());
-        ObjectSerializer os = ObjectSerializerFactory.create(ctx);
+        ObjectSerializer os = ObjectSerializer.create(ctx);
         assertThat(os, notNullValue());
-
-        ObjectSe
-
+        assertThat(os, instanceOf(JacksonJsonSerializer.class));
     }
 
 
