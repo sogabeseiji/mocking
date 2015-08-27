@@ -121,7 +121,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.5.201505241946</version>
+                <version>0.7.4.201502262128</version>
                 <configuration>
                     <destFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</destFile>
                     <dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
@@ -136,7 +136,7 @@
                     </execution>
                     <execution>
                         <id>post-unit-test</id>
-                        <phase>prepare-package</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
