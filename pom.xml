@@ -129,13 +129,14 @@
                 <executions>
                     <execution>
                         <id>pre-unit-test</id>
+                        <phase>test-compile</phase>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
                         <id>post-unit-test</id>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
