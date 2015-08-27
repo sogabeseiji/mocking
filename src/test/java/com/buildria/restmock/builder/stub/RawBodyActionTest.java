@@ -73,10 +73,12 @@ public class RawBodyActionTest {
 
         Action action = new RawBodyAction(server, uri, content);
         HttpResponse in = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        in.headers().add("Accept", "application/xml");
         HttpResponse out = action.apply(in);
 
         assertThat(out, notNullValue());
         assertThat(out.headers().get("Content-Length"), is("7"));
+        assertThat(out.headers().get("Accept"), is("application/xml"));
 
         assertThat(out, instanceOf(DefaultFullHttpResponse.class));
         DefaultFullHttpResponse response = (DefaultFullHttpResponse) out;
