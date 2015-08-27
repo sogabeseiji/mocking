@@ -16,7 +16,7 @@ public class RequestSpec {
 
     private Matcher<?>  uri;
 
-    public RequestSpec(StubHttpServer server) {
+    private RequestSpec(StubHttpServer server) {
         this.server = Objects.requireNonNull(server);
     }
 
