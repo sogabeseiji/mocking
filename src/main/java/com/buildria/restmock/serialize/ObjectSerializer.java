@@ -2,18 +2,8 @@ package com.buildria.restmock.serialize;
 
 import java.io.IOException;
 
-// CHECKSTYLE:OFF
-public abstract class ObjectSerializer {
-// CHECKSTYLE:ON
+public interface ObjectSerializer {
 
-    ObjectSerializer() {
-        //
-    }
-
-    public abstract String serialize(ObjectSerializeContext ctx) throws IOException;
-
-    public static ObjectSerializer create(ObjectSerializeContext ctx) {
-        return ctx.createStrategy();
-    }
+    String serialize(ObjectSerializeContext ctx) throws IOException;
 
 }

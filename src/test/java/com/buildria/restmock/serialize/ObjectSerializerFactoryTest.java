@@ -11,25 +11,25 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * Test for ObjectSerializer.
+ * Test for ObjectSerializerFactory.
  *
  * @author Seiji Sogabe
  */
-public class ObjectSerializerTest {
+public class ObjectSerializerFactoryTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
     @Test(expected = NullPointerException.class)
     public void testCreate() {
-        ObjectSerializer.create(null);
+        ObjectSerializerFactory.create(null);
     }
 
     @Test(expected = RestMockException.class)
     public void testCreateInvalidContentType() {
         Person person = new Person("Bob", 20);
         ObjectSerializeContext ctx = new ObjectSerializeContext(person, MediaType.JPEG.toString());
-        ObjectSerializer.create(ctx);
+        ObjectSerializerFactory.create(ctx);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class ObjectSerializerTest {
         Person person = new Person("Bob", 20);
         ObjectSerializeContext ctx = new ObjectSerializeContext(person,
                 MediaType.XML_UTF_8.toString());
-        ObjectSerializer os = ObjectSerializer.create(ctx);
+        ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JAXBXmlSerializer.class));
     }
@@ -47,7 +47,7 @@ public class ObjectSerializerTest {
         Person person = new Person("Bob", 20);
         ObjectSerializeContext ctx = new ObjectSerializeContext(person,
                 MediaType.JSON_UTF_8.toString());
-        ObjectSerializer os = ObjectSerializer.create(ctx);
+        ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JacksonJsonSerializer.class));
     }
@@ -67,7 +67,7 @@ public class ObjectSerializerTest {
                         return false;
                     }
                 };
-        ObjectSerializer os = ObjectSerializer.create(ctx);
+        ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(GsonJsonSerializer.class));
     }
