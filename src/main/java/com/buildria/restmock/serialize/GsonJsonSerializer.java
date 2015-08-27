@@ -6,6 +6,10 @@ import java.util.Objects;
 
 public class GsonJsonSerializer implements ObjectSerializer {
 
+    GsonJsonSerializer() {
+        //
+    }
+
     @Override
     public String seriaize(ObjectSerializeContext ctx) throws IOException {
         Objects.requireNonNull(ctx);

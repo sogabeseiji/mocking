@@ -9,6 +9,10 @@ import javax.xml.bind.Marshaller;
 
 public class JAXBXmlSerializer implements ObjectSerializer {
 
+    JAXBXmlSerializer() {
+        //
+    }
+
     @Override
     public String seriaize(ObjectSerializeContext ctx) throws IOException {
         Objects.requireNonNull(ctx);

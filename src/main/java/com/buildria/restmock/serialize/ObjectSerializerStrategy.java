@@ -5,6 +5,10 @@ import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import java.util.Objects;
 
+import static com.buildria.restmock.serialize.ObjectSerializer.GSON;
+import static com.buildria.restmock.serialize.ObjectSerializer.JACKSON;
+import static com.buildria.restmock.serialize.ObjectSerializer.JAXB;
+
 public class ObjectSerializerStrategy {
 
     private static final String JACKSON_CLASS = "com/fasterxml/jackson/databind/ObjectMapper.class";
@@ -22,13 +26,13 @@ public class ObjectSerializerStrategy {
 
         if ("json".equalsIgnoreCase(type.subtype())) {
             if (isJacksonEnabled()) {
-                return new JacksonJsonSerializer();
+                return JACKSON;
             } else if (isGsonEnabled()) {
-                return new GsonJsonSerializer();
+                return GSON;
             }
             throw new RestMockException("No Json library found.");
         } else if ("xml".equalsIgnoreCase(type.subtype())) {
-            return new JAXBXmlSerializer();
+            return JAXB;
         }
 
         throw new RestMockException("No valid Content-Type header found.");

@@ -10,6 +10,10 @@ import java.util.Objects;
 
 public class JacksonJsonSerializer implements ObjectSerializer {
 
+    JacksonJsonSerializer() {
+        //
+    }
+
     @Override
     public String seriaize(ObjectSerializeContext ctx) throws IOException {
         Objects.requireNonNull(ctx);
