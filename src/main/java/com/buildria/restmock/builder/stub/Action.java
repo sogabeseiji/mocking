@@ -22,7 +22,9 @@ import java.util.Objects;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 
+// CHECKSTYLE: OFF
 public abstract class Action implements Function<HttpResponse, HttpResponse> {
+// CHECKSTYLE: ON
 
     protected final Matcher<?> uri;
 
