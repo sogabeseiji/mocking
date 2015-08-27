@@ -30,7 +30,7 @@ public class JAXBXmlSerializerTest {
 
     @Test(expected = NullPointerException.class)
     public void testSerializeCtxNull() throws Exception {
-        target.seriaize(null);
+        target.serialize(null);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class JAXBXmlSerializerTest {
         ObjectSerializeContext ctx
                 = new ObjectSerializeContext(person, ContentType.XML.name());
 
-        String xml = target.seriaize(ctx);
+        String xml = target.serialize(ctx);
 
         assertThat(xml, notNullValue());
         XmlPath xp = new XmlPath(xml);

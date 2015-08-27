@@ -193,7 +193,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
             ObjectSerializer os = ObjectSerializer.create(ctx);
             try {
                 return new RawBodyAction(server, uri,
-                        os.seriaize(ctx).getBytes(StandardCharsets.UTF_8)).apply(response);
+                        os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(response);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");
             }

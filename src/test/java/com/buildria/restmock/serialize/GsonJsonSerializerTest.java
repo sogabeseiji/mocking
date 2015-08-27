@@ -30,7 +30,7 @@ public class GsonJsonSerializerTest {
 
     @Test(expected = NullPointerException.class)
     public void testSerializeCtxNull() throws Exception {
-        target.seriaize(null);
+        target.serialize(null);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class GsonJsonSerializerTest {
         ObjectSerializeContext ctx =
                 new ObjectSerializeContext(person, ContentType.JSON.name());
 
-        String json = target.seriaize(ctx);
+        String json = target.serialize(ctx);
 
         assertThat(json, notNullValue());
         JsonPath js = new JsonPath(json);
@@ -53,7 +53,7 @@ public class GsonJsonSerializerTest {
         ObjectSerializeContext ctx =
                 new ObjectSerializeContext(person, ContentType.JSON.name());
 
-        String json = target.seriaize(ctx);
+        String json = target.serialize(ctx);
 
         assertThat(json, notNullValue());
         JsonPath js = new JsonPath(json);

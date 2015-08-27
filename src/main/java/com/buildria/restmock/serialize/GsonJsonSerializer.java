@@ -12,7 +12,7 @@ public class GsonJsonSerializer extends ObjectSerializer {
     }
 
     @Override
-    public String seriaize(ObjectSerializeContext ctx) throws IOException {
+    public String serialize(ObjectSerializeContext ctx) throws IOException {
         Objects.requireNonNull(ctx);
         Object obj = ctx.getObjectToSerialize();
         GsonBuilder builder = new GsonBuilder();

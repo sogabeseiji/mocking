@@ -52,5 +52,24 @@ public class ObjectSerializerTest {
         assertThat(os, instanceOf(JacksonJsonSerializer.class));
     }
 
+    @Test
+    public void testCreateGson() {
+        Person person = new Person("Bob", 20);
+        ObjectSerializeContext ctx
+                = new ObjectSerializeContext(person, MediaType.JSON_UTF_8.toString()) {
+                    @Override
+                    protected boolean isGsonEnabled() {
+                        return true;
+                    }
+
+                    @Override
+                    protected boolean isJacksonEnabled() {
+                        return false;
+                    }
+                };
+        ObjectSerializer os = ObjectSerializer.create(ctx);
+        assertThat(os, notNullValue());
+        assertThat(os, instanceOf(GsonJsonSerializer.class));
+    }
 
 }
