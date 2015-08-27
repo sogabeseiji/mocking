@@ -66,10 +66,10 @@ public class StubHttpServer {
         b.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .childHandler(new ChannelInitializer<SocketChannel>() {
-                    // CHECKSTYLE: OFF
+                    // CHECKSTYLE:OFF
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
-                    // CHECKSTYLE: ON
+                    // CHECKSTYLE:ON
                         ch.pipeline().addLast("decoder", new HttpRequestDecoder(4096, 8192, 8192));
                         ch.pipeline().addLast("aggregator", new HttpObjectAggregator(8192));
                         ch.pipeline().addLast("encoder", new HttpResponseEncoder());
@@ -120,7 +120,7 @@ public class StubHttpServer {
         LOG.debug("### StubHttpServer stopped.");
     }
 
-    // CHECKSTYLE: OFF
+    // CHECKSTYLE:OFF
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis();
         int port;
@@ -133,14 +133,14 @@ public class StubHttpServer {
         server.run();
         LOG.debug("### It took {} ms", System.currentTimeMillis() - start);
     }
-    // CHECKSTYLE: ON
+    // CHECKSTYLE:ON
 
     private class Handler extends SimpleChannelInboundHandler<Object> {
 
-        // CHECKSTYLE: OFF
+        // CHECKSTYLE:OFF
         @Override
         public void channelRead0(final ChannelHandlerContext ctx, Object msg) throws Exception {
-        // CHECKSTYLE: ON
+        // CHECKSTYLE:ON
             if (!(msg instanceof HttpRequest)) {
                 return;
             }
@@ -170,10 +170,10 @@ public class StubHttpServer {
 
         }
 
-        // CHECKSTYLE: OFF
+        // CHECKSTYLE:OFF
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        // CHECKSTYLE: OFF
+        // CHECKSTYLE:ON
             super.exceptionCaught(ctx, cause);
         }
 
