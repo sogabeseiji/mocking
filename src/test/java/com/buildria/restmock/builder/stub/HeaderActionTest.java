@@ -8,7 +8,6 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import org.hamcrest.Matcher;
-import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -23,10 +22,6 @@ public class HeaderActionTest {
     public TestNameRule testNameRule = new TestNameRule();
 
     private HeaderAction target;
-
-    @After
-    public void tearDown() {
-    }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorServerNull() throws Exception {
