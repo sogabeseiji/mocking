@@ -48,11 +48,6 @@ public class ObjectSerializerContextTest {
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString()) {
                     @Override
-                    protected boolean isGsonEnabled() {
-                        return true;
-                    }
-
-                    @Override
                     protected boolean isJacksonEnabled() {
                         return false;
                     }
