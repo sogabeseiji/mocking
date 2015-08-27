@@ -5,6 +5,7 @@ public class RestMockException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public RestMockException() {
+        super();
     }
 
     public RestMockException(String message) {

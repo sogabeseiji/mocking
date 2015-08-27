@@ -36,7 +36,21 @@ import static com.google.common.base.Stopwatch.createStarted;
  */
 public class StubHttpServer {
 
+    /**
+     * Default port.
+     */
     public static final int DEFAULT_PORT = 8080;
+
+    private static final int MAX_INITIALLINE_LENGH = 4096;
+
+    private static final int MAX_HEADERS_SIZE = 8192;
+
+    private static final int MAX_CHUNK_SIZE = 8192;
+
+    private static final int MAX_CONTENT_LENGTH = 8192;
+
+    private static final int SO_BACKLOG = 128;
+
     private final int port;
 
     private EventLoopGroup bossGroup;
@@ -70,13 +84,15 @@ public class StubHttpServer {
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
                     // CHECKSTYLE:ON
-                        ch.pipeline().addLast("decoder", new HttpRequestDecoder(4096, 8192, 8192));
-                        ch.pipeline().addLast("aggregator", new HttpObjectAggregator(8192));
+                        // int maxInitialLineLength, int maxHeaderSize, int maxChunkSize
+                        ch.pipeline().addLast("decoder",
+                                new HttpRequestDecoder(MAX_INITIALLINE_LENGH, MAX_HEADERS_SIZE, MAX_CHUNK_SIZE));
+                        ch.pipeline().addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
                         ch.pipeline().addLast("encoder", new HttpResponseEncoder());
                         ch.pipeline().addLast("handler", new Handler());
                     }
                 })
-                .option(ChannelOption.SO_BACKLOG, 128)
+                .option(ChannelOption.SO_BACKLOG, SO_BACKLOG)
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
         // Bind and start to accept incoming connections.
@@ -119,21 +135,6 @@ public class StubHttpServer {
         }
         LOG.debug("### StubHttpServer stopped.");
     }
-
-    // CHECKSTYLE:OFF
-    public static void main(String[] args) throws Exception {
-        long start = System.currentTimeMillis();
-        int port;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        } else {
-            port = DEFAULT_PORT;
-        }
-        StubHttpServer server = new StubHttpServer(port);
-        server.run();
-        LOG.debug("### It took {} ms", System.currentTimeMillis() - start);
-    }
-    // CHECKSTYLE:ON
 
     private class Handler extends SimpleChannelInboundHandler<Object> {
 
