@@ -5,7 +5,7 @@ import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import java.util.Objects;
 
-public class ObjectSerializeContext {
+public class ObjectSerializerContext {
 
     // JSON
     /**
@@ -32,7 +32,7 @@ public class ObjectSerializeContext {
 
     private final String contentType;
 
-    public ObjectSerializeContext(Object target, String contentType) {
+    public ObjectSerializerContext(Object target, String contentType) {
         this.objectToSerialize = Objects.requireNonNull(target);
         this.contentType = Objects.requireNonNull(contentType);
     }

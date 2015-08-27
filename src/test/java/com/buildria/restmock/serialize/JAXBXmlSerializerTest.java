@@ -36,8 +36,8 @@ public class JAXBXmlSerializerTest {
     @Test
     public void testSerialize() throws Exception {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx
-                = new ObjectSerializeContext(person, ContentType.XML.name());
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(person, ContentType.XML.name());
 
         String xml = target.serialize(ctx);
 

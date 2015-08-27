@@ -8,7 +8,7 @@ public class ObjectSerializerFactory {
         super();
     }
 
-    public static ObjectSerializer create(ObjectSerializeContext ctx) {
+    public static ObjectSerializer create(ObjectSerializerContext ctx) {
         Objects.requireNonNull(ctx);
         return ctx.createStrategy();
     }

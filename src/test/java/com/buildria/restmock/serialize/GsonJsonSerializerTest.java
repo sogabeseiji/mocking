@@ -36,8 +36,8 @@ public class GsonJsonSerializerTest {
     @Test
     public void testSerialize() throws Exception {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx =
-                new ObjectSerializeContext(person, ContentType.JSON.name());
+        ObjectSerializerContext ctx =
+                new ObjectSerializerContext(person, ContentType.JSON.name());
 
         String json = target.serialize(ctx);
 
@@ -50,8 +50,8 @@ public class GsonJsonSerializerTest {
     @Test
     public void testSerializeMultibytes() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
-        ObjectSerializeContext ctx =
-                new ObjectSerializeContext(person, ContentType.JSON.name());
+        ObjectSerializerContext ctx =
+                new ObjectSerializerContext(person, ContentType.JSON.name());
 
         String json = target.serialize(ctx);
 

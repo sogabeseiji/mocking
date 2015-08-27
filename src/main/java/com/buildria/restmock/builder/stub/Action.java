@@ -2,7 +2,7 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.Function;
 import com.buildria.restmock.RestMockException;
-import com.buildria.restmock.serialize.ObjectSerializeContext;
+import com.buildria.restmock.serialize.ObjectSerializerContext;
 import com.buildria.restmock.serialize.ObjectSerializer;
 import com.buildria.restmock.serialize.ObjectSerializerFactory;
 import com.buildria.restmock.stub.StubHttpServer;
@@ -189,8 +189,8 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
             if (contentType == null) {
                 throw new RestMockException("No Content-Type found.");
             }
-            ObjectSerializeContext ctx =
-                    new ObjectSerializeContext(content, contentType.getValue());
+            ObjectSerializerContext ctx =
+                    new ObjectSerializerContext(content, contentType.getValue());
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
                 return new RawBodyAction(server, uri,

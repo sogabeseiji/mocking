@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class ObjectSerializeContextTest {
+public class ObjectSerializerContextTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -18,14 +18,14 @@ public class ObjectSerializeContextTest {
     @Test(expected = RestMockException.class)
     public void testCreateInvalidContentType() {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx = new ObjectSerializeContext(person, MediaType.JPEG.toString());
+        ObjectSerializerContext ctx = new ObjectSerializerContext(person, MediaType.JPEG.toString());
         ObjectSerializerFactory.create(ctx);
     }
 
     @Test
     public void testCreateJAXB() {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx = new ObjectSerializeContext(person,
+        ObjectSerializerContext ctx = new ObjectSerializerContext(person,
                 MediaType.XML_UTF_8.toString());
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
@@ -35,7 +35,7 @@ public class ObjectSerializeContextTest {
     @Test
     public void testCreateJackson() {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx = new ObjectSerializeContext(person,
+        ObjectSerializerContext ctx = new ObjectSerializerContext(person,
                 MediaType.JSON_UTF_8.toString());
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
@@ -45,8 +45,8 @@ public class ObjectSerializeContextTest {
     @Test
     public void testCreateGson() {
         Person person = new Person("Bob", 20);
-        ObjectSerializeContext ctx
-                = new ObjectSerializeContext(person, MediaType.JSON_UTF_8.toString()) {
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString()) {
                     @Override
                     protected boolean isGsonEnabled() {
                         return true;
