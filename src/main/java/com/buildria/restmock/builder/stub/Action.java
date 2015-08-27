@@ -105,7 +105,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         public HeaderAction(StubHttpServer server, Matcher<?> uri, String header, String value) {
             super(server, uri);
             this.header = Objects.requireNonNull(header);
-            this.value = value;
+            this.value = Objects.requireNonNull(value);
         }
 
         public String getHeader() {
