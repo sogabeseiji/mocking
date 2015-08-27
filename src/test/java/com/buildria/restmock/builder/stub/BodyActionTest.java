@@ -20,6 +20,7 @@ import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static com.buildria.restmock.serialize.ObjectSerializer.JACKSON;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
@@ -91,7 +92,7 @@ public class BodyActionTest {
 
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString());
-        String expected = ObjectSerializerContext.JACKSON.serialize(ctx);
+        String expected =  JACKSON.serialize(ctx);
 
         assertThat(json, is(expected));
     }

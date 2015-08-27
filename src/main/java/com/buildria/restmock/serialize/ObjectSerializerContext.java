@@ -5,24 +5,11 @@ import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import java.util.Objects;
 
+import static com.buildria.restmock.serialize.ObjectSerializer.GSON;
+import static com.buildria.restmock.serialize.ObjectSerializer.JACKSON;
+import static com.buildria.restmock.serialize.ObjectSerializer.JAXB;
+
 public class ObjectSerializerContext {
-
-    // JSON
-    /**
-     * ObjectSerializer for Gson.
-     */
-    public static final ObjectSerializer GSON = new GsonJsonSerializer();
-
-    /**
-     * ObjectSerializer for Jackson.
-     */
-    public static final ObjectSerializer JACKSON = new JacksonJsonSerializer();
-
-    // XML
-    /**
-     * ObjectSerializer for JAXB.
-     */
-    public static final ObjectSerializer JAXB = new JAXBXmlSerializer();
 
     private static final String JACKSON_CLASS = "com/fasterxml/jackson/databind/ObjectMapper.class";
 
