@@ -7,6 +7,7 @@ import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.response.Response;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,6 +17,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
 import static com.jayway.restassured.RestAssured.given;
@@ -167,8 +170,8 @@ public class StubSpecTest {
     }
 
     @Test
-    public void testRequestBody() throws Exception {
-        Person p = new Person("あいうえお", 19);
+    public void testRequestBodyMultibytes() throws Exception {
+        Person p = new Person("\u3042\u3044\u3046\u3048\u304a", 19);
 
         when(server).
                 uri("/api/p").
@@ -177,7 +180,8 @@ public class StubSpecTest {
                 body(p).
                 contentType(MediaType.JSON_UTF_8);
 
-        given().
+        Response r =
+                given().
                 log().all().
                 accept(ContentType.JSON).
                 contentType(ContentType.JSON).
@@ -188,8 +192,12 @@ public class StubSpecTest {
                 log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
-                body("name", is("あいうえお")).
-                body("old", is(19));
+                body("name", is("\u3042\u3044\u3046\u3048\u304a")).
+                body("old", is(19)).
+        extract().
+                response();
+
+        LOG.debug("### body: {}", r.getBody().asString());
     }
 
     @Test
@@ -244,4 +252,6 @@ public class StubSpecTest {
         }
 
     }
+
+    private static final Logger LOG = LoggerFactory.getLogger(StubSpecTest.class);
 }

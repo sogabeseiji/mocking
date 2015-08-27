@@ -18,7 +18,7 @@ public class JacksonJsonSerializer implements ObjectSerializer {
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
             JsonGenerator g = new JsonFactory().createGenerator(out, JsonEncoding.UTF8);
             mapper.writeValue(g, obj);
-            return out.toString();
+            return out.toString("UTF-8");
         }
     }
 
