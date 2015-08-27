@@ -6,9 +6,10 @@ import com.google.common.net.MediaType;
 import java.io.IOException;
 import java.util.Objects;
 
-
+// CHECKSTYLE:OFF
 public abstract class ObjectSerializer {
-
+// CHECKSTYLE:ON
+    
     private static final String JACKSON_CLASS = "com/fasterxml/jackson/databind/ObjectMapper.class";
 
     private static final String GSON_CLASS = "com/google/gson/Gson.class";

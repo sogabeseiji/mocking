@@ -4,7 +4,6 @@ import com.buildria.restmock.Function;
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.serialize.ObjectSerializeContext;
 import com.buildria.restmock.serialize.ObjectSerializer;
-import com.buildria.restmock.serialize.ObjectSerializer;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.MoreObjects.ToStringHelper;
