@@ -47,4 +47,19 @@ public class GsonJsonSerializerTest {
         assertThat(js.getInt("old"), is(20));
     }
 
+    @Test
+    public void testSerializeMultibytes() throws Exception {
+        Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
+        ObjectSerializeContext ctx =
+                new ObjectSerializeContext(person, ContentType.JSON.name());
+
+        String json = target.seriaize(ctx);
+
+        assertThat(json, notNullValue());
+        JsonPath js = new JsonPath(json);
+        assertThat(js.getString("name"), is("\u3042\u3044\u3046\u3048\u304a"));
+        assertThat(js.getInt("old"), is(20));
+    }
+
+
 }
