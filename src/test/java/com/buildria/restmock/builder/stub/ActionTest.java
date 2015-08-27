@@ -3,12 +3,14 @@ package com.buildria.restmock.builder.stub;
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.stub.Action.HeaderAction;
 import com.buildria.restmock.stub.StubHttpServer;
+import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpResponse;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -86,6 +88,17 @@ public class ActionTest {
 
         HeaderAction contentType = action.getContentType();
         assertThat(contentType, nullValue());
+    }
+
+    @Test
+    public void testObjects() {
+        StubHttpServer server = new StubHttpServer();
+        Matcher<?> uri = Matchers.startsWith("/api/p");
+        Action action = new ActionImpl(server, uri);
+
+        ToStringHelper answer = action.objects();
+        assertThat(answer, notNullValue());
+        assertThat(answer.toString(), containsString("uri"));
     }
 
     private static class ActionImpl extends Action {

@@ -3,6 +3,7 @@ package com.buildria.restmock.builder.stub;
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.stub.Action.StatusCodeAction;
 import com.buildria.restmock.stub.StubHttpServer;
+import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -12,6 +13,7 @@ import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -66,6 +68,20 @@ public class StatusCodeActionTest {
 
         assertThat(out, notNullValue());
         assertThat(out.getStatus().code(), is(code));
+    }
+
+    @Test
+    public void testObjects() {
+        StubHttpServer server = new StubHttpServer();
+        Matcher<?> uri = equalTo("/api/p");
+        int code = 404;
+
+        StatusCodeAction action = new StatusCodeAction(server, uri, code);
+
+        MoreObjects.ToStringHelper answer = action.objects();
+        assertThat(answer, notNullValue());
+        assertThat(answer.toString(), containsString("uri"));
+        assertThat(answer.toString(), containsString("code"));
     }
 
 }
