@@ -4,7 +4,7 @@ import com.buildria.restmock.Function;
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.serialize.ObjectSerializeContext;
 import com.buildria.restmock.serialize.ObjectSerializer;
-import com.buildria.restmock.serialize.ObjectSerializerStrategy;
+import com.buildria.restmock.serialize.ObjectSerializerFactory;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.MoreObjects.ToStringHelper;
@@ -191,7 +191,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
             }
             ObjectSerializeContext ctx =
                     new ObjectSerializeContext(content, contentType.getValue());
-            ObjectSerializer os = ObjectSerializerStrategy.createObjectSerializer(ctx);
+            ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
                 return new RawBodyAction(server, uri,
                         os.seriaize(ctx).getBytes(StandardCharsets.UTF_8)).apply(response);

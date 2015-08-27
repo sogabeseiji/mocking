@@ -9,17 +9,17 @@ import static com.buildria.restmock.serialize.ObjectSerializer.GSON;
 import static com.buildria.restmock.serialize.ObjectSerializer.JACKSON;
 import static com.buildria.restmock.serialize.ObjectSerializer.JAXB;
 
-public class ObjectSerializerStrategy {
+public class ObjectSerializerFactory {
 
     private static final String JACKSON_CLASS = "com/fasterxml/jackson/databind/ObjectMapper.class";
 
     private static final String GSON_CLASS = "com/google/gson/Gson.class";
 
-    private ObjectSerializerStrategy() {
+    private ObjectSerializerFactory() {
         //
     }
 
-    public static ObjectSerializer createObjectSerializer(ObjectSerializeContext ctx) {
+    public static ObjectSerializer create(ObjectSerializeContext ctx) {
         Objects.requireNonNull(ctx);
         String contentType = ctx.getContentType();
         MediaType type = MediaType.parse(contentType);
