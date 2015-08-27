@@ -9,19 +9,19 @@ public interface ObjectSerializer {
     /**
      * ObjectSerializer for Gson.
      */
-    public static final ObjectSerializer GSON = new GsonJsonSerializer();
+    static final ObjectSerializer GSON = new GsonJsonSerializer();
 
     /**
      * ObjectSerializer for Jackson.
      */
-    public static final ObjectSerializer JACKSON = new JacksonJsonSerializer();
+    static final ObjectSerializer JACKSON = new JacksonJsonSerializer();
 
     // XML
 
     /**
      * ObjectSerializer for JAXB.
      */
-    public static final ObjectSerializer JAXB = new JAXBXmlSerializer();
+    static final ObjectSerializer JAXB = new JAXBXmlSerializer();
 
     String seriaize(ObjectSerializeContext ctx) throws IOException;
 
