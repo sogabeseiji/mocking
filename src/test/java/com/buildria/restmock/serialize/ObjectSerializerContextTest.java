@@ -62,4 +62,21 @@ public class ObjectSerializerContextTest {
         assertThat(os, instanceOf(GsonJsonSerializer.class));
     }
 
+    @Test(expected = RestMockException.class)
+    public void testCreateNoJsonFound() throws Exception {
+        Person person = new Person("Bob", 20);
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString()) {
+                    @Override
+                    protected boolean isGsonEnabled() {
+                        return false;
+                    }
+
+                    @Override
+                    protected boolean isJacksonEnabled() {
+                        return false;
+                    }
+                };
+        ObjectSerializer os = ObjectSerializerFactory.create(ctx);
+    }
 }
