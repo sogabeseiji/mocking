@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
+import static com.buildria.restmock.builder.verify.VerifySpec.verify;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
@@ -70,6 +71,7 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
+        verify(server).get("/api/p");
     }
 
     @Test
