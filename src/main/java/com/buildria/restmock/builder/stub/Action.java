@@ -1,6 +1,5 @@
 package com.buildria.restmock.builder.stub;
 
-import com.buildria.restmock.Function;
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.serialize.ObjectSerializer;
 import com.buildria.restmock.serialize.ObjectSerializerContext;
@@ -12,6 +11,7 @@ import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.io.IOException;
@@ -23,7 +23,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 
 // CHECKSTYLE:OFF
-public abstract class Action implements Function<HttpResponse, HttpResponse> {
+public abstract class Action {
 // CHECKSTYLE:ON
 
     protected final Matcher<?> uri;
@@ -43,12 +43,12 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         return this.uri.matches(uri);
     }
 
-    public HeaderAction getContentType() {
+    public HeaderAction getHeaderAction(String uri, String headerName) {
         List<Action> actions = server.getActions();
         for (Action action : actions) {
-            if (action instanceof HeaderAction) {
+            if (action.isApplicable(uri) && action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;
-                if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(ha.getHeader())) {
+                if (ha.getHeader().equalsIgnoreCase(headerName)) {
                     return ha;
                 }
             }
@@ -56,8 +56,7 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         return null;
     }
 
-    @Override
-    public abstract HttpResponse apply(HttpResponse input);
+    public abstract HttpResponse apply(HttpRequest req, HttpResponse res);
 
     public ToStringHelper objects() {
         return MoreObjects.toStringHelper(this).add("uri", uri);
@@ -81,10 +80,11 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         }
 
         @Override
-        public HttpResponse apply(HttpResponse response) {
-            Objects.requireNonNull(response);
-            response.setStatus(HttpResponseStatus.valueOf(code));
-            return response;
+        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+            Objects.requireNonNull(req);
+            Objects.requireNonNull(res);
+            res.setStatus(HttpResponseStatus.valueOf(code));
+            return res;
         }
 
         @Override
@@ -117,10 +117,11 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         }
 
         @Override
-        public HttpResponse apply(HttpResponse response) {
-            Objects.requireNonNull(response);
-            response.headers().add(header, value);
-            return response;
+        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+            Objects.requireNonNull(req);
+            Objects.requireNonNull(res);
+            res.headers().add(header, value);
+            return res;
         }
 
         @Override
@@ -146,14 +147,15 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         }
 
         @Override
-        public HttpResponse apply(HttpResponse response) {
-            Objects.requireNonNull(response);
+        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+            Objects.requireNonNull(req);
+            Objects.requireNonNull(res);
             ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
             buffer.writeBytes(content);
             HttpResponse r
-                    = new DefaultFullHttpResponse(response.getProtocolVersion(),
-                            response.getStatus(), buffer);
-            for (Map.Entry<String, String> entry : response.headers()) {
+                    = new DefaultFullHttpResponse(res.getProtocolVersion(),
+                            res.getStatus(), buffer);
+            for (Map.Entry<String, String> entry : res.headers()) {
                 r.headers().add(entry.getKey(), entry.getValue());
             }
             r.headers().add(HttpHeaders.CONTENT_LENGTH, content.length);
@@ -183,18 +185,19 @@ public abstract class Action implements Function<HttpResponse, HttpResponse> {
         }
 
         @Override
-        public HttpResponse apply(HttpResponse response) {
-            Objects.requireNonNull(response);
-            HeaderAction contentType = getContentType();
+        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+            Objects.requireNonNull(req);
+            Objects.requireNonNull(res);
+            HeaderAction contentType = getHeaderAction(req.getUri(), "Content-Type");
             if (contentType == null) {
                 throw new RestMockException("No Content-Type found.");
             }
-            ObjectSerializerContext ctx =
-                    new ObjectSerializerContext(content, contentType.getValue());
+            ObjectSerializerContext ctx
+                    = new ObjectSerializerContext(content, contentType.getValue());
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
                 return new RawBodyAction(server, uri,
-                        os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(response);
+                        os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");
             }

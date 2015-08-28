@@ -149,19 +149,19 @@ public class StubHttpServer {
             HttpRequest req = (HttpRequest) msg;
             calls.add(Call.fromRequest(req));
 
-            HttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+            HttpResponse res = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             boolean proceed = false;
             for (Action action : actions) {
                 if (action.isApplicable(req.getUri())) {
                     proceed = true;
-                    response = action.apply(response);
+                    res = action.apply(req, res);
                 }
             }
             if (!proceed) {
-                response.setStatus(HttpResponseStatus.NOT_FOUND);
+                res.setStatus(HttpResponseStatus.NOT_FOUND);
             }
 
-            final HttpResponse r = response;
+            final HttpResponse r = res;
             ctx.channel().eventLoop().execute(new Runnable() {
                 @Override
                 public void run() {

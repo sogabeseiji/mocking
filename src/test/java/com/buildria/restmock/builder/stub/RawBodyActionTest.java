@@ -6,7 +6,10 @@ import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpResponse;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
@@ -62,7 +65,7 @@ public class RawBodyActionTest {
         byte[] content = "content".getBytes();
 
         Action action = new RawBodyAction(server, uri, content);
-        action.apply(null);
+        action.apply(null, null);
     }
 
     @Test
@@ -72,9 +75,10 @@ public class RawBodyActionTest {
         byte[] content = "content".getBytes();
 
         Action action = new RawBodyAction(server, uri, content);
-        HttpResponse in = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        in.headers().add("Accept", "application/xml");
-        HttpResponse out = action.apply(in);
+        HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
+        HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        res.headers().add("Accept", "application/xml");
+        HttpResponse out = action.apply(req, res);
 
         assertThat(out, notNullValue());
         assertThat(out.headers().get("Content-Length"), is("7"));
