@@ -25,7 +25,7 @@ public class ResponseSpec {
 
     private final Matcher<?> uri;
 
-    public ResponseSpec(StubHttpServer server, Matcher<?> uri) {
+    ResponseSpec(StubHttpServer server, Matcher<?> uri) {
         this.server = server;
         this.uri = uri;
     }
