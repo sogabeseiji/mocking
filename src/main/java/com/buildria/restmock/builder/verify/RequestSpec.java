@@ -9,7 +9,7 @@ public class RequestSpec {
 
     private final String uri;
 
-    protected RequestSpec(List<Call> calls, String uri) {
+    RequestSpec(List<Call> calls, String uri) {
         this.calls = calls;
         this.uri = uri;
     }

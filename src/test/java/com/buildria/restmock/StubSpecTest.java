@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
-import static com.buildria.restmock.builder.verify.VerifySpec.verify;
+import static com.buildria.restmock.builder.verify.MethodSpec.verify;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
