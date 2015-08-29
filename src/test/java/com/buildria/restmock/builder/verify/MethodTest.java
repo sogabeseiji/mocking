@@ -6,6 +6,11 @@ import com.buildria.restmock.stub.Call;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class MethodTest {
 
     @Rule
@@ -35,6 +40,51 @@ public class MethodTest {
 
         Call call = null;
         target.apply(call);
+    }
+
+    @Test
+    public void testApplyTrue() throws Exception {
+        String method = "get";
+        String uri = "/api/p";
+        target = new Method(method, uri);
+
+        Call call = mock(Call.class);
+        when(call.getMethod()).thenReturn("get");
+        when(call.getUri()).thenReturn("/api/p");
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(true));
+    }
+
+    @Test
+    public void testApplyMethodUnmatch() throws Exception {
+        String method = "get";
+        String uri = "/api/p";
+        target = new Method(method, uri);
+
+        Call call = mock(Call.class);
+        when(call.getMethod()).thenReturn("post");
+        when(call.getUri()).thenReturn("/api/p");
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(false));
+    }
+
+    @Test
+    public void testApplyUriUnmatch() throws Exception {
+        String method = "get";
+        String uri = "/api/p";
+        target = new Method(method, uri);
+
+        Call call = mock(Call.class);
+        when(call.getMethod()).thenReturn("get");
+        when(call.getUri()).thenReturn("/api/q");
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(false));
     }
 
 }

@@ -29,6 +29,7 @@ public abstract class Verifier implements Predicate<Call> {
 
         @Override
         public boolean apply(Call call) {
+            Objects.requireNonNull(call);
             return call.getUri().equalsIgnoreCase(uri)
                     && method.equalsIgnoreCase(call.getMethod());
         }
@@ -49,6 +50,7 @@ public abstract class Verifier implements Predicate<Call> {
         // TODO
         @Override
         public boolean apply(Call call) {
+            Objects.requireNonNull(call);
             Map<String, String> headers = call.getHeaders();
             for (Entry<String, String> entry : headers.entrySet()) {
                 String n = entry.getKey();
