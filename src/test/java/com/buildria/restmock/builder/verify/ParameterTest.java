@@ -32,7 +32,7 @@ public class ParameterTest {
     @Test(expected = NullPointerException.class)
     public void testConstructorValuesNull() throws Exception {
         String key = "key";
-        String values = null;
+        String[] values = null;
         target = new Parameter(key, values);
     }
 
@@ -80,4 +80,20 @@ public class ParameterTest {
         assertThat(actual, is(true));
     }
 
+    @Test
+    public void testApplyFalse() throws Exception {
+        String key = "key";
+        String[] values = new String[]{"value1"};
+        target = new Parameter(key, values);
+
+        Call call = mock(Call.class);
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("key", Arrays.asList("value11"));
+
+        when(call.getParameters()).thenReturn(params);
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(false));
+    }
 }

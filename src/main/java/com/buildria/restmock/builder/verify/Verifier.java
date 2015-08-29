@@ -73,10 +73,8 @@ public abstract class Verifier implements Predicate<Call> {
         private final String[] values;
 
         public Parameter(String key, String... values) {
-            Objects.requireNonNull(key);
-            Objects.requireNonNull(values);
-            this.key = key;
-            this.values = values;
+            this.key = Objects.requireNonNull(key);
+            this.values = Objects.requireNonNull(values);
             Arrays.sort(this.values);
         }
 
