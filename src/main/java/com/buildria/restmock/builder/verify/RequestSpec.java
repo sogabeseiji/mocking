@@ -15,6 +15,7 @@ public class RequestSpec {
 
     private List<Call> calls;
 
+    @SuppressWarnings("PMD.UnusedPrivateField")
     private final String path;
 
     RequestSpec(List<Call> calls, String path) {

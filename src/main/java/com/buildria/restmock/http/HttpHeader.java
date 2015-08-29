@@ -35,6 +35,7 @@ package com.buildria.restmock.http;
 public final class HttpHeader {
 
     private HttpHeader() {
+        super();
     }
 
     /**
