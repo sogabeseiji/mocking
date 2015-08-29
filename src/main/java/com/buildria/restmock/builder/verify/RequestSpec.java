@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RequestSpec {
 
-    private final List<Call> calls;
+    private  List<Call> calls;
 
     private final String path;
 
@@ -22,8 +22,8 @@ public class RequestSpec {
     }
 
     public RequestSpec header(String name, Matcher<?> value) {
-        List<Call> answers = CallsVerifier.verify(calls, new Header(name, value));
-        return new RequestSpec(answers, path);
+        this.calls = CallsVerifier.verify(calls, new Header(name, value));
+        return this;
     }
 
     public RequestSpec header(String name, String value) {
@@ -63,8 +63,8 @@ public class RequestSpec {
     }
 
     public RequestSpec parameters(String key, String[] values) {
-        List<Call> answers = CallsVerifier.verify(calls, new Parameter(key, values));
-        return new RequestSpec(answers, path);
+        this.calls = CallsVerifier.verify(calls, new Parameter(key, values));
+        return this;
     }
 
     public RequestSpec queryParam(String key, String value) {

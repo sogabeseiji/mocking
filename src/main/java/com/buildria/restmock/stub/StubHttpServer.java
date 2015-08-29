@@ -105,7 +105,7 @@ public class StubHttpServer {
     }
 
     public List<Call> getCalls() {
-        return Collections.unmodifiableList(calls);
+        return calls;
     }
 
     public void addAction(Action action) {
