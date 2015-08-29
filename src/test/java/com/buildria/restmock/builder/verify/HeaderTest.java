@@ -2,8 +2,8 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.verify.Verifier.Header;
+import com.buildria.restmock.http.HttpHeaders;
 import com.buildria.restmock.stub.Call;
-import com.google.common.net.HttpHeaders;
 import java.util.HashMap;
 import java.util.Map;
 import org.hamcrest.Matcher;

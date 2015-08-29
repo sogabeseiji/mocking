@@ -2,9 +2,9 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.builder.verify.Verifier.Header;
 import com.buildria.restmock.builder.verify.Verifier.Parameter;
+import com.buildria.restmock.http.HttpHeaders;
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Joiner;
-import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import java.util.List;
 import org.hamcrest.Matcher;

@@ -1,13 +1,13 @@
 package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.RestMockException;
+import com.buildria.restmock.http.HttpHeaders;
 import com.buildria.restmock.serialize.ObjectSerializer;
 import com.buildria.restmock.serialize.ObjectSerializerContext;
 import com.buildria.restmock.serialize.ObjectSerializerFactory;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.MoreObjects.ToStringHelper;
-import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -171,7 +171,7 @@ public abstract class Action {
             for (Map.Entry<String, String> entry : res.headers()) {
                 r.headers().add(entry.getKey(), entry.getValue());
             }
-            r.headers().add(HttpHeaders.CONTENT_LENGTH, content.length);
+            r.headers().add(HttpHeaders.CONTENT_TYPE, content.length);
             return r;
         }
 
