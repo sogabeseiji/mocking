@@ -2,7 +2,7 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.verify.Verifier.Header;
-import com.buildria.restmock.http.HttpHeaders;
+import com.buildria.restmock.http.HttpHeader;
 import com.buildria.restmock.stub.Call;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,14 +33,14 @@ public class HeaderTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValueNull() throws Exception {
-        String name = HttpHeaders.CONTENT_TYPE;
+        String name = HttpHeader.CONTENT_TYPE;
         Matcher<?> value = null;
         target = new Header(name, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
-        String name = HttpHeaders.CONTENT_TYPE;
+        String name = HttpHeader.CONTENT_TYPE;
         Matcher<?> value = equalTo("application/json");
         target = new Header(name, value);
 
@@ -50,13 +50,13 @@ public class HeaderTest {
 
     @Test
     public void testApplyTrue() throws Exception {
-        String name = HttpHeaders.CONTENT_TYPE;
+        String name = HttpHeader.CONTENT_TYPE;
         Matcher<?> value = equalTo("application/json");
         target = new Header(name, value);
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();
-        headers.put(HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.put(HttpHeader.CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);
@@ -66,14 +66,14 @@ public class HeaderTest {
 
     @Test
     public void testApplyTrue2() throws Exception {
-        String name = HttpHeaders.CONTENT_TYPE;
+        String name = HttpHeader.CONTENT_TYPE;
         @SuppressWarnings("unchecked")
         Matcher<?> value = anyOf(equalTo("application/json"), equalTo("application/xml"));
         target = new Header(name, value);
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();
-        headers.put(HttpHeaders.CONTENT_TYPE, "application/xml");
+        headers.put(HttpHeader.CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);
@@ -83,13 +83,13 @@ public class HeaderTest {
 
     @Test
     public void testApplyFalse() throws Exception {
-        String name = HttpHeaders.CONTENT_TYPE;
+        String name = HttpHeader.CONTENT_TYPE;
         Matcher<?> value = equalTo("application/json");
         target = new Header(name, value);
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();
-        headers.put(HttpHeaders.CONTENT_TYPE, "application/xml");
+        headers.put(HttpHeader.CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);

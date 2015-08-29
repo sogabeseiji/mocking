@@ -1,7 +1,7 @@
 package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.RestMockException;
-import com.buildria.restmock.http.HttpHeaders;
+import com.buildria.restmock.http.HttpHeader;
 import com.buildria.restmock.serialize.ObjectSerializer;
 import com.buildria.restmock.serialize.ObjectSerializerContext;
 import com.buildria.restmock.serialize.ObjectSerializerFactory;
@@ -171,7 +171,7 @@ public abstract class Action {
             for (Map.Entry<String, String> entry : res.headers()) {
                 r.headers().add(entry.getKey(), entry.getValue());
             }
-            r.headers().add(HttpHeaders.CONTENT_TYPE, content.length);
+            r.headers().add(HttpHeader.CONTENT_LENGTH, content.length);
             return r;
         }
 
@@ -203,7 +203,7 @@ public abstract class Action {
         public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
-            HeaderAction contentType = getHeaderAction(req.getUri(), "Content-Type");
+            HeaderAction contentType = getHeaderAction(req.getUri(), HttpHeader.CONTENT_TYPE);
             if (contentType == null) {
                 throw new RestMockException("No Content-Type found.");
             }

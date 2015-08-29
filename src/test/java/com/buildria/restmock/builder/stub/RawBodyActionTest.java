@@ -2,6 +2,7 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.stub.Action.RawBodyAction;
+import com.buildria.restmock.http.HttpHeader;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
@@ -77,12 +78,12 @@ public class RawBodyActionTest {
         Action action = new RawBodyAction(server, path, content);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        res.headers().add("Accept", "application/xml");
+        res.headers().add(HttpHeader.ACCEPT, "application/xml");
         HttpResponse out = action.apply(req, res);
 
         assertThat(out, notNullValue());
-        assertThat(out.headers().get("Content-Length"), is("7"));
-        assertThat(out.headers().get("Accept"), is("application/xml"));
+        assertThat(out.headers().get(HttpHeader.CONTENT_LENGTH), is("7"));
+        assertThat(out.headers().get(HttpHeader.ACCEPT), is("application/xml"));
 
         assertThat(out, instanceOf(DefaultFullHttpResponse.class));
         DefaultFullHttpResponse response = (DefaultFullHttpResponse) out;
