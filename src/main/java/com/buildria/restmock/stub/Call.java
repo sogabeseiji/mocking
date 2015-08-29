@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,23 +52,23 @@ public class Call {
         return call;
     }
 
-    public String getPath() {
+    public @Nonnull String getPath() {
         return path;
     }
 
-    public String getMethod() {
+    public @Nonnull String getMethod() {
         return method;
     }
 
-    public Map<String, String> getHeaders() {
+    public @Nonnull Map<String, String> getHeaders() {
         return headers;
     }
 
-    public Map<String, List<String>> getParameters() {
+    public @Nonnull Map<String, List<String>> getParameters() {
         return parameters;
     }
 
-    public byte[] getBody() {
+    public @Nullable byte[] getBody() {
         return body;
     }
 
