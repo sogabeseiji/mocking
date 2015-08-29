@@ -36,36 +36,36 @@ public class StatusCodeActionTest {
     @Test(expected = NullPointerException.class)
     public void testConstructorServerNull() throws Exception {
         StubHttpServer server = null;
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         int code = 200;
-        Action action = new StatusCodeAction(server, uri, code);
+        Action action = new StatusCodeAction(server, path, code);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorUriNull() throws Exception {
+    public void testConstructorPathNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = null;
+        Matcher<?> path = null;
         int code = 200;
-        Action action = new StatusCodeAction(server, uri, code);
+        Action action = new StatusCodeAction(server, path, code);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         int code = 200;
 
-        StatusCodeAction action = new StatusCodeAction(server, uri, code);
+        StatusCodeAction action = new StatusCodeAction(server, path, code);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         int code = 404;
 
-        StatusCodeAction action = new StatusCodeAction(server, uri, code);
+        StatusCodeAction action = new StatusCodeAction(server, path, code);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -77,14 +77,14 @@ public class StatusCodeActionTest {
     @Test
     public void testObjects() {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         int code = 404;
 
-        StatusCodeAction action = new StatusCodeAction(server, uri, code);
+        StatusCodeAction action = new StatusCodeAction(server, path, code);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());
-        assertThat(answer.toString(), containsString("uri"));
+        assertThat(answer.toString(), containsString("path"));
         assertThat(answer.toString(), containsString("code"));
     }
 

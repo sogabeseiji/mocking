@@ -23,15 +23,15 @@ public class ResponseSpec {
 
     private final StubHttpServer server;
 
-    private final Matcher<?> uri;
+    private final Matcher<?> path;
 
-    ResponseSpec(StubHttpServer server, Matcher<?> uri) {
+    ResponseSpec(StubHttpServer server, Matcher<?> path) {
         this.server = server;
-        this.uri = uri;
+        this.path = path;
     }
 
     public ResponseSpec statusCode(int code) {
-        server.addAction(new StatusCodeAction(server, uri, code));
+        server.addAction(new StatusCodeAction(server, path, code));
         return this;
     }
 
@@ -48,7 +48,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec header(String name, String value) {
-        server.addAction(new HeaderAction(server, uri, name, value));
+        server.addAction(new HeaderAction(server, path, name, value));
         return this;
     }
 
@@ -61,7 +61,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec rawBody(byte[] content) {
-        server.addAction(new RawBodyAction(server, uri, content));
+        server.addAction(new RawBodyAction(server, path, content));
         return this;
     }
 
@@ -70,7 +70,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec body(Object content) {
-        server.addAction(new BodyAction(server, uri, content));
+        server.addAction(new BodyAction(server, path, content));
         return this;
     }
 

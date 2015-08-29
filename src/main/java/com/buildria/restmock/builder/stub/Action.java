@@ -26,27 +26,27 @@ import org.hamcrest.Matcher;
 public abstract class Action {
 // CHECKSTYLE:ON
 
-    protected final Matcher<?> uri;
+    protected final Matcher<?> path;
 
     protected final StubHttpServer server;
 
-    public Action(StubHttpServer server, Matcher<?> uri) {
+    public Action(StubHttpServer server, Matcher<?> path) {
         this.server = Objects.requireNonNull(server);
-        this.uri = Objects.requireNonNull(uri);
+        this.path = Objects.requireNonNull(path);
     }
 
-    public Matcher<?> getUri() {
-        return uri;
+    public Matcher<?> getPath() {
+        return path;
     }
 
-    public boolean isApplicable(String uri) {
-        return this.uri.matches(uri);
+    public boolean isApplicable(String path) {
+        return this.path.matches(path);
     }
 
-    public HeaderAction getHeaderAction(String uri, String headerName) {
+    public HeaderAction getHeaderAction(String path, String headerName) {
         List<Action> actions = server.getActions();
         for (Action action : actions) {
-            if (action.isApplicable(uri) && action instanceof HeaderAction) {
+            if (action.isApplicable(path) && action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;
                 if (ha.getHeader().equalsIgnoreCase(headerName)) {
                     return ha;
@@ -59,7 +59,7 @@ public abstract class Action {
     public abstract HttpResponse apply(HttpRequest req, HttpResponse res);
 
     public ToStringHelper objects() {
-        return MoreObjects.toStringHelper(this).add("uri", uri);
+        return MoreObjects.toStringHelper(this).add("path", path);
     }
 
     @Override
@@ -74,8 +74,8 @@ public abstract class Action {
 
         private final int code;
 
-        public StatusCodeAction(StubHttpServer server, Matcher<?> uri, int code) {
-            super(server, uri);
+        public StatusCodeAction(StubHttpServer server, Matcher<?> path, int code) {
+            super(server, path);
             this.code = code;
         }
 
@@ -102,8 +102,8 @@ public abstract class Action {
 
         private final String value;
 
-        public HeaderAction(StubHttpServer server, Matcher<?> uri, String header, String value) {
-            super(server, uri);
+        public HeaderAction(StubHttpServer server, Matcher<?> path, String header, String value) {
+            super(server, path);
             this.header = Objects.requireNonNull(header);
             this.value = Objects.requireNonNull(value);
         }
@@ -137,8 +137,8 @@ public abstract class Action {
 
         private final byte[] content;
 
-        public RawBodyAction(StubHttpServer server, Matcher<?> uri, byte[] content) {
-            super(server, uri);
+        public RawBodyAction(StubHttpServer server, Matcher<?> path, byte[] content) {
+            super(server, path);
             this.content = Objects.requireNonNull(content);
         }
 
@@ -175,8 +175,8 @@ public abstract class Action {
 
         private final Object content;
 
-        public BodyAction(StubHttpServer server, Matcher<?> uri, Object content) {
-            super(server, uri);
+        public BodyAction(StubHttpServer server, Matcher<?> path, Object content) {
+            super(server, path);
             this.content = Objects.requireNonNull(content);
         }
 
@@ -196,7 +196,7 @@ public abstract class Action {
                     = new ObjectSerializerContext(content, contentType.getValue());
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
-                return new RawBodyAction(server, uri,
+                return new RawBodyAction(server, path,
                         os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");

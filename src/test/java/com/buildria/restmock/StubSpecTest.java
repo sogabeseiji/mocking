@@ -53,8 +53,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
          then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
@@ -82,16 +81,14 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
                 header("X-header", "restmock1").
                 contentType(MediaType.JSON_UTF_8);
 
-        when(server).
-                uri("/api/q").
+        when(server).path("/api/q").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json).
@@ -131,8 +128,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json).
@@ -153,8 +149,7 @@ public class StubSpecTest {
 
     @Test
     public void testResourceBody() throws Exception {
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(Resources.getResource("com/buildria/restmock/person.json")).
@@ -177,8 +172,7 @@ public class StubSpecTest {
     public void testRequestBodyMultibytes() throws Exception {
         Person p = new Person("\u3042\u3044\u3046\u3048\u304a", 19);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(p).
@@ -208,8 +202,7 @@ public class StubSpecTest {
     public void testRequestXmlBody() throws Exception {
         Person p = new Person("あいうえお", 19);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(p).
