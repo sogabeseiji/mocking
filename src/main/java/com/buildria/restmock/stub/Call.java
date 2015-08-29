@@ -29,7 +29,6 @@ public class Call {
         call.uri = req.getUri();
         call.method = req.getMethod().name();
         for (Map.Entry<String, String> entry : req.headers().entries()) {
-            String key = entry.getKey();
             call.headers.put(entry.getKey(), entry.getValue());
         }
         if (req instanceof HttpContent) {
@@ -57,7 +56,7 @@ public class Call {
     public byte[] getBody() {
         return body;
     }
-    
+
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
