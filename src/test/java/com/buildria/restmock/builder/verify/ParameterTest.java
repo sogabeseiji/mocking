@@ -96,4 +96,18 @@ public class ParameterTest {
 
         assertThat(actual, is(false));
     }
+
+    @Test
+    public void testApplyFalse2() throws Exception {
+        String key = "key";
+        String[] values = new String[]{"value1"};
+        target = new Parameter(key, values);
+
+        Call call = mock(Call.class);
+        when(call.getParameters()).thenReturn(null);
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(false));
+    }
 }

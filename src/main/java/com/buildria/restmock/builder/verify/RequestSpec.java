@@ -58,12 +58,21 @@ public class RequestSpec {
         return header(HttpHeaders.ACCEPT, value);
     }
 
-    public RequestSpec parameters(String key, String values) {
-        return parameters(key, new String[]{values});
+    public RequestSpec parameter(String key, String value) {
+        return parameters(key, new String[]{value});
     }
 
     public RequestSpec parameters(String key, String[] values) {
         List<Call> answers = CallsVerifier.verify(calls, new Parameter(key, values));
         return new RequestSpec(answers, path);
     }
+
+    public RequestSpec queryParam(String key, String value) {
+        return parameter(key, value);
+    }
+
+    public RequestSpec queryParams(String key, String... values) {
+        return parameters(key, values);
+    }
+
 }

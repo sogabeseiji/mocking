@@ -3,6 +3,7 @@ package com.buildria.restmock.builder.verify;
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Predicate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -82,6 +83,9 @@ public abstract class Verifier implements Predicate<Call> {
         public boolean apply(Call call) {
             Objects.requireNonNull(call);
             Map<String, List<String>> params = call.getParameters();
+            if (params == null) {
+                params = Collections.emptyMap();
+            }
             List<String> vals = params.get(key);
             if (vals == null) {
                 return false;

@@ -221,6 +221,67 @@ public class StubSpecTest {
                 body("person.old", is("19"));
     }
 
+    @Test
+    public void testQueryParam() throws Exception {
+        Person p = new Person("hoge", 19);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(p);
+
+        when(server).path("/api/p").
+         then().
+                statusCode(HttpStatus.SC_200_OK).
+                rawBody(json, Charset.defaultCharset()).
+                contentType(MediaType.JSON_UTF_8);
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+                queryParam("name", "value 1").
+         when().
+                get("/api/p").
+         then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                body("name", is("hoge")).
+                body("old", is(19));
+
+        verify(server).get("/api/p").
+                accept(containsString("application/json")).
+                queryParam("name", "value 1");
+    }
+
+    @Test
+    public void testQueryParams() throws Exception {
+        Person p = new Person("hoge", 19);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(p);
+
+        when(server).path("/api/p").
+         then().
+                statusCode(HttpStatus.SC_200_OK).
+                rawBody(json, Charset.defaultCharset()).
+                contentType(MediaType.JSON_UTF_8);
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+                queryParam("name", "value 1").
+                queryParam("name", "value 2").
+         when().
+                get("/api/p").
+         then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                body("name", is("hoge")).
+                body("old", is(19));
+
+        verify(server).get("/api/p").
+                accept(containsString("application/json")).
+                queryParams("name", "value 1", "value 2");
+    }
+
     @XmlRootElement(name = "person")
     @XmlType
     private static class Person {
