@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 
@@ -26,27 +28,29 @@ import org.hamcrest.Matcher;
 public abstract class Action {
 // CHECKSTYLE:ON
 
-    protected final Matcher<?> uri;
+    protected final Matcher<?> path;
 
     protected final StubHttpServer server;
 
-    public Action(StubHttpServer server, Matcher<?> uri) {
+    public Action(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path) {
         this.server = Objects.requireNonNull(server);
-        this.uri = Objects.requireNonNull(uri);
+        this.path = Objects.requireNonNull(path);
     }
 
-    public Matcher<?> getUri() {
-        return uri;
+    @Nonnull
+    public Matcher<?> getPath() {
+        return path;
     }
 
-    public boolean isApplicable(String uri) {
-        return this.uri.matches(uri);
+    public boolean isApplicable(String path) {
+        return this.path.matches(path);
     }
 
-    public HeaderAction getHeaderAction(String uri, String headerName) {
+    @Nullable
+    public HeaderAction getHeaderAction(String path, String headerName) {
         List<Action> actions = server.getActions();
         for (Action action : actions) {
-            if (action.isApplicable(uri) && action instanceof HeaderAction) {
+            if (action.isApplicable(path) && action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;
                 if (ha.getHeader().equalsIgnoreCase(headerName)) {
                     return ha;
@@ -56,10 +60,11 @@ public abstract class Action {
         return null;
     }
 
-    public abstract HttpResponse apply(HttpRequest req, HttpResponse res);
+    @Nonnull
+    public abstract HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 
     public ToStringHelper objects() {
-        return MoreObjects.toStringHelper(this).add("uri", uri);
+        return MoreObjects.toStringHelper(this).add("path", path);
     }
 
     @Override
@@ -74,13 +79,14 @@ public abstract class Action {
 
         private final int code;
 
-        public StatusCodeAction(StubHttpServer server, Matcher<?> uri, int code) {
-            super(server, uri);
+        public StatusCodeAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path, int code) {
+            super(server, path);
             this.code = code;
         }
 
+        @Nonnull
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             res.setStatus(HttpResponseStatus.valueOf(code));
@@ -102,22 +108,27 @@ public abstract class Action {
 
         private final String value;
 
-        public HeaderAction(StubHttpServer server, Matcher<?> uri, String header, String value) {
-            super(server, uri);
+        @Nonnull
+        public HeaderAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+                @Nonnull String header, @Nonnull String value) {
+            super(server, path);
             this.header = Objects.requireNonNull(header);
             this.value = Objects.requireNonNull(value);
         }
 
+        @Nonnull
         public String getHeader() {
             return header;
         }
 
+        @Nonnull
         public String getValue() {
             return value;
         }
 
+        @Nonnull
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             res.headers().add(header, value);
@@ -137,8 +148,9 @@ public abstract class Action {
 
         private final byte[] content;
 
-        public RawBodyAction(StubHttpServer server, Matcher<?> uri, byte[] content) {
-            super(server, uri);
+        public RawBodyAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+                @Nonnull byte[] content) {
+            super(server, path);
             this.content = Objects.requireNonNull(content);
         }
 
@@ -146,8 +158,9 @@ public abstract class Action {
             return content;
         }
 
+        @Nonnull
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
@@ -175,8 +188,9 @@ public abstract class Action {
 
         private final Object content;
 
-        public BodyAction(StubHttpServer server, Matcher<?> uri, Object content) {
-            super(server, uri);
+        public BodyAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+                @Nonnull Object content) {
+            super(server, path);
             this.content = Objects.requireNonNull(content);
         }
 
@@ -184,8 +198,9 @@ public abstract class Action {
             return content;
         }
 
+        @Nonnull
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             HeaderAction contentType = getHeaderAction(req.getUri(), "Content-Type");
@@ -196,7 +211,7 @@ public abstract class Action {
                     = new ObjectSerializerContext(content, contentType.getValue());
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
-                return new RawBodyAction(server, uri,
+                return new RawBodyAction(server, path,
                         os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");

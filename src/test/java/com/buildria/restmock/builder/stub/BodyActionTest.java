@@ -43,34 +43,34 @@ public class BodyActionTest {
     @Test(expected = NullPointerException.class)
     public void testConstructorServerNull() throws Exception {
         StubHttpServer server = null;
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         Object content = person;
-        Action action = new BodyAction(server, uri, content);
+        Action action = new BodyAction(server, path, content);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorUriNull() throws Exception {
+    public void testConstructorPathNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = null;
+        Matcher<?> path = null;
         Object content = person;
-        Action action = new BodyAction(server, uri, content);
+        Action action = new BodyAction(server, path, content);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorContentNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         Object content = null;
-        Action action = new BodyAction(server, uri, content);
+        Action action = new BodyAction(server, path, content);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
-        Action action = new BodyAction(server, uri, content);
+        Action action = new BodyAction(server, path, content);
         action.apply(null, null);
     }
 
@@ -78,10 +78,10 @@ public class BodyActionTest {
     public void testApplyResponse() throws Exception {
         StubHttpServer server = new StubHttpServer();
         server.addAction(new HeaderAction(server, equalTo("/api/p"), "Content-Type", "application/json"));
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
-        Action action = new BodyAction(server, uri, content);
+        Action action = new BodyAction(server, path, content);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -104,10 +104,10 @@ public class BodyActionTest {
     @Test(expected = RestMockException.class)
     public void testApplyResponseNoContentType() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
-        Action action = new BodyAction(server, uri, content);
+        Action action = new BodyAction(server, path, content);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -116,14 +116,14 @@ public class BodyActionTest {
     @Test
     public void testObjects() {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
-        Action action = new BodyAction(server, uri, content);
+        Action action = new BodyAction(server, path, content);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());
-        assertThat(answer.toString(), containsString("uri"));
+        assertThat(answer.toString(), containsString("path"));
         assertThat(answer.toString(), containsString("content"));
     }
 }

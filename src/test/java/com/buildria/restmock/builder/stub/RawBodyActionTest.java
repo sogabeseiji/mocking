@@ -34,47 +34,47 @@ public class RawBodyActionTest {
     @Test(expected = NullPointerException.class)
     public void testConstructorServerNull() throws Exception {
         StubHttpServer server = null;
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(server, uri, content);
+        Action action = new RawBodyAction(server, path, content);
     }
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorUriNull() throws Exception {
+    public void testConstructorPathNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = null;
+        Matcher<?> path = null;
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(server, uri, content);
+        Action action = new RawBodyAction(server, path, content);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorContentNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         byte[] content = null;
 
-        Action action = new RawBodyAction(server, uri, content);
+        Action action = new RawBodyAction(server, path, content);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(server, uri, content);
+        Action action = new RawBodyAction(server, path, content);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(server, uri, content);
+        Action action = new RawBodyAction(server, path, content);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         res.headers().add("Accept", "application/xml");
@@ -96,14 +96,14 @@ public class RawBodyActionTest {
     @Test
     public void testObjects() {
         StubHttpServer server = new StubHttpServer();
-        Matcher<?> uri = equalTo("/api/p");
+        Matcher<?> path = equalTo("/api/p");
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(server, uri, content);
+        Action action = new RawBodyAction(server, path, content);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());
-        assertThat(answer.toString(), containsString("uri"));
+        assertThat(answer.toString(), containsString("path"));
         assertThat(answer.toString(), containsString("content"));
     }
 }

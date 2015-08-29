@@ -1,26 +1,29 @@
 package com.buildria.restmock.stub;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.net.HttpHeaders;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpRequest;
-import java.util.HashMap;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Call {
 
-    private String uri;
+    private String path;
 
     private String method;
 
-    private String contentType;
+    private final Map<String, String> headers = new ConcurrentHashMap<>();
 
-    private String accept;
-
-    private final Map<String, String> headers = new HashMap<>();
+    private final Map<String, List<String>> parameters = new ConcurrentHashMap<>();
 
     private byte[] body;
 
@@ -31,16 +34,11 @@ public class Call {
     public static Call fromRequest(HttpRequest req) {
         Objects.requireNonNull(req);
         Call call = new Call();
-        call.uri = req.getUri();
+        QueryStringDecoder decoder = new QueryStringDecoder(req.getUri());
+        call.path = decoder.path();
+        call.parameters.putAll(decoder.parameters());
         call.method = req.getMethod().name();
-        call.contentType = req.headers().get(HttpHeaders.CONTENT_TYPE);
-        call.accept = req.headers().get(HttpHeaders.ACCEPT);
         for (Map.Entry<String, String> entry : req.headers().entries()) {
-            String key = entry.getKey();
-            if (HttpHeaders.CONTENT_TYPE.equalsIgnoreCase(key)
-                    || HttpHeaders.ACCEPT.equalsIgnoreCase(key)) {
-                continue;
-            }
             call.headers.put(entry.getKey(), entry.getValue());
         }
         if (req instanceof HttpContent) {
@@ -50,23 +48,42 @@ public class Call {
             }
         }
 
+        LOG.debug("### call: {}", call.toString());
         return call;
     }
 
-    public String getUri() {
-        return uri;
+    @Nonnull
+    public String getPath() {
+        return path;
     }
 
+    @Nonnull
     public String getMethod() {
         return method;
+    }
+
+    @Nonnull
+    public Map<String, String> getHeaders() {
+        return headers;
+    }
+
+    @Nonnull
+    public Map<String, List<String>> getParameters() {
+        return parameters;
+    }
+
+    @Nullable
+    public byte[] getBody() {
+        return body;
     }
 
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("uri", uri).add("method", method).add("contentType", contentType)
-                .add("accept", accept).add("headers", headers).add("body", DatatypeConverter.printHexBinary(body))
+                .add("path", path).add("method", method).add("headers", headers).add("parameters", parameters).
+                add("body", DatatypeConverter.printHexBinary(body))
                 .toString();
     }
 
+    private static final Logger LOG = LoggerFactory.getLogger(Call.class);
 }

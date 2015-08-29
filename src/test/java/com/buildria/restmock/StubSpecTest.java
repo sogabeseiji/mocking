@@ -21,7 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
+import static com.buildria.restmock.builder.verify.MethodSpec.verify;
 import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 public class StubSpecTest {
@@ -51,8 +53,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
          then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
@@ -70,6 +71,8 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
+        verify(server).get("/api/p").
+                accept(containsString("application/json"));
     }
 
     @Test
@@ -78,16 +81,14 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
                 header("X-header", "restmock1").
                 contentType(MediaType.JSON_UTF_8);
 
-        when(server).
-                uri("/api/q").
+        when(server).path("/api/q").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json).
@@ -127,8 +128,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(json).
@@ -149,8 +149,7 @@ public class StubSpecTest {
 
     @Test
     public void testResourceBody() throws Exception {
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 rawBody(Resources.getResource("com/buildria/restmock/person.json")).
@@ -173,8 +172,7 @@ public class StubSpecTest {
     public void testRequestBodyMultibytes() throws Exception {
         Person p = new Person("\u3042\u3044\u3046\u3048\u304a", 19);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(p).
@@ -204,8 +202,7 @@ public class StubSpecTest {
     public void testRequestXmlBody() throws Exception {
         Person p = new Person("あいうえお", 19);
 
-        when(server).
-                uri("/api/p").
+        when(server).path("/api/p").
         then().
                 statusCode(HttpStatus.SC_200_OK).
                 body(p).
@@ -222,6 +219,67 @@ public class StubSpecTest {
                 contentType(ContentType.XML).
                 body("persson.name", is("あいうえお")).
                 body("person.old", is("19"));
+    }
+
+    @Test
+    public void testQueryParam() throws Exception {
+        Person p = new Person("hoge", 19);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(p);
+
+        when(server).path("/api/p").
+         then().
+                statusCode(HttpStatus.SC_200_OK).
+                rawBody(json, Charset.defaultCharset()).
+                contentType(MediaType.JSON_UTF_8);
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+                queryParam("name", "value 1").
+         when().
+                get("/api/p").
+         then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                body("name", is("hoge")).
+                body("old", is(19));
+
+        verify(server).get("/api/p").
+                accept(containsString("application/json")).
+                queryParam("name", "value 1");
+    }
+
+    @Test
+    public void testQueryParams() throws Exception {
+        Person p = new Person("hoge", 19);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(p);
+
+        when(server).path("/api/p").
+         then().
+                statusCode(HttpStatus.SC_200_OK).
+                rawBody(json, Charset.defaultCharset()).
+                contentType(MediaType.JSON_UTF_8);
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+                queryParam("name", "value 1").
+                queryParam("name", "value 2").
+         when().
+                get("/api/p").
+         then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                body("name", is("hoge")).
+                body("old", is(19));
+
+        verify(server).get("/api/p").
+                accept(containsString("application/json")).
+                queryParams("name", "value 1", "value 2");
     }
 
     @XmlRootElement(name = "person")

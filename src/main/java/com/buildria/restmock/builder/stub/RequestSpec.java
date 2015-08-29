@@ -14,7 +14,7 @@ public class RequestSpec {
 
     private final StubHttpServer server;
 
-    private Matcher<?>  uri;
+    private Matcher<?>  path;
 
     private RequestSpec(StubHttpServer server) {
         this.server = Objects.requireNonNull(server);
@@ -24,17 +24,17 @@ public class RequestSpec {
         return new RequestSpec(server);
     }
 
-    public RequestSpec uri(String uri) {
-        return uri(equalTo(Objects.requireNonNull(uri)));
+    public RequestSpec path(String path) {
+        return RequestSpec.this.path(equalTo(Objects.requireNonNull(path)));
     }
 
-    public RequestSpec uri(Matcher<?> uri) {
-        this.uri = Objects.requireNonNull(uri);
+    public RequestSpec path(Matcher<?> path) {
+        this.path = Objects.requireNonNull(path);
         return this;
     }
 
     public ResponseSpec then() {
-        return new ResponseSpec(server, uri);
+        return new ResponseSpec(server, path);
     }
 
 }
