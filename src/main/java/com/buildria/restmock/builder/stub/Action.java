@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 
@@ -30,12 +32,12 @@ public abstract class Action {
 
     protected final StubHttpServer server;
 
-    public Action(StubHttpServer server, Matcher<?> path) {
+    public Action(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path) {
         this.server = Objects.requireNonNull(server);
         this.path = Objects.requireNonNull(path);
     }
 
-    public Matcher<?> getPath() {
+    public @Nonnull Matcher<?> getPath() {
         return path;
     }
 
@@ -43,7 +45,7 @@ public abstract class Action {
         return this.path.matches(path);
     }
 
-    public HeaderAction getHeaderAction(String path, String headerName) {
+    public @Nullable HeaderAction getHeaderAction(String path, String headerName) {
         List<Action> actions = server.getActions();
         for (Action action : actions) {
             if (action.isApplicable(path) && action instanceof HeaderAction) {
@@ -56,7 +58,7 @@ public abstract class Action {
         return null;
     }
 
-    public abstract HttpResponse apply(HttpRequest req, HttpResponse res);
+    public abstract @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 
     public ToStringHelper objects() {
         return MoreObjects.toStringHelper(this).add("path", path);
@@ -74,13 +76,13 @@ public abstract class Action {
 
         private final int code;
 
-        public StatusCodeAction(StubHttpServer server, Matcher<?> path, int code) {
+        public StatusCodeAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path, int code) {
             super(server, path);
             this.code = code;
         }
 
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             res.setStatus(HttpResponseStatus.valueOf(code));
@@ -102,22 +104,23 @@ public abstract class Action {
 
         private final String value;
 
-        public HeaderAction(StubHttpServer server, Matcher<?> path, String header, String value) {
+        public @Nonnull HeaderAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+                @Nonnull String header, @Nonnull String value) {
             super(server, path);
             this.header = Objects.requireNonNull(header);
             this.value = Objects.requireNonNull(value);
         }
 
-        public String getHeader() {
+        public @Nonnull String getHeader() {
             return header;
         }
 
-        public String getValue() {
+        public @Nonnull String getValue() {
             return value;
         }
 
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             res.headers().add(header, value);
@@ -137,7 +140,8 @@ public abstract class Action {
 
         private final byte[] content;
 
-        public RawBodyAction(StubHttpServer server, Matcher<?> path, byte[] content) {
+        public RawBodyAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+                @Nonnull byte[] content) {
             super(server, path);
             this.content = Objects.requireNonNull(content);
         }
@@ -147,7 +151,7 @@ public abstract class Action {
         }
 
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
@@ -175,7 +179,8 @@ public abstract class Action {
 
         private final Object content;
 
-        public BodyAction(StubHttpServer server, Matcher<?> path, Object content) {
+        public BodyAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+                @Nonnull Object content) {
             super(server, path);
             this.content = Objects.requireNonNull(content);
         }
@@ -185,7 +190,7 @@ public abstract class Action {
         }
 
         @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
+        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             HeaderAction contentType = getHeaderAction(req.getUri(), "Content-Type");
