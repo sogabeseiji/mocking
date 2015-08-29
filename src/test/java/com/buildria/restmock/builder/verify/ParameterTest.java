@@ -47,14 +47,14 @@ public class ParameterTest {
     }
 
     @Test
-    public void testApplyTrue() throws Exception {
+    public void testApplyOneParams() throws Exception {
         String key = "key";
-        String values = "values";
+        String[] values = new String[]{"value1"};
         target = new Parameter(key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
-        params.put("key", Arrays.asList("values"));
+        params.put("key", Arrays.asList("value1"));
 
         when(call.getParameters()).thenReturn(params);
 
@@ -63,5 +63,21 @@ public class ParameterTest {
         assertThat(actual, is(true));
     }
 
+    @Test
+    public void testApplyTwoParams() throws Exception {
+        String key = "key";
+        String[] values = new String[]{"value1", "value2"};
+        target = new Parameter(key, values);
+
+        Call call = mock(Call.class);
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("key", Arrays.asList("value1", "value2"));
+
+        when(call.getParameters()).thenReturn(params);
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(true));
+    }
 
 }

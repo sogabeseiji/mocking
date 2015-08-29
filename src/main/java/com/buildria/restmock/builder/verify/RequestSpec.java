@@ -1,6 +1,7 @@
 package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.builder.verify.Verifier.Header;
+import com.buildria.restmock.builder.verify.Verifier.Parameter;
 import com.buildria.restmock.stub.Call;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
@@ -13,16 +14,16 @@ public class RequestSpec {
 
     private final List<Call> calls;
 
-    private final String uri;
+    private final String path;
 
-    RequestSpec(List<Call> calls, String uri) {
+    RequestSpec(List<Call> calls, String path) {
         this.calls = calls;
-        this.uri = uri;
+        this.path = path;
     }
 
     public RequestSpec header(String name, Matcher<?> value) {
         List<Call> answers = CallsVerifier.verify(calls, new Header(name, value));
-        return new RequestSpec(answers, uri);
+        return new RequestSpec(answers, path);
     }
 
     public RequestSpec header(String name, String value) {
@@ -57,4 +58,12 @@ public class RequestSpec {
         return header(HttpHeaders.ACCEPT, value);
     }
 
+    public RequestSpec parameters(String key, String values) {
+        return parameters(key, new String[]{values});
+    }
+
+    public RequestSpec parameters(String key, String[] values) {
+        List<Call> answers = CallsVerifier.verify(calls, new Parameter(key, values));
+        return new RequestSpec(answers, path);
+    }
 }

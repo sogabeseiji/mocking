@@ -2,12 +2,12 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Predicate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 
 // CHECKSTYLE:OFF
 public abstract class Verifier implements Predicate<Call> {
@@ -18,21 +18,21 @@ public abstract class Verifier implements Predicate<Call> {
 
     public static class Method extends Verifier {
 
-        private final String uri;
+        private final String path;
 
         private final String method;
 
-        public Method(String method, String uri) {
-            Objects.requireNonNull(uri);
+        public Method(String method, String path) {
+            Objects.requireNonNull(path);
             Objects.requireNonNull(method);
-            this.uri = uri;
+            this.path = path;
             this.method = method;
         }
 
         @Override
         public boolean apply(Call call) {
             Objects.requireNonNull(call);
-            return call.getUri().equalsIgnoreCase(uri)
+            return call.getPath().equalsIgnoreCase(path)
                     && method.equalsIgnoreCase(call.getMethod());
         }
 
@@ -72,15 +72,12 @@ public abstract class Verifier implements Predicate<Call> {
 
         private final String[] values;
 
-        public Parameter(String key, String value) {
-            this(key, new String[] { value });
-        }
-
         public Parameter(String key, String... values) {
             Objects.requireNonNull(key);
             Objects.requireNonNull(values);
             this.key = key;
             this.values = values;
+            Arrays.sort(this.values);
         }
 
         @Override
@@ -92,7 +89,9 @@ public abstract class Verifier implements Predicate<Call> {
                 return false;
             }
 
-            return Matchers.containsInAnyOrder(vals.toArray()).matches(values);
+            String[] sorted = vals.toArray(new String[0]);
+            Arrays.sort(sorted);
+            return Arrays.equals(sorted, values);
         }
 
     }

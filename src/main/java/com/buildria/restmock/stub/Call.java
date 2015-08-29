@@ -10,10 +10,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.bind.DatatypeConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Call {
 
-    private String uri;
+    private String path;
 
     private String method;
 
@@ -31,7 +33,7 @@ public class Call {
         Objects.requireNonNull(req);
         Call call = new Call();
         QueryStringDecoder decoder = new QueryStringDecoder(req.getUri());
-        call.uri = decoder.uri();
+        call.path = decoder.path();
         call.parameters.putAll(decoder.parameters());
         call.method = req.getMethod().name();
         for (Map.Entry<String, String> entry : req.headers().entries()) {
@@ -44,11 +46,12 @@ public class Call {
             }
         }
 
+        LOG.debug("### call: {}", call.toString());
         return call;
     }
 
-    public String getUri() {
-        return uri;
+    public String getPath() {
+        return path;
     }
 
     public String getMethod() {
@@ -62,7 +65,7 @@ public class Call {
     public Map<String, List<String>> getParameters() {
         return parameters;
     }
-    
+
     public byte[] getBody() {
         return body;
     }
@@ -70,9 +73,10 @@ public class Call {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("uri", uri).add("method", method).add("headers", headers).
+                .add("path", path).add("method", method).add("headers", headers).add("parameters", parameters).
                 add("body", DatatypeConverter.printHexBinary(body))
                 .toString();
     }
 
+    private static final Logger LOG = LoggerFactory.getLogger(Call.class);
 }

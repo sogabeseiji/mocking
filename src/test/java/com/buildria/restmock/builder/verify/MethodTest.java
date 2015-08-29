@@ -21,22 +21,22 @@ public class MethodTest {
     @Test(expected = NullPointerException.class)
     public void testConstructorMethodNull() throws Exception {
         String method = null;
-        String uri = "/api/p";
-        target = new Method(method, uri);
+        String path = "/api/p";
+        target = new Method(method, path);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorUriNull() throws Exception {
         String method = "get";
-        String uri = null;
-        target = new Method(method, uri);
+        String path = null;
+        target = new Method(method, path);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
         String method = "get";
-        String uri = "/api/p";
-        target = new Method(method, uri);
+        String path = "/api/p";
+        target = new Method(method, path);
 
         Call call = null;
         target.apply(call);
@@ -45,12 +45,12 @@ public class MethodTest {
     @Test
     public void testApplyTrue() throws Exception {
         String method = "get";
-        String uri = "/api/p";
-        target = new Method(method, uri);
+        String path = "/api/p";
+        target = new Method(method, path);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("get");
-        when(call.getUri()).thenReturn("/api/p");
+        when(call.getPath()).thenReturn("/api/p");
 
         boolean actual = target.apply(call);
 
@@ -60,12 +60,12 @@ public class MethodTest {
     @Test
     public void testApplyMethodUnmatch() throws Exception {
         String method = "get";
-        String uri = "/api/p";
-        target = new Method(method, uri);
+        String path = "/api/p";
+        target = new Method(method, path);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("post");
-        when(call.getUri()).thenReturn("/api/p");
+        when(call.getPath()).thenReturn("/api/p");
 
         boolean actual = target.apply(call);
 
@@ -75,12 +75,12 @@ public class MethodTest {
     @Test
     public void testApplyUriUnmatch() throws Exception {
         String method = "get";
-        String uri = "/api/p";
-        target = new Method(method, uri);
+        String path = "/api/p";
+        target = new Method(method, path);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("get");
-        when(call.getUri()).thenReturn("/api/q");
+        when(call.getPath()).thenReturn("/api/q");
 
         boolean actual = target.apply(call);
 

@@ -13,7 +13,6 @@ import java.nio.charset.StandardCharsets;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
 import static com.buildria.restmock.builder.verify.MethodSpec.verify;
 import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 public class StubSpecTest {
@@ -73,7 +73,7 @@ public class StubSpecTest {
                 body("old", is(19));
 
         verify(server).get("/api/p").
-                accept(Matchers.containsString("application/json"));
+                accept(containsString("application/json"));
     }
 
     @Test

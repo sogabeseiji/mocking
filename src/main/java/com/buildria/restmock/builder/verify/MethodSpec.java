@@ -21,24 +21,24 @@ public class MethodSpec {
         return new MethodSpec(calls);
     }
 
-    public RequestSpec get(String uri) {
-        List<Call> answers = CallsVerifier.verify(calls, new Method("get", uri));
-        return new RequestSpec(answers, uri);
+    public RequestSpec get(String path) {
+        List<Call> answers = CallsVerifier.verify(calls, new Method("get", path));
+        return new RequestSpec(answers, path);
     }
 
-    public RequestSpec post(String uri) {
-        List<Call> answers = CallsVerifier.verify(calls, new Method("post", uri));
-        return new RequestSpec(answers, uri);
+    public RequestSpec post(String path) {
+        List<Call> answers = CallsVerifier.verify(calls, new Method("post", path));
+        return new RequestSpec(answers, path);
     }
 
-    public RequestSpec put(String uri) {
-        List<Call> answers = CallsVerifier.verify(calls, new Method("put", uri));
-        return new RequestSpec(answers, uri);
+    public RequestSpec put(String path) {
+        List<Call> answers = CallsVerifier.verify(calls, new Method("put", path));
+        return new RequestSpec(answers, path);
     }
 
-    public RequestSpec delete(String uri) {
-        List<Call> answers = CallsVerifier.verify(calls, new Method("delete", uri));
-        return new RequestSpec(answers, uri);
+    public RequestSpec delete(String path) {
+        List<Call> answers = CallsVerifier.verify(calls, new Method("delete", path));
+        return new RequestSpec(answers, path);
     }
 
 }
