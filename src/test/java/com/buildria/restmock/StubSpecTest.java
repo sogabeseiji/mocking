@@ -61,7 +61,7 @@ public class StubSpecTest {
 
         given().
                 log().all().
-                accept(ContentType.JSON).
+                accept(ContentType.JSON.toString()).
          when().
                 get("/api/p").
          then().
@@ -71,7 +71,7 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        verify(server).get("/api/p");
+        verify(server).get("/api/p").accept(ContentType.JSON.toString());
     }
 
     @Test
