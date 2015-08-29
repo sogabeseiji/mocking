@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 
@@ -45,7 +46,7 @@ public abstract class Action {
         return this.path.matches(path);
     }
 
-    @Nonnull
+    @Nullable
     public HeaderAction getHeaderAction(String path, String headerName) {
         List<Action> actions = server.getActions();
         for (Action action : actions) {
@@ -59,8 +60,8 @@ public abstract class Action {
         return null;
     }
 
-    public abstract @Nonnull
-    HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
+    @Nonnull
+    public abstract HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 
     public ToStringHelper objects() {
         return MoreObjects.toStringHelper(this).add("path", path);
@@ -121,7 +122,7 @@ public abstract class Action {
         }
 
         @Nonnull
-        public  String getValue() {
+        public String getValue() {
             return value;
         }
 
