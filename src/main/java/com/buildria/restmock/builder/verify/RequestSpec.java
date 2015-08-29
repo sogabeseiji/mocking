@@ -26,7 +26,7 @@ public class RequestSpec {
         calls = Calls.filter(calls, new Header(name, value));
         if (calls.isEmpty()) {
             throw new AssertionError(
-                    String.format("No calls found. header: {} value: {}", name, value.toString()));
+                    String.format("No calls found. header: %s value: %s", name, value.toString()));
         }
         return this;
     }
@@ -71,7 +71,7 @@ public class RequestSpec {
         calls = Calls.filter(calls, new Parameter(key, values));
         if (calls.isEmpty()) {
             throw new AssertionError(
-                    String.format("No calls found. key: {} value: {}", key, Joiner.on(", ").join(values)));
+                    String.format("No calls found. key: %s value: %s", key, Joiner.on(", ").join(values)));
         }
         return this;
     }
