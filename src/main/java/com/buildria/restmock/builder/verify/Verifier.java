@@ -20,7 +20,7 @@ public abstract class Verifier implements Predicate<Call> {
 
         private final String method;
 
-        public Method(String uri, String method) {
+        public Method(String method, String uri) {
             Objects.requireNonNull(uri);
             Objects.requireNonNull(method);
             this.uri = uri;
