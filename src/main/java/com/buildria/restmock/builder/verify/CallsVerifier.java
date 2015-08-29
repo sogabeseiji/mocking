@@ -1,7 +1,7 @@
 package com.buildria.restmock.builder.verify;
 
-import com.buildria.restmock.Predicate;
 import com.buildria.restmock.stub.Call;
+import com.google.common.base.Predicate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

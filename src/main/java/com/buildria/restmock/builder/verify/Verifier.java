@@ -1,11 +1,13 @@
 package com.buildria.restmock.builder.verify;
 
-import com.buildria.restmock.Predicate;
 import com.buildria.restmock.stub.Call;
+import com.google.common.base.Predicate;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 
 // CHECKSTYLE:OFF
 public abstract class Verifier implements Predicate<Call> {
@@ -64,4 +66,36 @@ public abstract class Verifier implements Predicate<Call> {
 
     }
 
+    public static class Parameter extends Verifier {
+
+        private final String key;
+
+        private final String[] values;
+
+        public Parameter(String key, String value) {
+            this(key, new String[] { value });
+        }
+
+        public Parameter(String key, String... values) {
+            Objects.requireNonNull(key);
+            Objects.requireNonNull(values);
+            this.key = key;
+            this.values = values;
+        }
+
+        @Override
+        public boolean apply(Call call) {
+            Objects.requireNonNull(call);
+            Map<String, List<String>> params = call.getParameters();
+            List<String> vals = params.get(key);
+            if (vals == null) {
+                return false;
+            }
+
+            return Matchers.containsInAnyOrder(vals.toArray()).matches(values);
+        }
+
+    }
+
 }
+
