@@ -6,13 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class CallsVerifier {
+public class Calls {
 
-    private CallsVerifier() {
+    private Calls() {
         super();
     }
 
-    public static List<Call> verify(List<Call> calls, Predicate<Call> predicates) {
+    public static List<Call> filter(List<Call> calls, Predicate<Call> predicates) {
         Objects.requireNonNull(calls);
         Objects.requireNonNull(predicates);
 
@@ -21,10 +21,6 @@ public class CallsVerifier {
             if (predicates.apply(call)) {
                 answers.add(call);
             }
-        }
-
-        if (answers.isEmpty()) {
-            throw new AssertionError("No call found.");
         }
 
         return answers;

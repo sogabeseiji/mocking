@@ -3,6 +3,7 @@ package com.buildria.restmock.builder.verify;
 import com.buildria.restmock.builder.verify.Verifier.Header;
 import com.buildria.restmock.builder.verify.Verifier.Parameter;
 import com.buildria.restmock.stub.Call;
+import com.google.common.base.Joiner;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
 import java.util.List;
@@ -12,7 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RequestSpec {
 
-    private  List<Call> calls;
+    private List<Call> calls;
 
     private final String path;
 
@@ -22,7 +23,11 @@ public class RequestSpec {
     }
 
     public RequestSpec header(String name, Matcher<?> value) {
-        this.calls = CallsVerifier.verify(calls, new Header(name, value));
+        calls = Calls.filter(calls, new Header(name, value));
+        if (calls.isEmpty()) {
+            throw new AssertionError(
+                    String.format("No calls found. header: {} value: {}", name, value.toString()));
+        }
         return this;
     }
 
@@ -63,7 +68,11 @@ public class RequestSpec {
     }
 
     public RequestSpec parameters(String key, String[] values) {
-        this.calls = CallsVerifier.verify(calls, new Parameter(key, values));
+        calls = Calls.filter(calls, new Parameter(key, values));
+        if (calls.isEmpty()) {
+            throw new AssertionError(
+                    String.format("No calls found. key: {} value: {}", key, Joiner.on(", ").join(values)));
+        }
         return this;
     }
 
