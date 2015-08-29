@@ -4,6 +4,9 @@ import com.buildria.restmock.builder.verify.Verifier.Header;
 import com.buildria.restmock.stub.Call;
 import com.google.common.net.MediaType;
 import java.util.List;
+import org.hamcrest.Matcher;
+
+import static org.hamcrest.Matchers.equalTo;
 
 public class RequestSpec {
 
@@ -16,13 +19,21 @@ public class RequestSpec {
         this.uri = uri;
     }
 
-    public RequestSpec header(String name, String value) {
+    public RequestSpec header(String name, Matcher<?> value) {
         List<Call> answers = CallsVerifier.verify(calls, new Header(name, value));
         return new RequestSpec(answers, uri);
     }
 
+    public RequestSpec header(String name, String value) {
+        return header(name, equalTo(value));
+    }
+
     public RequestSpec header(String name, MediaType value) {
         return header(name, value.toString());
+    }
+
+    public RequestSpec contentType(Matcher<?> value) {
+        return header("Cotent-Type", value);
     }
 
     public RequestSpec contentType(String value) {
@@ -31,6 +42,10 @@ public class RequestSpec {
 
     public RequestSpec contentType(MediaType value) {
         return header("Cotent-Type", value);
+    }
+
+    public RequestSpec accept(Matcher<?> value) {
+        return header("Accept", value);
     }
 
     public RequestSpec accept(String value) {

@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -61,7 +62,7 @@ public class StubSpecTest {
 
         given().
                 log().all().
-                accept(ContentType.JSON.toString()).
+                accept(ContentType.JSON).
          when().
                 get("/api/p").
          then().
@@ -71,7 +72,8 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        verify(server).get("/api/p").accept(ContentType.JSON.toString());
+        verify(server).get("/api/p").
+                accept(Matchers.containsString("application/json"));
     }
 
     @Test

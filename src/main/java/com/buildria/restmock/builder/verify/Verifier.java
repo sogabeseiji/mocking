@@ -5,6 +5,7 @@ import com.buildria.restmock.stub.Call;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import org.hamcrest.Matcher;
 
 // CHECKSTYLE:OFF
 public abstract class Verifier implements Predicate<Call> {
@@ -38,9 +39,9 @@ public abstract class Verifier implements Predicate<Call> {
 
         private final String name;
 
-        private final String value;
+        private final Matcher<?> value;
 
-        public Header(String name, String value) {
+        public Header(String name, Matcher<?> value) {
             this.name = Objects.requireNonNull(name);
             this.value = Objects.requireNonNull(value);
         }
@@ -52,7 +53,7 @@ public abstract class Verifier implements Predicate<Call> {
             for (Entry<String, String> entry : headers.entrySet()) {
                 String n = entry.getKey();
                 String v = entry.getValue();
-                if (name.equalsIgnoreCase(n) && value.equalsIgnoreCase(v)) {
+                if (name.equalsIgnoreCase(n) && value.matches(v)) {
                     return true;
                 }
             }
