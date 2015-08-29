@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 
@@ -37,7 +36,8 @@ public abstract class Action {
         this.path = Objects.requireNonNull(path);
     }
 
-    public @Nonnull Matcher<?> getPath() {
+    @Nonnull
+    public Matcher<?> getPath() {
         return path;
     }
 
@@ -45,7 +45,8 @@ public abstract class Action {
         return this.path.matches(path);
     }
 
-    public @Nullable HeaderAction getHeaderAction(String path, String headerName) {
+    @Nonnull
+    public HeaderAction getHeaderAction(String path, String headerName) {
         List<Action> actions = server.getActions();
         for (Action action : actions) {
             if (action.isApplicable(path) && action instanceof HeaderAction) {
@@ -58,7 +59,8 @@ public abstract class Action {
         return null;
     }
 
-    public abstract @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
+    public abstract @Nonnull
+    HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 
     public ToStringHelper objects() {
         return MoreObjects.toStringHelper(this).add("path", path);
@@ -81,8 +83,9 @@ public abstract class Action {
             this.code = code;
         }
 
+        @Nonnull
         @Override
-        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             res.setStatus(HttpResponseStatus.valueOf(code));
@@ -104,23 +107,27 @@ public abstract class Action {
 
         private final String value;
 
-        public @Nonnull HeaderAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+        @Nonnull
+        public HeaderAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
                 @Nonnull String header, @Nonnull String value) {
             super(server, path);
             this.header = Objects.requireNonNull(header);
             this.value = Objects.requireNonNull(value);
         }
 
-        public @Nonnull String getHeader() {
+        @Nonnull
+        public String getHeader() {
             return header;
         }
 
-        public @Nonnull String getValue() {
+        @Nonnull
+        public  String getValue() {
             return value;
         }
 
+        @Nonnull
         @Override
-        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             res.headers().add(header, value);
@@ -150,8 +157,9 @@ public abstract class Action {
             return content;
         }
 
+        @Nonnull
         @Override
-        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
@@ -189,8 +197,9 @@ public abstract class Action {
             return content;
         }
 
+        @Nonnull
         @Override
-        public @Nonnull HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
+        public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
             HeaderAction contentType = getHeaderAction(req.getUri(), "Content-Type");

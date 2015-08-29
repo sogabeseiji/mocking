@@ -52,23 +52,28 @@ public class Call {
         return call;
     }
 
-    public @Nonnull String getPath() {
+    @Nonnull
+    public String getPath() {
         return path;
     }
 
-    public @Nonnull String getMethod() {
+    @Nonnull
+    public String getMethod() {
         return method;
     }
 
-    public @Nonnull Map<String, String> getHeaders() {
+    @Nonnull
+    public Map<String, String> getHeaders() {
         return headers;
     }
 
-    public @Nonnull Map<String, List<String>> getParameters() {
+    @Nonnull
+    public Map<String, List<String>> getParameters() {
         return parameters;
     }
 
-    public @Nullable byte[] getBody() {
+    @Nullable
+    public byte[] getBody() {
         return body;
     }
 
