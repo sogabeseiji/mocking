@@ -1,6 +1,5 @@
 package com.buildria.restmock;
 
-import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
@@ -22,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
 import static com.buildria.restmock.builder.verify.MethodSpec.verify;
+import static com.buildria.restmock.http.RM_HttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -55,7 +55,7 @@ public class StubSpecTest {
 
         when(server).path("/api/p").
          then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
                 contentType(MediaType.JSON_UTF_8);
 
@@ -83,14 +83,14 @@ public class StubSpecTest {
 
         when(server).path("/api/p").
         then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
                 header("X-header", "restmock1").
                 contentType(MediaType.JSON_UTF_8);
 
         when(server).path("/api/q").
         then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 rawBody(json).
                 header("X-header", "restmock2").
                 contentType(MediaType.JSON_UTF_8);
@@ -102,7 +102,7 @@ public class StubSpecTest {
                 post("/api/p").
         then().
                 log().all().
-                statusCode(200).
+                statusCode(SC_200_OK).
                 contentType(ContentType.JSON).
                 header("X-header", "restmock1").
                 body("name", is("hoge")).
@@ -115,7 +115,7 @@ public class StubSpecTest {
                 get("/api/q").
          then().
                 log().all().
-                statusCode(200).
+                statusCode(SC_200_OK).
                 contentType(ContentType.JSON).
                 header("X-header", "restmock2").
                 body("name", is("hoge")).
@@ -130,7 +130,7 @@ public class StubSpecTest {
 
         when(server).path("/api/p").
         then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 rawBody(json).
                 contentType(MediaType.JSON_UTF_8);
 
@@ -151,7 +151,7 @@ public class StubSpecTest {
     public void testResourceBody() throws Exception {
         when(server).path("/api/p").
         then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 rawBody(Resources.getResource("com/buildria/restmock/person.json")).
                 contentType(MediaType.JSON_UTF_8);
 
@@ -174,7 +174,7 @@ public class StubSpecTest {
 
         when(server).path("/api/p").
         then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 body(p).
                 contentType(MediaType.JSON_UTF_8);
 
@@ -204,7 +204,7 @@ public class StubSpecTest {
 
         when(server).path("/api/p").
         then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 body(p).
                 contentType(MediaType.XML_UTF_8);
 
@@ -229,7 +229,7 @@ public class StubSpecTest {
 
         when(server).path("/api/p").
          then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
                 contentType(MediaType.JSON_UTF_8);
 
@@ -259,7 +259,7 @@ public class StubSpecTest {
 
         when(server).path("/api/p").
          then().
-                statusCode(HttpStatus.SC_200_OK).
+                statusCode(SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
                 contentType(MediaType.JSON_UTF_8);
 

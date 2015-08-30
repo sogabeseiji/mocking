@@ -4,8 +4,6 @@ import com.buildria.restmock.builder.stub.Action.BodyAction;
 import com.buildria.restmock.builder.stub.Action.HeaderAction;
 import com.buildria.restmock.builder.stub.Action.RawBodyAction;
 import com.buildria.restmock.builder.stub.Action.StatusCodeAction;
-import com.buildria.restmock.http.HttpHeader;
-import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
@@ -14,6 +12,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.hamcrest.Matcher;
+
+import static com.buildria.restmock.http.RM_HttpHeaders.CONTENT_TYPE;
 
 /**
  *
@@ -35,16 +35,12 @@ public class ResponseSpec {
         return this;
     }
 
-    public ResponseSpec statusCode(HttpStatus status) {
-        return statusCode(status.getCode());
-    }
-
     public ResponseSpec contentType(String contentType) {
-        return header(HttpHeader.CONTENT_TYPE, contentType);
+        return header(CONTENT_TYPE, contentType);
     }
 
     public ResponseSpec contentType(MediaType contentType) {
-        return header(HttpHeader.CONTENT_TYPE, contentType.toString());
+        return header(CONTENT_TYPE, contentType.toString());
     }
 
     public ResponseSpec header(String name, String value) {

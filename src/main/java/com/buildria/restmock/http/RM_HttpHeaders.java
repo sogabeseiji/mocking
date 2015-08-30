@@ -32,9 +32,9 @@ package com.buildria.restmock.http;
  *
  * @since 4.1
  */
-public final class HttpHeader {
+public final class RM_HttpHeaders {
 
-    private HttpHeader() {
+    private RM_HttpHeaders() {
         super();
     }
 

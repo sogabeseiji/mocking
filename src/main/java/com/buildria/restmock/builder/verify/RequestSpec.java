@@ -2,13 +2,14 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.builder.verify.Verifier.Header;
 import com.buildria.restmock.builder.verify.Verifier.Parameter;
-import com.buildria.restmock.http.HttpHeader;
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Joiner;
 import com.google.common.net.MediaType;
 import java.util.List;
 import org.hamcrest.Matcher;
 
+import static com.buildria.restmock.http.RM_HttpHeaders.ACCEPT;
+import static com.buildria.restmock.http.RM_HttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.equalTo;
 
 public class RequestSpec {
@@ -41,27 +42,27 @@ public class RequestSpec {
     }
 
     public RequestSpec contentType(Matcher<?> value) {
-        return header(HttpHeader.CONTENT_TYPE, value);
+        return header(CONTENT_TYPE, value);
     }
 
     public RequestSpec contentType(String value) {
-        return header(HttpHeader.CONTENT_TYPE, value);
+        return header(CONTENT_TYPE, value);
     }
 
     public RequestSpec contentType(MediaType value) {
-        return header(HttpHeader.CONTENT_TYPE, value);
+        return header(CONTENT_TYPE, value);
     }
 
     public RequestSpec accept(Matcher<?> value) {
-        return header(HttpHeader.ACCEPT, value);
+        return header(ACCEPT, value);
     }
 
     public RequestSpec accept(String value) {
-        return header(HttpHeader.ACCEPT, value);
+        return header(ACCEPT, value);
     }
 
     public RequestSpec accept(MediaType value) {
-        return header(HttpHeader.ACCEPT, value);
+        return header(ACCEPT, value);
     }
 
     public RequestSpec parameter(String key, String value) {

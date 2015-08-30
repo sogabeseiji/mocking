@@ -1,6 +1,5 @@
 package com.buildria.restmock;
 
-import com.buildria.restmock.http.HttpStatus;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.jayway.restassured.RestAssured;
 import javax.xml.bind.annotation.XmlElement;
@@ -13,6 +12,7 @@ import org.junit.Test;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
 import static com.buildria.restmock.builder.verify.MethodSpec.verify;
+import static com.buildria.restmock.http.RM_HttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
@@ -44,8 +44,8 @@ public class SampleCodeTest {
         // Restmock
         when(server).
                 path("/api/p").
-                then().
-                statusCode(HttpStatus.SC_200_OK).
+        then().
+                statusCode(SC_200_OK).
                 contentType("application/json").
                 body(person);
 
@@ -53,11 +53,11 @@ public class SampleCodeTest {
         given().
                 log().all().
                 accept("application/json").
-                when().
+        when().
                 get("/api/p").
-                then().
+        then().
                 log().all().
-                statusCode(200).
+                statusCode(SC_200_OK).
                 contentType("application/json").
                 body("name", is("Bob")).
                 body("old", is(20));

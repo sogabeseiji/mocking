@@ -47,8 +47,8 @@ public class SampleCodeTest {
         // Restmock
         when(server).
                 path("/api/p").
-         then().
-                statusCode(HttpStatus.SC_200_OK).
+        then().
+                statusCode(SC_200_OK).
                 contentType("application/json").
                 body(person);
 
@@ -56,11 +56,11 @@ public class SampleCodeTest {
         given().
                 log().all().
                 accept("application/json").
-         when().
+        when().
                 get("/api/p").
-         then().
+        then().
                 log().all().
-                statusCode(200).
+                statusCode(SC_200_OK).
                 contentType("application/json").
                 body("name", is("Bob")).
                 body("old", is(20));
