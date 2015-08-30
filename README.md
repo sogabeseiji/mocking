@@ -15,10 +15,6 @@ Restmock provides a DSL to:
 
 
 ``` java
-package com.buildria.restmock;
-
-(snip)
-
 public class SampleCodeTest {
 
     private StubHttpServer server;
@@ -47,7 +43,7 @@ public class SampleCodeTest {
         // Restmock
         when(server).
                 path("/api/p").
-         then().
+        then().
                 statusCode(HttpStatus.SC_200_OK).
                 contentType("application/json").
                 body(person);
@@ -56,9 +52,9 @@ public class SampleCodeTest {
         given().
                 log().all().
                 accept("application/json").
-         when().
+        when().
                 get("/api/p").
-         then().
+        then().
                 log().all().
                 statusCode(200).
                 contentType("application/json").
