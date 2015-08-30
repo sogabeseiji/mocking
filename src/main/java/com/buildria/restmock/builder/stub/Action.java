@@ -1,9 +1,9 @@
 package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.RestMockException;
-import com.buildria.restmock.serialize.ObjectSerializer;
-import com.buildria.restmock.serialize.ObjectSerializerContext;
-import com.buildria.restmock.serialize.ObjectSerializerFactory;
+import com.buildria.restmock.serializer.ObjectSerializer;
+import com.buildria.restmock.serializer.ObjectSerializerContext;
+import com.buildria.restmock.serializer.ObjectSerializerFactory;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.MoreObjects.ToStringHelper;

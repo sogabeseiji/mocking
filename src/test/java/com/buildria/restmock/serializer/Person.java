@@ -1,4 +1,4 @@
-package com.buildria.restmock.serialize;
+package com.buildria.restmock.serializer;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

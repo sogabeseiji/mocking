@@ -1,4 +1,4 @@
-package com.buildria.restmock.serialize;
+package com.buildria.restmock.serializer;
 
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;

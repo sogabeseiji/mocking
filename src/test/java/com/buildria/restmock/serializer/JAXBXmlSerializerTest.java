@@ -1,5 +1,7 @@
-package com.buildria.restmock.serialize;
+package com.buildria.restmock.serializer;
 
+import com.buildria.restmock.serializer.ObjectSerializerContext;
+import com.buildria.restmock.serializer.JAXBXmlSerializer;
 import com.buildria.restmock.TestNameRule;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.xml.XmlPath;

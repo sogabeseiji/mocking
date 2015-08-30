@@ -1,4 +1,4 @@
-package com.buildria.restmock.serialize;
+package com.buildria.restmock.serializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

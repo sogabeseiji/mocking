@@ -1,13 +1,13 @@
-package com.buildria.restmock.serialize;
+package com.buildria.restmock.serializer;
 
 import com.buildria.restmock.RestMockException;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import java.util.Objects;
 
-import static com.buildria.restmock.serialize.ObjectSerializer.GSON;
-import static com.buildria.restmock.serialize.ObjectSerializer.JACKSON;
-import static com.buildria.restmock.serialize.ObjectSerializer.JAXB;
+import static com.buildria.restmock.serializer.ObjectSerializer.GSON;
+import static com.buildria.restmock.serializer.ObjectSerializer.JACKSON;
+import static com.buildria.restmock.serializer.ObjectSerializer.JAXB;
 
 public class ObjectSerializerContext {
 

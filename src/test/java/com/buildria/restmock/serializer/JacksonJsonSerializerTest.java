@@ -1,5 +1,7 @@
-package com.buildria.restmock.serialize;
+package com.buildria.restmock.serializer;
 
+import com.buildria.restmock.serializer.ObjectSerializerContext;
+import com.buildria.restmock.serializer.JacksonJsonSerializer;
 import com.buildria.restmock.TestNameRule;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.json.JsonPath;
@@ -12,20 +14,20 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 /**
- * Test for GsonJsonSerializer.
+ * Test for JacksonJsonSerializzer.
  *
  * @author Seiji Sogabe
  */
-public class GsonJsonSerializerTest {
+public class JacksonJsonSerializerTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private GsonJsonSerializer target;
+    private JacksonJsonSerializer target;
 
     @Before
     public void setUp() {
-        target = new GsonJsonSerializer();
+        target = new JacksonJsonSerializer();
     }
 
     @Test(expected = NullPointerException.class)
@@ -60,6 +62,5 @@ public class GsonJsonSerializerTest {
         assertThat(js.getString("name"), is("\u3042\u3044\u3046\u3048\u304a"));
         assertThat(js.getInt("old"), is(20));
     }
-
 
 }

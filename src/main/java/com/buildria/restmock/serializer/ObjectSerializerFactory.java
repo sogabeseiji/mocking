@@ -1,4 +1,4 @@
-package com.buildria.restmock.serialize;
+package com.buildria.restmock.serializer;
 
 import java.util.Objects;
 
