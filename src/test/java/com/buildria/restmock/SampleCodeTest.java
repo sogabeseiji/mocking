@@ -1,23 +1,20 @@
-# Restmock
-
-[![Build Status](http://ci.buildria.com/job/restmock/badge/icon)](http://ci.buildria.com/job/restmock/)
-
-Restmock is a test framework  which is inspired by [Restito](https://github.com/mkotsur/restito).
-
-Restmock provides a DSL to:
-
- * Mimic rest server behavior
- * Record HTTP calls to the server
- * Perform verification against happened calls (TODO)
-
-
-## Quick example
-
-
-``` java
 package com.buildria.restmock;
 
-(snip)
+import com.buildria.restmock.http.HttpStatus;
+import com.buildria.restmock.stub.StubHttpServer;
+import com.jayway.restassured.RestAssured;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import static com.buildria.restmock.builder.stub.RequestSpec.when;
+import static com.buildria.restmock.builder.verify.MethodSpec.verify;
+import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 
 public class SampleCodeTest {
 
@@ -47,7 +44,7 @@ public class SampleCodeTest {
         // Restmock
         when(server).
                 path("/api/p").
-         then().
+                then().
                 statusCode(HttpStatus.SC_200_OK).
                 contentType("application/json").
                 body(person);
@@ -56,9 +53,9 @@ public class SampleCodeTest {
         given().
                 log().all().
                 accept("application/json").
-         when().
+                when().
                 get("/api/p").
-         then().
+                then().
                 log().all().
                 statusCode(200).
                 contentType("application/json").
@@ -71,6 +68,32 @@ public class SampleCodeTest {
                 accept("application/json");
     }
 
-(snip)
+    @XmlRootElement(name = "person")
+    @XmlType
+    private static class Person {
+
+        private String name;
+
+        private int old;
+
+        public Person() {
+            //
+        }
+
+        public Person(String name, int old) {
+            this.name = name;
+            this.old = old;
+        }
+
+        @XmlElement
+        public String getName() {
+            return name;
+        }
+
+        @XmlElement
+        public int getOld() {
+            return old;
+        }
+
+    }
 }
-```
