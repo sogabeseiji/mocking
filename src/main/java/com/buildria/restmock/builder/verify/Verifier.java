@@ -1,36 +1,56 @@
 package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.stub.Call;
+import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.Predicate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
 // CHECKSTYLE:OFF
 public abstract class Verifier implements Predicate<Call> {
 // CHECKSTYLE:ON
 
+    protected final StubHttpServer server;
+
+    protected final String path;
+
+    public Verifier(@Nonnull StubHttpServer server, @Nonnull String path) {
+        Objects.requireNonNull(server);
+        Objects.requireNonNull(path);
+        this.server = server;
+        this.path = path;
+    }
+
+    @Nonnull
+    public StubHttpServer getServer() {
+        return server;
+    }
+
+    @Nonnull
+    public String getPath() {
+        return path;
+    }
+
     @Override
     public abstract boolean apply(Call call);
 
     public static class Method extends Verifier {
 
-        private final String path;
-
         private final String method;
 
-        public Method(String method, String path) {
-            Objects.requireNonNull(path);
-            Objects.requireNonNull(method);
-            this.path = path;
-            this.method = method;
+        public Method(@Nonnull StubHttpServer server,
+                @Nonnull String path, @Nonnull String method) {
+            super(server, path);
+            this.method = Objects.requireNonNull(method);
         }
 
         @Override
-        public boolean apply(Call call) {
+        public boolean apply(@Nonnull Call call) {
             Objects.requireNonNull(call);
             return call.getPath().equalsIgnoreCase(path)
                     && method.equalsIgnoreCase(call.getMethod());
@@ -44,14 +64,15 @@ public abstract class Verifier implements Predicate<Call> {
 
         private final Matcher<?> value;
 
-        public Header(String name, Matcher<?> value) {
+        public Header(@Nonnull StubHttpServer server,  @Nonnull String path,
+                @Nonnull String name, @Nonnull Matcher<?> value) {
+            super(server, path);
             this.name = Objects.requireNonNull(name);
             this.value = Objects.requireNonNull(value);
         }
 
-        // TODO
         @Override
-        public boolean apply(Call call) {
+        public boolean apply(@Nonnull Call call) {
             Objects.requireNonNull(call);
             Map<String, String> headers = call.getHeaders();
             for (Entry<String, String> entry : headers.entrySet()) {
@@ -72,14 +93,16 @@ public abstract class Verifier implements Predicate<Call> {
 
         private final String[] values;
 
-        public Parameter(String key, String... values) {
+        public Parameter(@Nonnull StubHttpServer server, @Nonnull String path,
+                String key, @Nonnull String[] values) {
+            super(server, path);
             this.key = Objects.requireNonNull(key);
             this.values = Objects.requireNonNull(values);
             Arrays.sort(this.values);
         }
 
         @Override
-        public boolean apply(Call call) {
+        public boolean apply(@Nonnull Call call) {
             Objects.requireNonNull(call);
             Map<String, List<String>> params = call.getParameters();
             List<String> vals = params.get(key);
@@ -95,4 +118,3 @@ public abstract class Verifier implements Predicate<Call> {
     }
 
 }
-

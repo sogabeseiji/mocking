@@ -3,6 +3,7 @@ package com.buildria.restmock.builder.verify;
 import com.buildria.restmock.builder.verify.Verifier.Header;
 import com.buildria.restmock.builder.verify.Verifier.Parameter;
 import com.buildria.restmock.stub.Call;
+import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.Joiner;
 import com.google.common.net.MediaType;
 import java.util.List;
@@ -14,18 +15,21 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RequestSpec {
 
+    private final StubHttpServer server;
+
     private List<Call> calls;
 
     @SuppressWarnings("PMD.UnusedPrivateField")
     private final String path;
 
-    RequestSpec(List<Call> calls, String path) {
+    RequestSpec(StubHttpServer server, List<Call> calls, String path) {
+        this.server = server;
         this.calls = calls;
         this.path = path;
     }
 
     public RequestSpec header(String name, Matcher<?> value) {
-        calls = Calls.filter(calls, new Header(name, value));
+        calls = Calls.filter(calls, new Header(server, path, name, value));
         if (calls.isEmpty()) {
             throw new AssertionError(
                     String.format("No calls found. header: %s value: %s", name, value.toString()));
@@ -70,7 +74,7 @@ public class RequestSpec {
     }
 
     public RequestSpec parameters(String key, String[] values) {
-        calls = Calls.filter(calls, new Parameter(key, values));
+        calls = Calls.filter(calls, new Parameter(server, path, key, values));
         if (calls.isEmpty()) {
             throw new AssertionError(
                     String.format("No calls found. key: %s value: %s", key, Joiner.on(", ").join(values)));

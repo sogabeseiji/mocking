@@ -3,6 +3,7 @@ package com.buildria.restmock.builder.verify;
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.verify.Verifier.Method;
 import com.buildria.restmock.stub.Call;
+import com.buildria.restmock.stub.StubHttpServer;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,23 +21,26 @@ public class MethodTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorMethodNull() throws Exception {
-        String method = null;
+        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
-        target = new Method(method, path);
+        String method = null;
+        target = new Method(server, path, method);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorUriNull() throws Exception {
-        String method = "get";
+        StubHttpServer server = new StubHttpServer();
         String path = null;
-        target = new Method(method, path);
+        String method = "get";
+        target = new Method(server, path, method);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
-        String method = "get";
+        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
-        target = new Method(method, path);
+        String method = "get";
+        target = new Method(server, path, method);
 
         Call call = null;
         target.apply(call);
@@ -44,9 +48,10 @@ public class MethodTest {
 
     @Test
     public void testApplyTrue() throws Exception {
-        String method = "get";
+        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
-        target = new Method(method, path);
+        String method = "get";
+        target = new Method(server, path, method);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("get");
@@ -59,9 +64,10 @@ public class MethodTest {
 
     @Test
     public void testApplyMethodUnmatch() throws Exception {
-        String method = "get";
+        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
-        target = new Method(method, path);
+        String method = "get";
+        target = new Method(server, path, method);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("post");
@@ -74,9 +80,10 @@ public class MethodTest {
 
     @Test
     public void testApplyUriUnmatch() throws Exception {
-        String method = "get";
+        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
-        target = new Method(method, path);
+        String method = "get";
+        target = new Method(server, path, method);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("get");

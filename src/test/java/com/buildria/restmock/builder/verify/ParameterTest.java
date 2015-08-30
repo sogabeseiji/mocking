@@ -3,6 +3,7 @@ package com.buildria.restmock.builder.verify;
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.verify.Verifier.Parameter;
 import com.buildria.restmock.stub.Call;
+import com.buildria.restmock.stub.StubHttpServer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -24,23 +25,29 @@ public class ParameterTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorKeyNull() throws Exception {
+        StubHttpServer server = new StubHttpServer();
+        String path = "/api/p";
         String key = null;
-        String values = "values";
-        target = new Parameter(key, values);
+        String[] values = new String[] {"values"};
+        target = new Parameter(server, path, key, values);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValuesNull() throws Exception {
+        StubHttpServer server = new StubHttpServer();
+        String path = "/api/p";
         String key = "key";
         String[] values = null;
-        target = new Parameter(key, values);
+        target = new Parameter(server, path, key, values);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
+        StubHttpServer server = new StubHttpServer();
+        String path = "/api/p";
         String key = "key";
-        String values = "values";
-        target = new Parameter(key, values);
+        String[] values = new String[] {"values"};
+        target = new Parameter(server, path, key, values);
 
         Call call = null;
         target.apply(call);
@@ -48,9 +55,11 @@ public class ParameterTest {
 
     @Test
     public void testApplyOneParams() throws Exception {
+        StubHttpServer server = new StubHttpServer();
+        String path = "/api/p";
         String key = "key";
         String[] values = new String[]{"value1"};
-        target = new Parameter(key, values);
+        target = new Parameter(server, path, key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -65,9 +74,11 @@ public class ParameterTest {
 
     @Test
     public void testApplyTwoParams() throws Exception {
+        StubHttpServer server = new StubHttpServer();
+        String path = "/api/p";
         String key = "key";
         String[] values = new String[]{"value1", "value2"};
-        target = new Parameter(key, values);
+        target = new Parameter(server, path, key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -82,9 +93,11 @@ public class ParameterTest {
 
     @Test
     public void testApplyFalse() throws Exception {
+        StubHttpServer server = new StubHttpServer();
+        String path = "/api/p";
         String key = "key";
         String[] values = new String[]{"value1"};
-        target = new Parameter(key, values);
+        target = new Parameter(server, path, key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
