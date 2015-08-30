@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,7 @@ public class Call {
 
     private final Map<String, List<String>> parameters = new ConcurrentHashMap<>();
 
-    private byte[] body;
+    private byte[] body = new byte[]{};
 
     private Call() {
         //
@@ -72,7 +71,7 @@ public class Call {
         return parameters;
     }
 
-    @Nullable
+    @Nonnull
     public byte[] getBody() {
         return body;
     }
