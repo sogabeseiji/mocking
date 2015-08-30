@@ -15,10 +15,6 @@ Restmock provides a DSL to:
 
 
 ``` java
-package com.buildria.restmock;
-
-(snip)
-
 public class SampleCodeTest {
 
     private StubHttpServer server;
