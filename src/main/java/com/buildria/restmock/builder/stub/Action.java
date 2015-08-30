@@ -23,8 +23,8 @@ import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
 
-import static com.buildria.restmock.http.RM_HttpHeaders.CONTENT_LENGTH;
-import static com.buildria.restmock.http.RM_HttpHeaders.CONTENT_TYPE;
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_LENGTH;
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 
 // CHECKSTYLE:OFF
 public abstract class Action {

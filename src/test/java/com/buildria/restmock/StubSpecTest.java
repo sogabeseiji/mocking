@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.buildria.restmock.builder.stub.RequestSpec.when;
 import static com.buildria.restmock.builder.verify.MethodSpec.verify;
-import static com.buildria.restmock.http.RM_HttpStatus.SC_200_OK;
+import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;

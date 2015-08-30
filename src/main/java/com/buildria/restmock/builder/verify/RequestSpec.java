@@ -9,8 +9,8 @@ import com.google.common.net.MediaType;
 import java.util.List;
 import org.hamcrest.Matcher;
 
-import static com.buildria.restmock.http.RM_HttpHeaders.ACCEPT;
-import static com.buildria.restmock.http.RM_HttpHeaders.CONTENT_TYPE;
+import static com.buildria.restmock.http.RMHttpHeaders.ACCEPT;
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.equalTo;
 
 public class RequestSpec {

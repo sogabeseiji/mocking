@@ -2,7 +2,9 @@ package com.buildria.restmock.serialize;
 
 import java.util.Objects;
 
+// CHECKSTYLE:OFF
 public class ObjectSerializerFactory {
+// CHECKSTYLE:ON
 
     private ObjectSerializerFactory() {
         super();

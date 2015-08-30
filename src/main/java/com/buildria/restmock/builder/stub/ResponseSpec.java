@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.hamcrest.Matcher;
 
-import static com.buildria.restmock.http.RM_HttpHeaders.CONTENT_TYPE;
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 
 /**
  *

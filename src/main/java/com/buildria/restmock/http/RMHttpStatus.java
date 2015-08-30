@@ -1,6 +1,6 @@
 package com.buildria.restmock.http;
 
-public final class RM_HttpStatus {
+public final class RMHttpStatus {
 
     // 1xx
     public static final int SC_100_CONTINUE = 100;
@@ -48,7 +48,7 @@ public final class RM_HttpStatus {
     public static final int SC_504_GATEWAY_TIMEOUT = 504 ;
     public static final int SC_505_HTTP_VERSION_NOT_SUPPORTED = 505;
 
-    private RM_HttpStatus() {
+    private RMHttpStatus() {
         super();
     }
 

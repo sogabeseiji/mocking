@@ -2,7 +2,7 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.verify.Verifier.Header;
-import com.buildria.restmock.http.RM_HttpHeaders;
+import com.buildria.restmock.http.RMHttpHeaders;
 import com.buildria.restmock.stub.Call;
 import com.buildria.restmock.stub.StubHttpServer;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.restmock.http.RM_HttpHeaders.CONTENT_TYPE;
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -66,7 +66,7 @@ public class HeaderTest {
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();
-        headers.put(RM_HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.put(RMHttpHeaders.CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);
