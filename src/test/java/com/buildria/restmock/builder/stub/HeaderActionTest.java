@@ -2,7 +2,6 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.stub.Action.HeaderAction;
-import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpResponse;
@@ -29,60 +28,46 @@ public class HeaderActionTest {
     private HeaderAction target;
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorServerNull() throws Exception {
-        StubHttpServer server = null;
-        Matcher<?> path = equalTo("/api/p");
-        String header = "Content-Type";
-        String value = "application/xml";
-        Action action = new HeaderAction(server, path, header, value);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = null;
         String header = "Content-Type";
         String value = "application/xml";
-        Action action = new HeaderAction(server, path, header, value);
+        Action action = new HeaderAction(path, header, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorHeaderNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         String header = null;
         String value = "application/xml";
-        Action action = new HeaderAction(server, path, header, value);
+        Action action = new HeaderAction(path, header, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValueNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         String header = "Content-Type";
         String value = null;
-        Action action = new HeaderAction(server, path, header, value);
+        Action action = new HeaderAction(path, header, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         String header = "Content-Type";
         String value = "application/xml";
 
-        Action action = new HeaderAction(server, path, header, value);
+        Action action = new HeaderAction(path, header, value);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         String header = "Content-Type";
         String value = "application/xml";
 
-        Action action = new HeaderAction(server, path, header, value);
+        Action action = new HeaderAction(path, header, value);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -93,12 +78,11 @@ public class HeaderActionTest {
 
     @Test
     public void testObjects() {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         String header = "Content-Type";
         String value = "application/xml";
 
-        Action action = new HeaderAction(server, path, header, value);
+        Action action = new HeaderAction(path, header, value);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());

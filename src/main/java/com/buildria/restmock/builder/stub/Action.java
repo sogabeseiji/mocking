@@ -4,7 +4,6 @@ import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.serializer.ObjectSerializer;
 import com.buildria.restmock.serializer.ObjectSerializerContext;
 import com.buildria.restmock.serializer.ObjectSerializerFactory;
-import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.buffer.ByteBuf;
@@ -32,10 +31,7 @@ public abstract class Action {
 
     protected final Matcher<?> path;
 
-    protected final StubHttpServer server;
-
-    public Action(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path) {
-        this.server = Objects.requireNonNull(server);
+    public Action(@Nonnull Matcher<?> path) {
         this.path = Objects.requireNonNull(path);
     }
 
@@ -49,8 +45,7 @@ public abstract class Action {
     }
 
     @Nullable
-    public HeaderAction getHeaderAction(String path, String headerName) {
-        List<Action> actions = server.getActions();
+    public HeaderAction getHeaderAction(String path, String headerName, List<Action> actions) {
         for (Action action : actions) {
             if (action.isApplicable(path) && action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;
@@ -81,8 +76,8 @@ public abstract class Action {
 
         private final int code;
 
-        public StatusCodeAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path, int code) {
-            super(server, path);
+        public StatusCodeAction(@Nonnull Matcher<?> path, int code) {
+            super(path);
             this.code = code;
         }
 
@@ -111,9 +106,9 @@ public abstract class Action {
         private final String value;
 
         @Nonnull
-        public HeaderAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
+        public HeaderAction(@Nonnull Matcher<?> path,
                 @Nonnull String header, @Nonnull String value) {
-            super(server, path);
+            super(path);
             this.header = Objects.requireNonNull(header);
             this.value = Objects.requireNonNull(value);
         }
@@ -150,9 +145,8 @@ public abstract class Action {
 
         private final byte[] content;
 
-        public RawBodyAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
-                @Nonnull byte[] content) {
-            super(server, path);
+        public RawBodyAction(@Nonnull Matcher<?> path, @Nonnull byte[] content) {
+            super(path);
             this.content = Objects.requireNonNull(content);
         }
 
@@ -190,10 +184,13 @@ public abstract class Action {
 
         private final Object content;
 
-        public BodyAction(@Nonnull StubHttpServer server, @Nonnull Matcher<?> path,
-                @Nonnull Object content) {
-            super(server, path);
+        private final List<Action> actions;
+
+        public BodyAction(@Nonnull Matcher<?> path, @Nonnull Object content,
+                @Nonnull List<Action> actions) {
+            super(path);
             this.content = Objects.requireNonNull(content);
+            this.actions = Objects.requireNonNull(actions);
         }
 
         public Object getContent() {
@@ -205,7 +202,7 @@ public abstract class Action {
         public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
-            HeaderAction contentType = getHeaderAction(req.getUri(), CONTENT_TYPE);
+            HeaderAction contentType = getHeaderAction(req.getUri(), CONTENT_TYPE, actions);
             if (contentType == null) {
                 throw new RestMockException("No Content-Type found.");
             }
@@ -213,8 +210,8 @@ public abstract class Action {
                     = new ObjectSerializerContext(content, contentType.getValue());
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
-                return new RawBodyAction(server, path,
-                        os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(req, res);
+                return new RawBodyAction(
+                        path, os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");
             }

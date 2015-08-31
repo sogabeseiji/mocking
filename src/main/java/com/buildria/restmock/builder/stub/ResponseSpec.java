@@ -4,7 +4,6 @@ import com.buildria.restmock.builder.stub.Action.BodyAction;
 import com.buildria.restmock.builder.stub.Action.HeaderAction;
 import com.buildria.restmock.builder.stub.Action.RawBodyAction;
 import com.buildria.restmock.builder.stub.Action.StatusCodeAction;
-import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import java.io.IOException;
@@ -19,19 +18,16 @@ import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
  *
  * @author sogabe
  */
-public class ResponseSpec {
-
-    private final StubHttpServer server;
+public class ResponseSpec extends Spec {
 
     private final Matcher<?> path;
 
-    ResponseSpec(StubHttpServer server, Matcher<?> path) {
-        this.server = server;
+    ResponseSpec(Matcher<?> path) {
         this.path = path;
     }
 
     public ResponseSpec statusCode(int code) {
-        server.addAction(new StatusCodeAction(server, path, code));
+        addAction(new StatusCodeAction(path, code));
         return this;
     }
 
@@ -44,7 +40,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec header(String name, String value) {
-        server.addAction(new HeaderAction(server, path, name, value));
+        addAction(new HeaderAction(path, name, value));
         return this;
     }
 
@@ -57,7 +53,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec rawBody(byte[] content) {
-        server.addAction(new RawBodyAction(server, path, content));
+        addAction(new RawBodyAction(path, content));
         return this;
     }
 
@@ -66,7 +62,7 @@ public class ResponseSpec {
     }
 
     public ResponseSpec body(Object content) {
-        server.addAction(new BodyAction(server, path, content));
+        addAction(new BodyAction(path, content, getActions()));
         return this;
     }
 

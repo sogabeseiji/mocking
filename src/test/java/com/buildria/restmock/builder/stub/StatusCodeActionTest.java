@@ -2,7 +2,6 @@ package com.buildria.restmock.builder.stub;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.stub.Action.StatusCodeAction;
-import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpResponse;
@@ -34,38 +33,27 @@ public class StatusCodeActionTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorServerNull() throws Exception {
-        StubHttpServer server = null;
-        Matcher<?> path = equalTo("/api/p");
-        int code = 200;
-        Action action = new StatusCodeAction(server, path, code);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = null;
         int code = 200;
-        Action action = new StatusCodeAction(server, path, code);
+        Action action = new StatusCodeAction(path, code);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         int code = 200;
 
-        StatusCodeAction action = new StatusCodeAction(server, path, code);
+        StatusCodeAction action = new StatusCodeAction(path, code);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         int code = 404;
 
-        StatusCodeAction action = new StatusCodeAction(server, path, code);
+        StatusCodeAction action = new StatusCodeAction(path, code);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -76,11 +64,10 @@ public class StatusCodeActionTest {
 
     @Test
     public void testObjects() {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         int code = 404;
 
-        StatusCodeAction action = new StatusCodeAction(server, path, code);
+        StatusCodeAction action = new StatusCodeAction(path, code);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());

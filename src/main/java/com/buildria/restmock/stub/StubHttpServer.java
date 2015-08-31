@@ -84,7 +84,7 @@ public class StubHttpServer {
                     // CHECKSTYLE:OFF
                     @Override
                     public void initChannel(SocketChannel ch) throws Exception {
-                    // CHECKSTYLE:ON
+                        // CHECKSTYLE:ON
                         // int maxInitialLineLength, int maxHeaderSize, int maxChunkSize
                         ch.pipeline().addLast("decoder",
                                 new HttpRequestDecoder(MAX_INITIALLINE_LENGH, MAX_HEADERS_SIZE, MAX_CHUNK_SIZE));
@@ -142,7 +142,7 @@ public class StubHttpServer {
         // CHECKSTYLE:OFF
         @Override
         public void channelRead0(final ChannelHandlerContext ctx, Object msg) throws Exception {
-        // CHECKSTYLE:ON
+            // CHECKSTYLE:ON
             if (!(msg instanceof HttpRequest)) {
                 return;
             }
@@ -181,7 +181,7 @@ public class StubHttpServer {
         // CHECKSTYLE:OFF
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        // CHECKSTYLE:ON
+            // CHECKSTYLE:ON
             super.exceptionCaught(ctx, cause);
         }
 

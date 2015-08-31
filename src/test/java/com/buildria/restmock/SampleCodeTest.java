@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static com.buildria.restmock.builder.stub.RequestSpec.path;
 import static com.buildria.restmock.builder.verify.MethodSpec.get;
 import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
@@ -34,12 +35,12 @@ public class SampleCodeTest {
         Person person = new Person("Bob", 20);
 
         // Restmock
-        restmock.when().
-                path("/api/p").
-        then().
-                statusCode(SC_200_OK).
-                contentType("application/json").
-                body(person);
+        restmock.when(path("/api/p").
+                    then().
+                    statusCode(SC_200_OK).
+                    contentType("application/json").
+                    body(person)
+        );
 
         // Rest-assured
         given().

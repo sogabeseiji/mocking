@@ -4,7 +4,7 @@ import com.buildria.restmock.builder.verify.Rule.Method;
 
 public class MethodSpec extends Spec {
 
-    private static final MethodSpec instance = new MethodSpec();
+    private static final MethodSpec INSTANCE = new MethodSpec();
 
     private MethodSpec() {
         super();
@@ -16,19 +16,19 @@ public class MethodSpec extends Spec {
     }
 
     public static RequestSpec get(String path) {
-        return instance.method(path, "get");
+        return INSTANCE.method(path, "get");
     }
 
     public static RequestSpec post(String path) {
-        return instance.method(path, "post");
+        return INSTANCE.method(path, "post");
     }
 
     public static RequestSpec put(String path) {
-        return instance.method(path, "put");
+        return INSTANCE.method(path, "put");
     }
 
     public static RequestSpec delete(String path) {
-        return instance.method(path, "delete");
+        return INSTANCE.method(path, "delete");
     }
 
 }

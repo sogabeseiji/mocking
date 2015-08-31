@@ -19,6 +19,9 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
@@ -41,47 +44,39 @@ public class BodyActionTest {
     private final Person person = new Person("Bob", 20);
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorServerNull() throws Exception {
-        StubHttpServer server = null;
-        Matcher<?> path = equalTo("/api/p");
-        Object content = person;
-        Action action = new BodyAction(server, path, content);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = null;
         Object content = person;
-        Action action = new BodyAction(server, path, content);
+        List<Action> actions = Collections.<Action>emptyList();
+        Action action = new BodyAction(path, content, actions);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorContentNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         Object content = null;
-        Action action = new BodyAction(server, path, content);
+        List<Action> actions = Collections.<Action>emptyList();
+        Action action = new BodyAction(path, content, actions);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
-
-        Action action = new BodyAction(server, path, content);
+        List<Action> actions = Collections.<Action>emptyList();
+        Action action = new BodyAction(path, content, actions);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
-        StubHttpServer server = new StubHttpServer();
-        server.addAction(new HeaderAction(server, equalTo("/api/p"), "Content-Type", "application/json"));
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
-        Action action = new BodyAction(server, path, content);
+        List<Action> actions = new ArrayList<>();
+        actions.add(new HeaderAction(equalTo("/api/p"), "Content-Type", "application/json"));
+
+        Action action = new BodyAction(path, content, actions);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -96,7 +91,7 @@ public class BodyActionTest {
 
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString());
-        String expected =  JACKSON.serialize(ctx);
+        String expected = JACKSON.serialize(ctx);
 
         assertThat(json, is(expected));
     }
@@ -107,7 +102,7 @@ public class BodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
-        Action action = new BodyAction(server, path, content);
+        Action action = new BodyAction(path, content, Collections.<Action>emptyList());
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -115,11 +110,11 @@ public class BodyActionTest {
 
     @Test
     public void testObjects() {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
+        List<Action> actions = Collections.<Action>emptyList();
 
-        Action action = new BodyAction(server, path, content);
+        Action action = new BodyAction(path, content, actions);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());
