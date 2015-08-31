@@ -17,9 +17,10 @@ Restmock provides a DSL to:
 ``` java
 public class SampleCodeTest {
 
-    private StubHttpServer server;
-
     private static final int PORT = 8888;
+
+    @Rule
+    public Restmock restmock = new Restmock(PORT);
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -28,25 +29,21 @@ public class SampleCodeTest {
     public void setUp() throws Exception {
         // ポート番号
         RestAssured.port = PORT;
-        server = new StubHttpServer(PORT).run();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.stop();
     }
 
     @Test
     public void testReadMeSampleCode() {
         Person person = new Person("Bob", 20);
 
-        // Restmock
-        when(server).
-                path("/api/p").
-        then().
-                statusCode(SC_200_OK).
-                contentType("application/json").
-                body(person);
+         // Restmock
+        restmock.
+                when(
+                    path("/api/p").
+                then().
+                    statusCode(SC_200_OK).
+                    contentType("application/json").
+                    body(person)
+        );
 
         // Rest-assured
         given().
@@ -62,11 +59,14 @@ public class SampleCodeTest {
                 body("old", is(20));
 
         // Restmock
-        verify(server).
-                get("/api/p").
-                accept("application/json");
+        restmock.
+                verify(
+                    get("/api/p").
+                    accept("application/json")
+        );
     }
 
 (snip)
+    
 }
 ```

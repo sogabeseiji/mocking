@@ -35,8 +35,10 @@ public class SampleCodeTest {
         Person person = new Person("Bob", 20);
 
         // Restmock
-        restmock.when(path("/api/p").
-                    then().
+        restmock.
+                when(
+                    path("/api/p").
+                then().
                     statusCode(SC_200_OK).
                     contentType("application/json").
                     body(person)
@@ -56,9 +58,10 @@ public class SampleCodeTest {
                 body("old", is(20));
 
         // Restmock
-        restmock.verify(
-                get("/api/p").
-                accept("application/json")
+        restmock.
+                verify(
+                    get("/api/p").
+                    accept("application/json")
         );
     }
 
