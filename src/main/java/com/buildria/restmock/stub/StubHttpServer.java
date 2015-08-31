@@ -115,6 +115,15 @@ public class StubHttpServer {
         }
     }
 
+    public void addActions(List<Action> actions) {
+        Objects.requireNonNull(actions);
+        synchronized (lockObj) {
+            for (Action action : actions) {
+                this.actions.add(action);
+            }
+        }
+    }
+
     public List<Action> getActions() {
         synchronized (lockObj) {
             return Collections.unmodifiableList(actions);

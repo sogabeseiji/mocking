@@ -1,6 +1,5 @@
 package com.buildria.restmock;
 
-import com.buildria.restmock.builder.stub.Action;
 import com.buildria.restmock.builder.verify.Spec;
 import com.buildria.restmock.stub.StubHttpServer;
 import javax.annotation.Nonnull;
@@ -45,9 +44,7 @@ public class Restmock extends ExternalResource {
 
     @Nonnull
     public void when(com.buildria.restmock.builder.stub.Spec spec) {
-        for (Action action : spec.getActions()) {
-            server.addAction(action);
-        }
+        server.addActions(spec.getActions());
     }
 
     @Nonnull
