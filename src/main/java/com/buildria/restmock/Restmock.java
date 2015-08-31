@@ -26,14 +26,10 @@ public class Restmock extends ExternalResource {
         return port;
     }
 
-    // TODO
-    @Nonnull
-    public StubHttpServer getServer() {
-        return server;
-    }
-
+    // CHECKSTYLE:OFF
     @Override
     protected void before() throws Throwable {
+    // CHECKSTYLE:ON
         super.before();
         server = new StubHttpServer(port).run();
     }
@@ -49,7 +45,6 @@ public class Restmock extends ExternalResource {
 
     @Nonnull
     public void when(com.buildria.restmock.builder.stub.Spec spec) {
-        System.out.println(spec.getActions().size());
         for (Action action : spec.getActions()) {
             server.addAction(action);
         }
