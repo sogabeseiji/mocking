@@ -2,8 +2,8 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.verify.Rule.Parameter;
+import com.buildria.restmock.builder.verify.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
-import com.buildria.restmock.stub.StubHttpServer;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,41 +25,37 @@ public class ParameterTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorKeyNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String key = null;
         String[] values = new String[] {"values"};
-        target = new Parameter(server, path, key, values);
+        target = new Parameter(path, key, values);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValuesNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String key = "key";
         String[] values = null;
-        target = new Parameter(server, path, key, values);
+        target = new Parameter(path, key, values);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String key = "key";
         String[] values = new String[] {"values"};
-        target = new Parameter(server, path, key, values);
+        target = new Parameter(path, key, values);
 
         Call call = null;
-        target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
     }
 
     @Test
     public void testApplyOneParams() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String key = "key";
         String[] values = new String[]{"value1"};
-        target = new Parameter(server, path, key, values);
+        target = new Parameter(path, key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -67,18 +63,17 @@ public class ParameterTest {
 
         when(call.getParameters()).thenReturn(params);
 
-        boolean actual = target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
 
         assertThat(actual, is(true));
     }
 
     @Test
     public void testApplyTwoParams() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String key = "key";
         String[] values = new String[]{"value1", "value2"};
-        target = new Parameter(server, path, key, values);
+        target = new Parameter(path, key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -86,18 +81,17 @@ public class ParameterTest {
 
         when(call.getParameters()).thenReturn(params);
 
-        boolean actual = target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
 
         assertThat(actual, is(true));
     }
 
     @Test
     public void testApplyFalse() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String key = "key";
         String[] values = new String[]{"value1"};
-        target = new Parameter(server, path, key, values);
+        target = new Parameter(path, key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -105,7 +99,7 @@ public class ParameterTest {
 
         when(call.getParameters()).thenReturn(params);
 
-        boolean actual = target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
 
         assertThat(actual, is(false));
     }

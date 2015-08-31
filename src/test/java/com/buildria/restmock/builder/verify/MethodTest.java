@@ -2,8 +2,8 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.verify.Rule.Method;
+import com.buildria.restmock.builder.verify.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
-import com.buildria.restmock.stub.StubHttpServer;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -21,75 +21,69 @@ public class MethodTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorMethodNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String method = null;
-        target = new Method(server, path, method);
+        target = new Method(path, method);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorUriNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = null;
         String method = "get";
-        target = new Method(server, path, method);
+        target = new Method(path, method);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String method = "get";
-        target = new Method(server, path, method);
+        target = new Method(path, method);
 
         Call call = null;
-        target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
     }
 
     @Test
     public void testApplyTrue() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String method = "get";
-        target = new Method(server, path, method);
+        target = new Method(path, method);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("get");
         when(call.getPath()).thenReturn("/api/p");
 
-        boolean actual = target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
 
         assertThat(actual, is(true));
     }
 
     @Test
     public void testApplyMethodUnmatch() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String method = "get";
-        target = new Method(server, path, method);
+        target = new Method(path, method);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("post");
         when(call.getPath()).thenReturn("/api/p");
 
-        boolean actual = target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
 
         assertThat(actual, is(false));
     }
 
     @Test
     public void testApplyUriUnmatch() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         String path = "/api/p";
         String method = "get";
-        target = new Method(server, path, method);
+        target = new Method(path, method);
 
         Call call = mock(Call.class);
         when(call.getMethod()).thenReturn("get");
         when(call.getPath()).thenReturn("/api/q");
 
-        boolean actual = target.apply(call);
+        boolean actual = target.apply(new RuleContext(call, null));
 
         assertThat(actual, is(false));
     }

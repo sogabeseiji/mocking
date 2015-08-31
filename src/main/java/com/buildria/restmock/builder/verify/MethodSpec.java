@@ -1,46 +1,34 @@
 package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.builder.verify.Rule.Method;
-import com.buildria.restmock.stub.Call;
-import com.buildria.restmock.stub.StubHttpServer;
-import java.util.List;
-import javax.annotation.Nonnull;
 
-public class MethodSpec {
+public class MethodSpec extends Spec {
 
-    private final StubHttpServer server;
+    private static final MethodSpec instance = new MethodSpec();
 
-    private MethodSpec(@Nonnull StubHttpServer server) {
-        this.server = server;
-    }
-
-    public static MethodSpec verify(StubHttpServer server) {
-        return new MethodSpec(server);
+    private MethodSpec() {
+        super();
     }
 
     private RequestSpec method(String path, String method) {
-        List<Call> answers = Calls.filter(server.getCalls(), new Method(server, path, method));
-        if (answers.isEmpty()) {
-            throw new AssertionError(
-                    String.format("No calls found. path: %s method: %s ", path, method));
-        }
-        return new RequestSpec(server, answers, path);
+        addRule(new Method(path, method));
+        return new RequestSpec(path);
     }
 
-    public RequestSpec get(String path) {
-        return method(path, "get");
+    public static RequestSpec get(String path) {
+        return instance.method(path, "get");
     }
 
-    public RequestSpec post(String path) {
-        return method(path, "post");
+    public static RequestSpec post(String path) {
+        return instance.method(path, "post");
     }
 
-    public RequestSpec put(String path) {
-        return method(path, "put");
+    public static RequestSpec put(String path) {
+        return instance.method(path, "put");
     }
 
-    public RequestSpec delete(String path) {
-        return method(path, "delete");
+    public static RequestSpec delete(String path) {
+        return instance.method(path, "delete");
     }
 
 }

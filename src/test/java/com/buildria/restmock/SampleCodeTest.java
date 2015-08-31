@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static com.buildria.restmock.builder.verify.MethodSpec.get;
 import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -54,9 +55,10 @@ public class SampleCodeTest {
                 body("old", is(20));
 
         // Restmock
-        restmock.verify().
+        restmock.verify(
                 get("/api/p").
-                accept("application/json");
+                accept("application/json")
+        );
     }
 
     @XmlRootElement(name = "person")

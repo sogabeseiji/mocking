@@ -2,38 +2,25 @@ package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.builder.verify.Rule.Header;
 import com.buildria.restmock.builder.verify.Rule.Parameter;
-import com.buildria.restmock.stub.Call;
-import com.buildria.restmock.stub.StubHttpServer;
-import com.google.common.base.Joiner;
 import com.google.common.net.MediaType;
-import java.util.List;
+import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
 import static com.buildria.restmock.http.RMHttpHeaders.ACCEPT;
 import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.equalTo;
 
-public class RequestSpec {
-
-    private final StubHttpServer server;
-
-    private List<Call> calls;
+public class RequestSpec extends Spec {
 
     @SuppressWarnings("PMD.UnusedPrivateField")
     private final String path;
 
-    RequestSpec(StubHttpServer server, List<Call> calls, String path) {
-        this.server = server;
-        this.calls = calls;
+    RequestSpec(@Nonnull String path) {
         this.path = path;
     }
 
     public RequestSpec header(String name, Matcher<?> value) {
-        calls = Calls.filter(calls, new Header(server, path, name, value));
-        if (calls.isEmpty()) {
-            throw new AssertionError(
-                    String.format("No calls found. header: %s value: %s", name, value.toString()));
-        }
+        addRule(new Header(path, name, value));
         return this;
     }
 
@@ -74,11 +61,7 @@ public class RequestSpec {
     }
 
     public RequestSpec parameters(String key, String[] values) {
-        calls = Calls.filter(calls, new Parameter(server, path, key, values));
-        if (calls.isEmpty()) {
-            throw new AssertionError(
-                    String.format("No calls found. key: %s value: %s", key, Joiner.on(", ").join(values)));
-        }
+        addRule(new Parameter(path, key, values));
         return this;
     }
 

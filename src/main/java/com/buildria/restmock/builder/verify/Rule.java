@@ -1,7 +1,7 @@
 package com.buildria.restmock.builder.verify;
 
+import com.buildria.restmock.builder.verify.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
-import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.Predicate;
 import java.util.Arrays;
 import java.util.List;
@@ -12,23 +12,25 @@ import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
 // CHECKSTYLE:OFF
-public abstract class Rule implements Predicate<Call> {
+public abstract class Rule implements Predicate<RuleContext> {
 // CHECKSTYLE:ON
 
-    protected final StubHttpServer server;
+    public static class RuleContext {
+
+        public Call call;
+        public List<Rule> rules;
+
+        public RuleContext(Call call, List<Rule> rules) {
+            this.call = call;
+            this.rules = rules;
+        }
+    }
 
     protected final String path;
 
-    public Rule(@Nonnull StubHttpServer server, @Nonnull String path) {
-        Objects.requireNonNull(server);
+    public Rule(@Nonnull String path) {
         Objects.requireNonNull(path);
-        this.server = server;
         this.path = path;
-    }
-
-    @Nonnull
-    public StubHttpServer getServer() {
-        return server;
     }
 
     @Nonnull
@@ -37,21 +39,21 @@ public abstract class Rule implements Predicate<Call> {
     }
 
     @Override
-    public abstract boolean apply(Call call);
+    public abstract boolean apply(RuleContext ctx);
 
     public static class Method extends Rule {
 
         private final String method;
 
-        public Method(@Nonnull StubHttpServer server,
-                @Nonnull String path, @Nonnull String method) {
-            super(server, path);
+        public Method(@Nonnull String path, @Nonnull String method) {
+            super(path);
             this.method = Objects.requireNonNull(method);
         }
 
         @Override
-        public boolean apply(@Nonnull Call call) {
-            Objects.requireNonNull(call);
+        public boolean apply(@Nonnull RuleContext ctx) {
+            Objects.requireNonNull(ctx);
+            Call call = ctx.call;
             return call.getPath().equalsIgnoreCase(path)
                     && method.equalsIgnoreCase(call.getMethod());
         }
@@ -64,16 +66,17 @@ public abstract class Rule implements Predicate<Call> {
 
         private final Matcher<?> value;
 
-        public Header(@Nonnull StubHttpServer server,  @Nonnull String path,
+        public Header(@Nonnull String path,
                 @Nonnull String name, @Nonnull Matcher<?> value) {
-            super(server, path);
+            super(path);
             this.name = Objects.requireNonNull(name);
             this.value = Objects.requireNonNull(value);
         }
 
         @Override
-        public boolean apply(@Nonnull Call call) {
-            Objects.requireNonNull(call);
+        public boolean apply(@Nonnull RuleContext ctx) {
+            Objects.requireNonNull(ctx);
+            Call call = ctx.call;
             Map<String, String> headers = call.getHeaders();
             for (Entry<String, String> entry : headers.entrySet()) {
                 String n = entry.getKey();
@@ -93,17 +96,17 @@ public abstract class Rule implements Predicate<Call> {
 
         private final String[] values;
 
-        public Parameter(@Nonnull StubHttpServer server, @Nonnull String path,
-                String key, @Nonnull String[] values) {
-            super(server, path);
+        public Parameter(@Nonnull String path, String key, @Nonnull String[] values) {
+            super(path);
             this.key = Objects.requireNonNull(key);
             this.values = Objects.requireNonNull(values);
             Arrays.sort(this.values);
         }
 
         @Override
-        public boolean apply(@Nonnull Call call) {
-            Objects.requireNonNull(call);
+        public boolean apply(@Nonnull RuleContext ctx) {
+            Objects.requireNonNull(ctx);
+            Call call = ctx.call;
             Map<String, List<String>> params = call.getParameters();
             List<String> vals = params.get(key);
             if (vals == null) {

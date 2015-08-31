@@ -1,8 +1,9 @@
 package com.buildria.restmock;
 
 import com.buildria.restmock.builder.stub.RequestSpec;
-import com.buildria.restmock.builder.verify.MethodSpec;
+import com.buildria.restmock.builder.verify.Spec;
 import com.buildria.restmock.stub.StubHttpServer;
+import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
 
 public class Restmock extends ExternalResource {
@@ -26,6 +27,7 @@ public class Restmock extends ExternalResource {
     }
 
     // TODO
+    @Nonnull
     public StubHttpServer getServer() {
         return server;
     }
@@ -45,11 +47,13 @@ public class Restmock extends ExternalResource {
         super.after();
     }
 
+    @Nonnull
     public  RequestSpec when() {
         return RequestSpec.when(server);
     }
 
-    public MethodSpec verify() {
-        return MethodSpec.verify(server);
+    @Nonnull
+    public void verify(Spec spec) {
+        spec.validate(server.getCalls());
     }
 }
