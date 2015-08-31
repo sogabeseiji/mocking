@@ -1,7 +1,7 @@
 package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.verify.Verifier.Header;
+import com.buildria.restmock.builder.verify.Rule.Header;
 import com.buildria.restmock.http.RMHttpHeaders;
 import com.buildria.restmock.stub.Call;
 import com.buildria.restmock.stub.StubHttpServer;

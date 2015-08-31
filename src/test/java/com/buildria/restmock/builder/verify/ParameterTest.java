@@ -1,7 +1,7 @@
 package com.buildria.restmock.builder.verify;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.verify.Verifier.Parameter;
+import com.buildria.restmock.builder.verify.Rule.Parameter;
 import com.buildria.restmock.stub.Call;
 import com.buildria.restmock.stub.StubHttpServer;
 import java.util.Arrays;

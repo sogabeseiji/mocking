@@ -12,14 +12,14 @@ import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
 // CHECKSTYLE:OFF
-public abstract class Verifier implements Predicate<Call> {
+public abstract class Rule implements Predicate<Call> {
 // CHECKSTYLE:ON
 
     protected final StubHttpServer server;
 
     protected final String path;
 
-    public Verifier(@Nonnull StubHttpServer server, @Nonnull String path) {
+    public Rule(@Nonnull StubHttpServer server, @Nonnull String path) {
         Objects.requireNonNull(server);
         Objects.requireNonNull(path);
         this.server = server;
@@ -39,7 +39,7 @@ public abstract class Verifier implements Predicate<Call> {
     @Override
     public abstract boolean apply(Call call);
 
-    public static class Method extends Verifier {
+    public static class Method extends Rule {
 
         private final String method;
 
@@ -58,7 +58,7 @@ public abstract class Verifier implements Predicate<Call> {
 
     }
 
-    public static class Header extends Verifier {
+    public static class Header extends Rule {
 
         private final String name;
 
@@ -87,7 +87,7 @@ public abstract class Verifier implements Predicate<Call> {
 
     }
 
-    public static class Parameter extends Verifier {
+    public static class Parameter extends Rule {
 
         private final String key;
 
