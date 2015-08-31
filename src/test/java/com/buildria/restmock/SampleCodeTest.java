@@ -1,26 +1,23 @@
 package com.buildria.restmock;
 
-import com.buildria.restmock.stub.StubHttpServer;
 import com.jayway.restassured.RestAssured;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.restmock.builder.stub.RequestSpec.when;
-import static com.buildria.restmock.builder.verify.MethodSpec.verify;
 import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
 public class SampleCodeTest {
 
-    private StubHttpServer server;
-
     private static final int PORT = 8888;
+
+    @Rule
+    public Restmock restmock = new Restmock(PORT);
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -29,12 +26,6 @@ public class SampleCodeTest {
     public void setUp() throws Exception {
         // ポート番号
         RestAssured.port = PORT;
-        server = new StubHttpServer(PORT).run();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        server.stop();
     }
 
     @Test
@@ -42,7 +33,7 @@ public class SampleCodeTest {
         Person person = new Person("Bob", 20);
 
         // Restmock
-        when(server).
+        restmock.when().
                 path("/api/p").
         then().
                 statusCode(SC_200_OK).
@@ -63,7 +54,7 @@ public class SampleCodeTest {
                 body("old", is(20));
 
         // Restmock
-        verify(server).
+        restmock.verify().
                 get("/api/p").
                 accept("application/json");
     }
