@@ -1,7 +1,8 @@
-package com.buildria.restmock.builder.stub;
+package com.buildria.restmock.builder.action;
 
+import com.buildria.restmock.builder.action.Action;
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.stub.Action.StatusCodeAction;
+import com.buildria.restmock.builder.action.Action.StatusCode;
 import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpResponse;
@@ -26,7 +27,7 @@ public class StatusCodeActionTest {
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private StatusCodeAction target;
+    private StatusCode target;
 
     @After
     public void tearDown() {
@@ -36,7 +37,7 @@ public class StatusCodeActionTest {
     public void testConstructorPathNull() throws Exception {
         Matcher<?> path = null;
         int code = 200;
-        Action action = new StatusCodeAction(path, code);
+        Action action = new StatusCode(path, code);
     }
 
     @Test(expected = NullPointerException.class)
@@ -44,7 +45,7 @@ public class StatusCodeActionTest {
         Matcher<?> path = equalTo("/api/p");
         int code = 200;
 
-        StatusCodeAction action = new StatusCodeAction(path, code);
+        StatusCode action = new StatusCode(path, code);
         action.apply(null, null);
     }
 
@@ -53,7 +54,7 @@ public class StatusCodeActionTest {
         Matcher<?> path = equalTo("/api/p");
         int code = 404;
 
-        StatusCodeAction action = new StatusCodeAction(path, code);
+        StatusCode action = new StatusCode(path, code);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -67,7 +68,7 @@ public class StatusCodeActionTest {
         Matcher<?> path = equalTo("/api/p");
         int code = 404;
 
-        StatusCodeAction action = new StatusCodeAction(path, code);
+        StatusCode action = new StatusCode(path, code);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());

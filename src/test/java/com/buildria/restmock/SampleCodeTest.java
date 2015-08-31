@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.restmock.builder.stub.RequestSpec.path;
-import static com.buildria.restmock.builder.verify.MethodSpec.get;
+import static com.buildria.restmock.builder.action.RequestActionSpec.path;
+import static com.buildria.restmock.builder.rule.MethodRuleSpec.get;
 import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;

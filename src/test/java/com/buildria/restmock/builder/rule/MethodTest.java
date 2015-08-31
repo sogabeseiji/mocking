@@ -1,8 +1,8 @@
-package com.buildria.restmock.builder.verify;
+package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.verify.Rule.Method;
-import com.buildria.restmock.builder.verify.Rule.RuleContext;
+import com.buildria.restmock.builder.rule.Rule.Method;
+import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import org.junit.Rule;
 import org.junit.Test;

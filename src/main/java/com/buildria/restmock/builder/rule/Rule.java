@@ -1,6 +1,6 @@
-package com.buildria.restmock.builder.verify;
+package com.buildria.restmock.builder.rule;
 
-import com.buildria.restmock.builder.verify.Rule.RuleContext;
+import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Predicate;
 import java.util.Arrays;

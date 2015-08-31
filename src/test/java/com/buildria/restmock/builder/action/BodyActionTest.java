@@ -1,9 +1,10 @@
-package com.buildria.restmock.builder.stub;
+package com.buildria.restmock.builder.action;
 
+import com.buildria.restmock.builder.action.Action;
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.stub.Action.BodyAction;
-import com.buildria.restmock.builder.stub.Action.HeaderAction;
+import com.buildria.restmock.builder.action.Action.Body;
+import com.buildria.restmock.builder.action.Action.Header;
 import com.buildria.restmock.serializer.ObjectSerializerContext;
 import com.buildria.restmock.serializer.Person;
 import com.buildria.restmock.stub.StubHttpServer;
@@ -39,7 +40,7 @@ public class BodyActionTest {
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private BodyAction target;
+    private Body target;
 
     private final Person person = new Person("Bob", 20);
 
@@ -48,7 +49,7 @@ public class BodyActionTest {
         Matcher<?> path = null;
         Object content = person;
         List<Action> actions = Collections.<Action>emptyList();
-        Action action = new BodyAction(path, content, actions);
+        Action action = new Body(path, content, actions);
     }
 
     @Test(expected = NullPointerException.class)
@@ -56,7 +57,7 @@ public class BodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         Object content = null;
         List<Action> actions = Collections.<Action>emptyList();
-        Action action = new BodyAction(path, content, actions);
+        Action action = new Body(path, content, actions);
     }
 
     @Test(expected = NullPointerException.class)
@@ -64,7 +65,7 @@ public class BodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
         List<Action> actions = Collections.<Action>emptyList();
-        Action action = new BodyAction(path, content, actions);
+        Action action = new Body(path, content, actions);
         action.apply(null, null);
     }
 
@@ -74,9 +75,9 @@ public class BodyActionTest {
         Object content = person;
 
         List<Action> actions = new ArrayList<>();
-        actions.add(new HeaderAction(equalTo("/api/p"), "Content-Type", "application/json"));
+        actions.add(new Header(equalTo("/api/p"), "Content-Type", "application/json"));
 
-        Action action = new BodyAction(path, content, actions);
+        Action action = new Body(path, content, actions);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -102,7 +103,7 @@ public class BodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
-        Action action = new BodyAction(path, content, Collections.<Action>emptyList());
+        Action action = new Body(path, content, Collections.<Action>emptyList());
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -114,7 +115,7 @@ public class BodyActionTest {
         Object content = person;
         List<Action> actions = Collections.<Action>emptyList();
 
-        Action action = new BodyAction(path, content, actions);
+        Action action = new Body(path, content, actions);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());

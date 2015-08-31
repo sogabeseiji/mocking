@@ -1,7 +1,8 @@
-package com.buildria.restmock.builder.stub;
+package com.buildria.restmock.builder.action;
 
+import com.buildria.restmock.builder.action.Action;
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.stub.Action.HeaderAction;
+import com.buildria.restmock.builder.action.Action.Header;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpRequest;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertThat;
  *
  * @author Seiji Sogabe
  */
-public class ActionTest {
+public class StatusCodeATest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -60,13 +61,13 @@ public class ActionTest {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
-        server.addAction(new Action.StatusCodeAction(path, 200));
-        server.addAction(new Action.HeaderAction(equalTo("/api/q"), "Content-Type", "application/json"));
-        server.addAction(new Action.HeaderAction(path, "Content-Type", "application/xml"));
+        server.addAction(new Action.StatusCode(path, 200));
+        server.addAction(new Action.Header(equalTo("/api/q"), "Content-Type", "application/json"));
+        server.addAction(new Action.Header(path, "Content-Type", "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        HeaderAction contentType = action.getHeaderAction("/api/p", "Content-Type", server.getActions());
+        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
         assertThat(contentType, notNullValue());
         assertThat(contentType.getValue(), is("application/xml"));
     }
@@ -76,11 +77,11 @@ public class ActionTest {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
-        server.addAction(new Action.HeaderAction(path, "Accept", "application/xml"));
+        server.addAction(new Action.Header(path, "Accept", "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        HeaderAction contentType = action.getHeaderAction("/api/p", "Content-Type", server.getActions());
+        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
         assertThat(contentType, nullValue());
     }
 
