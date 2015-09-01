@@ -19,13 +19,13 @@ public class TestNameRule extends TestWatcher {
     @Override
     protected void starting(Description description) {
         sw = createStarted();
-        log.info("=== {} starting ...", description.getMethodName());
+        log.debug("=== {} starting ...", description.getMethodName());
     }
 
     @Override
     protected void finished(Description description) {
         sw.stop();
-        log.info("=== {} finished. {}", description.getMethodName(), sw);
+        log.debug("=== {} finished. {}", description.getMethodName(), sw);
     }
 
     private final Logger log = LoggerFactory.getLogger(TestNameRule.class);
