@@ -29,7 +29,7 @@ import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 public abstract class Action {
 // CHECKSTYLE:ON
 
-    protected final Matcher<?> path;
+    private final Matcher<?> path;
 
     public Action(@Nonnull Matcher<?> path) {
         this.path = Objects.requireNonNull(path);
@@ -211,7 +211,9 @@ public abstract class Action {
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
                 return new RawBody(
-                        path, os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(req, res);
+                        getPath(),
+                        os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).
+                        apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");
             }
