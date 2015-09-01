@@ -2,6 +2,7 @@ package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
+import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +44,8 @@ public abstract class Rule implements Predicate<RuleContext> {
     @Override
     public abstract boolean apply(RuleContext ctx);
 
+    public abstract String getDescription();
+
     public static class Method extends Rule {
 
         private final String path;
@@ -63,6 +66,11 @@ public abstract class Rule implements Predicate<RuleContext> {
                     && method.equalsIgnoreCase(call.getMethod());
         }
 
+        @Override
+        public String getDescription() {
+            return String.format("[Method] path: (%s) method: (%s)",
+                    path, method);
+        }
     }
 
     public static class Header extends Rule {
@@ -90,6 +98,12 @@ public abstract class Rule implements Predicate<RuleContext> {
                 }
             }
             return false;
+        }
+
+        @Override
+        public String getDescription() {
+            return String.format("[Header] name: (%s) value: (%s)",
+                    name, value);
         }
 
     }
@@ -122,6 +136,11 @@ public abstract class Rule implements Predicate<RuleContext> {
             return Arrays.equals(sorted, values);
         }
 
+        @Override
+        public String getDescription() {
+            return String.format("[Parameter] key: (%s) value: (%s)",
+                    key, Joiner.on(",").join(values));
+        }
     }
 
 }
