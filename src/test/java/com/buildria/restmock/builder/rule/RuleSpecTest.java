@@ -47,7 +47,7 @@ public class RuleSpecTest {
         when(c1.getMethod()).thenReturn("get");
 
         Map<String, List<String>> params = new HashMap<>();
-        params.put("name", Arrays.asList("bob"));
+        params.put("name", Arrays.asList("Bob"));
         when(c1.getParameters()).thenReturn(params);
 
         Map<String, String> headers = new HashMap<>();
