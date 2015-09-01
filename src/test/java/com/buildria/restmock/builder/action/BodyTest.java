@@ -60,6 +60,14 @@ public class BodyTest {
     }
 
     @Test(expected = NullPointerException.class)
+    public void testConstructorActionsNull() throws Exception {
+        Matcher<?> path = equalTo("/api/p");
+        Object content = person;
+        List<Action> actions = null;
+        Action action = new Body(path, content, actions);
+    }
+
+    @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
         Matcher<?> path = equalTo("/api/p");
         Object content = person;

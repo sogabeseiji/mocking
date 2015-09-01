@@ -11,6 +11,8 @@ import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static com.buildria.restmock.http.RMHttpHeaders.ACCEPT;
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -53,31 +55,31 @@ public class ActionTest {
     }
 
     @Test
-    public void testGetHeaderAction() {
+    public void testGetHeader() {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
         server.addAction(new Action.StatusCode(path, 200));
-        server.addAction(new Action.Header(equalTo("/api/q"), "Content-Type", "application/json"));
-        server.addAction(new Action.Header(path, "Content-Type", "application/xml"));
+        server.addAction(new Action.Header(equalTo("/api/q"), CONTENT_TYPE, "application/json"));
+        server.addAction(new Action.Header(path, CONTENT_TYPE, "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
+        Header contentType = action.getHeader("/api/p", CONTENT_TYPE, server.getActions());
         assertThat(contentType, notNullValue());
         assertThat(contentType.getValue(), is("application/xml"));
     }
 
     @Test
-    public void testGetHeaderActionCotentTypeNone() {
+    public void testGetHeaderCotentTypeNone() {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
-        server.addAction(new Action.Header(path, "Accept", "application/xml"));
+        server.addAction(new Action.Header(path, ACCEPT, "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
+        Header contentType = action.getHeader("/api/p", CONTENT_TYPE, server.getActions());
         assertThat(contentType, nullValue());
     }
 
