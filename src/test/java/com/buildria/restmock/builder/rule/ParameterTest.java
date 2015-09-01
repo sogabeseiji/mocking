@@ -104,4 +104,22 @@ public class ParameterTest {
         assertThat(actual, is(false));
     }
 
+    @Test
+    public void testApplyFalse2() throws Exception {
+        String path = "/api/p";
+        String key = "key";
+        String[] values = new String[]{"value1"};
+        target = new Parameter(path, key, values);
+
+        Call call = mock(Call.class);
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("key1", Arrays.asList("value11"));
+
+        when(call.getParameters()).thenReturn(params);
+
+        boolean actual = target.apply(new RuleContext(call, null));
+
+        assertThat(actual, is(false));
+    }
+
 }
