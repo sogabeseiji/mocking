@@ -1,11 +1,5 @@
 package com.buildria.restmock.serializer;
 
-import com.buildria.restmock.serializer.ObjectSerializer;
-import com.buildria.restmock.serializer.GsonJsonSerializer;
-import com.buildria.restmock.serializer.JAXBXmlSerializer;
-import com.buildria.restmock.serializer.ObjectSerializerContext;
-import com.buildria.restmock.serializer.JacksonJsonSerializer;
-import com.buildria.restmock.serializer.ObjectSerializerFactory;
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.TestNameRule;
 import com.google.common.net.MediaType;

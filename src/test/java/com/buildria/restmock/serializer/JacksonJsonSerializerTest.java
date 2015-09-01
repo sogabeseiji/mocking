@@ -1,7 +1,5 @@
 package com.buildria.restmock.serializer;
 
-import com.buildria.restmock.serializer.ObjectSerializerContext;
-import com.buildria.restmock.serializer.JacksonJsonSerializer;
 import com.buildria.restmock.TestNameRule;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.json.JsonPath;

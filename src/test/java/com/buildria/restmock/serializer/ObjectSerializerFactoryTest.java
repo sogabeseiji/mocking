@@ -1,6 +1,5 @@
 package com.buildria.restmock.serializer;
 
-import com.buildria.restmock.serializer.ObjectSerializerFactory;
 import com.buildria.restmock.TestNameRule;
 import org.junit.Rule;
 import org.junit.Test;
