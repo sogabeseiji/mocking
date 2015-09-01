@@ -78,10 +78,10 @@ public class Call {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this)
-                .add("path", path).add("method", method).add("headers", headers).add("parameters", parameters).
-                add("body", DatatypeConverter.printHexBinary(body))
-                .toString();
+        return MoreObjects.toStringHelper(this).
+                add("path", path).add("method", method).add("headers", headers).add("parameters", parameters).
+                add("body", DatatypeConverter.printHexBinary(body)).
+                toString();
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(Call.class);

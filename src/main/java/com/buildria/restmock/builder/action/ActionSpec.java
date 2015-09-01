@@ -13,7 +13,6 @@ public abstract class ActionSpec {
         return actions;
     }
 
-
     public void addAction(Action action) {
         actions.add(action);
     }

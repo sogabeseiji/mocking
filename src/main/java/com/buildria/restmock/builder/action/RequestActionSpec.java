@@ -5,7 +5,7 @@ import org.hamcrest.Matcher;
 
 import static org.hamcrest.Matchers.equalTo;
 
-public class RequestActionSpec {
+public class RequestActionSpec extends ActionSpec {
 
     private final Matcher<?>  path;
 
