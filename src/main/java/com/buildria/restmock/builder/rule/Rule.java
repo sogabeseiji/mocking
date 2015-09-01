@@ -17,13 +17,23 @@ public abstract class Rule implements Predicate<RuleContext> {
 
     public static class RuleContext {
 
-        public Call call;
-        public List<Rule> rules;
+        private final Call call;
+
+        private final List<Rule> rules;
 
         public RuleContext(Call call, List<Rule> rules) {
             this.call = call;
             this.rules = rules;
         }
+
+        public Call getCall() {
+            return call;
+        }
+
+        public List<Rule> getRules() {
+            return rules;
+        }
+
     }
 
     private final String path;
@@ -53,7 +63,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         @Override
         public boolean apply(@Nonnull RuleContext ctx) {
             Objects.requireNonNull(ctx);
-            Call call = ctx.call;
+            Call call = ctx.getCall();
             return call.getPath().equalsIgnoreCase(getPath())
                     && method.equalsIgnoreCase(call.getMethod());
         }
@@ -76,7 +86,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         @Override
         public boolean apply(@Nonnull RuleContext ctx) {
             Objects.requireNonNull(ctx);
-            Call call = ctx.call;
+            Call call = ctx.getCall();
             Map<String, String> headers = call.getHeaders();
             for (Entry<String, String> entry : headers.entrySet()) {
                 String n = entry.getKey();
@@ -106,7 +116,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         @Override
         public boolean apply(@Nonnull RuleContext ctx) {
             Objects.requireNonNull(ctx);
-            Call call = ctx.call;
+            Call call = ctx.getCall();
             Map<String, List<String>> params = call.getParameters();
             List<String> vals = params.get(key);
             if (vals == null) {
