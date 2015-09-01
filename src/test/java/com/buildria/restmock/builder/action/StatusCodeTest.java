@@ -1,13 +1,16 @@
 package com.buildria.restmock.builder.action;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.action.Action.Header;
-import com.buildria.restmock.stub.StubHttpServer;
-import com.google.common.base.MoreObjects.ToStringHelper;
+import com.buildria.restmock.builder.action.Action.StatusCode;
+import com.google.common.base.MoreObjects;
+import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.DefaultHttpResponse;
+import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.HttpVersion;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -15,96 +18,56 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
-/**
- * Test for Action.
- *
- * @author Seiji Sogabe
- */
 public class StatusCodeTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
+    private StatusCode target;
+
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = null;
-        Action action = new ActionImpl(path);
+        int code = 200;
+        Action action = new StatusCode(path, code);
     }
 
-    @Test
-    public void testIsApplicableTrue() throws Exception {
-        StubHttpServer server = new StubHttpServer();
+    @Test(expected = NullPointerException.class)
+    public void testApplyResponseNull() throws Exception {
         Matcher<?> path = equalTo("/api/p");
-        Action action = new ActionImpl(path);
+        int code = 200;
 
-        boolean answer = action.isApplicable("/api/p");
-        assertThat(answer, is(true));
+        StatusCode action = new StatusCode(path, code);
+        action.apply(null, null);
     }
 
     @Test
-    public void testIsApplicableFalse() throws Exception {
-        StubHttpServer server = new StubHttpServer();
-        Matcher<?> path = Matchers.startsWith("/api/p");
-        Action action = new ActionImpl(path);
-
-        boolean answer = action.isApplicable("/api/q");
-        assertThat(answer, is(false));
-    }
-
-    @Test
-    public void testGetHeaderAction() {
-        StubHttpServer server = new StubHttpServer();
+    public void testApplyResponse() throws Exception {
         Matcher<?> path = equalTo("/api/p");
+        int code = 404;
 
-        server.addAction(new Action.StatusCode(path, 200));
-        server.addAction(new Action.Header(equalTo("/api/q"), "Content-Type", "application/json"));
-        server.addAction(new Action.Header(path, "Content-Type", "application/xml"));
+        StatusCode action = new StatusCode(path, code);
+        HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
+        HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        HttpResponse out = action.apply(req, res);
 
-        Action action = new ActionImpl(path);
-
-        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
-        assertThat(contentType, notNullValue());
-        assertThat(contentType.getValue(), is("application/xml"));
-    }
-
-    @Test
-    public void testGetHeaderActionCotentTypeNone() {
-        StubHttpServer server = new StubHttpServer();
-        Matcher<?> path = equalTo("/api/p");
-
-        server.addAction(new Action.Header(path, "Accept", "application/xml"));
-
-        Action action = new ActionImpl(path);
-
-        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
-        assertThat(contentType, nullValue());
+        assertThat(out, notNullValue());
+        assertThat(out.getStatus().code(), is(code));
     }
 
     @Test
     public void testObjects() {
-        StubHttpServer server = new StubHttpServer();
-        Matcher<?> path = Matchers.startsWith("/api/p");
-        Action action = new ActionImpl(path);
+        Matcher<?> path = equalTo("/api/p");
+        int code = 404;
 
-        ToStringHelper answer = action.objects();
+        StatusCode action = new StatusCode(path, code);
+
+        MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());
         assertThat(answer.toString(), containsString("path"));
+        assertThat(answer.toString(), containsString("code"));
     }
 
-    private static class ActionImpl extends Action {
-
-        public ActionImpl(Matcher<?> path) {
-            super(path);
-        }
-
-        @Override
-        public HttpResponse apply(HttpRequest req, HttpResponse res) {
-            return res;
-        }
-
-    }
 }
