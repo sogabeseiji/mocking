@@ -4,9 +4,11 @@ import com.buildria.restmock.builder.action.Action.Body;
 import com.buildria.restmock.builder.action.Action.Header;
 import com.buildria.restmock.builder.action.Action.RawBody;
 import com.buildria.restmock.builder.action.Action.StatusCode;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -59,6 +61,10 @@ public class ResponseActionSpec extends ActionSpec {
 
     public ResponseActionSpec rawBody(URL url) throws IOException {
         return rawBody(Resources.toByteArray(url));
+    }
+
+    public ResponseActionSpec rawBody(InputStream is) throws IOException {
+        return rawBody(ByteStreams.toByteArray(is));
     }
 
     public ResponseActionSpec body(Object content) {
