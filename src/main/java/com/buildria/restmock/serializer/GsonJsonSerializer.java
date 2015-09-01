@@ -3,6 +3,8 @@ package com.buildria.restmock.serializer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.IOException;
+import java.util.Objects;
+import javax.annotation.Nonnull;
 
 public class GsonJsonSerializer extends ObjectSerializer {
 
@@ -11,8 +13,8 @@ public class GsonJsonSerializer extends ObjectSerializer {
     }
 
     @Override
-    public String serialize() throws IOException {
-        Object obj = getCtx().getObjectToSerialize();
+    public String serialize(@Nonnull Object obj) throws IOException {
+        Objects.requireNonNull(obj);
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
         return gson.toJson(obj);

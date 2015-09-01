@@ -12,17 +12,10 @@ public class ObjectSerializerContext {
 
     private static final String GSON_CLASS = "com/google/gson/Gson.class";
 
-    private final Object objectToSerialize;
-
     private final String contentType;
 
-    public ObjectSerializerContext(Object target, String contentType) {
-        this.objectToSerialize = Objects.requireNonNull(target);
+    public ObjectSerializerContext(String contentType) {
         this.contentType = Objects.requireNonNull(contentType);
-    }
-
-    public Object getObjectToSerialize() {
-        return objectToSerialize;
     }
 
     public String getContentType() {

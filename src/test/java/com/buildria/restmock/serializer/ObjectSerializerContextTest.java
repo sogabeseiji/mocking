@@ -18,15 +18,16 @@ public class ObjectSerializerContextTest {
     @Test(expected = RestMockException.class)
     public void testCreateInvalidContentType() {
         Person person = new Person("Bob", 20);
-        ObjectSerializerContext ctx = new ObjectSerializerContext(person, MediaType.JPEG.toString());
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(MediaType.JPEG.toString());
         ObjectSerializerFactory.create(ctx);
     }
 
     @Test
     public void testCreateJAXB() {
         Person person = new Person("Bob", 20);
-        ObjectSerializerContext ctx = new ObjectSerializerContext(person,
-                MediaType.XML_UTF_8.toString());
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(MediaType.XML_UTF_8.toString());
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JAXBXmlSerializer.class));
@@ -35,8 +36,8 @@ public class ObjectSerializerContextTest {
     @Test
     public void testCreateJackson() {
         Person person = new Person("Bob", 20);
-        ObjectSerializerContext ctx = new ObjectSerializerContext(person,
-                MediaType.JSON_UTF_8.toString());
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JacksonJsonSerializer.class));
@@ -46,7 +47,7 @@ public class ObjectSerializerContextTest {
     public void testCreateGson() {
         Person person = new Person("Bob", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString()) {
+                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString()) {
                     @Override
                     protected boolean isJacksonEnabled() {
                         return false;
@@ -61,7 +62,7 @@ public class ObjectSerializerContextTest {
     public void testCreateNoJsonFound() throws Exception {
         Person person = new Person("Bob", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString()) {
+                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString()) {
                     @Override
                     protected boolean isGsonEnabled() {
                         return false;

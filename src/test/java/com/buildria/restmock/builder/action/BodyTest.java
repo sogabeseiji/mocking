@@ -99,9 +99,9 @@ public class BodyTest {
         String json = buf.toString(StandardCharsets.UTF_8);
 
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString());
+                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
         ObjectSerializer serializer = ObjectSerializerFactory.create(ctx);
-        String expected = serializer.serialize();
+        String expected = serializer.serialize(person);
 
         assertThat(json, is(expected));
     }

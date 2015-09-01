@@ -2,6 +2,7 @@ package com.buildria.restmock.serializer;
 
 import java.io.IOException;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 
 // CHECKSTYLE:OFF
 public abstract class ObjectSerializer {
@@ -17,6 +18,6 @@ public abstract class ObjectSerializer {
         return ctx;
     }
 
-    public abstract String serialize() throws IOException;
+    public abstract String serialize(@Nonnull Object obj) throws IOException;
 
 }

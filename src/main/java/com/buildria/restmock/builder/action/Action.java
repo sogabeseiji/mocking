@@ -207,12 +207,12 @@ public abstract class Action {
                 throw new RestMockException("No Content-Type found.");
             }
             ObjectSerializerContext ctx
-                    = new ObjectSerializerContext(content, contentType.getValue());
+                    = new ObjectSerializerContext(contentType.getValue());
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
                 return new RawBody(
                         getPath(),
-                        os.serialize().getBytes(StandardCharsets.UTF_8)).
+                        os.serialize(content).getBytes(StandardCharsets.UTF_8)).
                         apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");

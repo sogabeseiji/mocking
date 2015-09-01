@@ -28,14 +28,24 @@ public class JAXBXmlSerializerTest {
         target = new JAXBXmlSerializer(null);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testSerializeObjectNull() throws Exception {
+        Person person = null;
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(ContentType.XML.name());
+        target = new JAXBXmlSerializer(ctx);
+
+        String xml = target.serialize(person);
+    }
+
     @Test
     public void testSerialize() throws Exception {
         Person person = new Person("Bob", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(person, ContentType.XML.name());
+                = new ObjectSerializerContext(ContentType.XML.name());
         target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize();
+        String xml = target.serialize(person);
 
         assertThat(xml, notNullValue());
         XmlPath xp = new XmlPath(xml);
@@ -47,10 +57,10 @@ public class JAXBXmlSerializerTest {
     public void testSerializeNoAnnotation() throws Exception {
         Animal animal = new Animal("Pooh");
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(animal, ContentType.XML.name());
+                = new ObjectSerializerContext(ContentType.XML.name());
         target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize();
+        String xml = target.serialize(animal);
     }
 
     /**
