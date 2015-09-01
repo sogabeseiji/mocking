@@ -8,8 +8,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.restmock.builder.stub.RequestSpec.path;
-import static com.buildria.restmock.builder.verify.MethodSpec.get;
+import static com.buildria.restmock.builder.action.RequestActionSpec.when;
+import static com.buildria.restmock.builder.rule.MethodRuleSpec.get;
 import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -34,14 +34,13 @@ public class SampleCodeTest {
     public void testReadMeSampleCode() {
         Person person = new Person("Bob", 20);
 
-        // Restmock
-        restmock.
-                when(
-                    path("/api/p").
-                then().
-                    statusCode(SC_200_OK).
-                    contentType("application/json").
-                    body(person)
+        // RestMock
+        restmock.$(
+                    when("/api/p").
+                    then().
+                        statusCode(SC_200_OK).
+                        contentType("application/json").
+                        body(person)
         );
 
         // Rest-assured
@@ -57,9 +56,8 @@ public class SampleCodeTest {
                 body("name", is("Bob")).
                 body("old", is(20));
 
-        // Restmock
-        restmock.
-                verify(
+        // RestMock
+        restmock.$(
                     get("/api/p").
                     accept("application/json")
         );

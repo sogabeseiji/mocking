@@ -1,7 +1,7 @@
-package com.buildria.restmock.builder.stub;
+package com.buildria.restmock.builder.action;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.stub.Action.HeaderAction;
+import com.buildria.restmock.builder.action.Action.Header;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpRequest;
@@ -30,14 +30,12 @@ public class ActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = null;
         Action action = new ActionImpl(path);
     }
 
     @Test
     public void testIsApplicableTrue() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         Action action = new ActionImpl(path);
 
@@ -47,7 +45,6 @@ public class ActionTest {
 
     @Test
     public void testIsApplicableFalse() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = Matchers.startsWith("/api/p");
         Action action = new ActionImpl(path);
 
@@ -60,13 +57,13 @@ public class ActionTest {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
-        server.addAction(new Action.StatusCodeAction(path, 200));
-        server.addAction(new Action.HeaderAction(equalTo("/api/q"), "Content-Type", "application/json"));
-        server.addAction(new Action.HeaderAction(path, "Content-Type", "application/xml"));
+        server.addAction(new Action.StatusCode(path, 200));
+        server.addAction(new Action.Header(equalTo("/api/q"), "Content-Type", "application/json"));
+        server.addAction(new Action.Header(path, "Content-Type", "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        HeaderAction contentType = action.getHeaderAction("/api/p", "Content-Type", server.getActions());
+        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
         assertThat(contentType, notNullValue());
         assertThat(contentType.getValue(), is("application/xml"));
     }
@@ -76,23 +73,32 @@ public class ActionTest {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
-        server.addAction(new Action.HeaderAction(path, "Accept", "application/xml"));
+        server.addAction(new Action.Header(path, "Accept", "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        HeaderAction contentType = action.getHeaderAction("/api/p", "Content-Type", server.getActions());
+        Header contentType = action.getHeader("/api/p", "Content-Type", server.getActions());
         assertThat(contentType, nullValue());
     }
 
     @Test
     public void testObjects() {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = Matchers.startsWith("/api/p");
         Action action = new ActionImpl(path);
 
         ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());
         assertThat(answer.toString(), containsString("path"));
+    }
+
+    @Test
+    public void testToString() {
+        Matcher<?> path = Matchers.startsWith("/api/p");
+        Action action = new ActionImpl(path);
+
+        String answer = action.toString();
+        assertThat(answer, notNullValue());
+        assertThat(answer, containsString("path"));
     }
 
     private static class ActionImpl extends Action {
