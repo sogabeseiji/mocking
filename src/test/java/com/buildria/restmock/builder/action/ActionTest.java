@@ -91,6 +91,16 @@ public class ActionTest {
         assertThat(answer.toString(), containsString("path"));
     }
 
+    @Test
+    public void testToString() {
+        Matcher<?> path = Matchers.startsWith("/api/p");
+        Action action = new ActionImpl(path);
+
+        String answer = action.toString();
+        assertThat(answer, notNullValue());
+        assertThat(answer, containsString("path"));
+    }
+
     private static class ActionImpl extends Action {
 
         public ActionImpl(Matcher<?> path) {
