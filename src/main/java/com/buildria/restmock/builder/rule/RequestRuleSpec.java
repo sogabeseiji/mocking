@@ -3,7 +3,6 @@ package com.buildria.restmock.builder.rule;
 import com.buildria.restmock.builder.rule.Rule.Header;
 import com.buildria.restmock.builder.rule.Rule.Parameter;
 import com.google.common.net.MediaType;
-import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
 import static com.buildria.restmock.http.RMHttpHeaders.ACCEPT;
@@ -12,15 +11,12 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RequestRuleSpec extends RuleSpec {
 
-    @SuppressWarnings("PMD.UnusedPrivateField")
-    private final String path;
-
-    RequestRuleSpec(@Nonnull String path) {
-        this.path = path;
+    RequestRuleSpec() {
+        super();
     }
 
     public RequestRuleSpec header(String name, Matcher<?> value) {
-        addRule(new Header(path, name, value));
+        addRule(new Header(name, value));
         return this;
     }
 
@@ -61,7 +57,7 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec parameters(String key, String[] values) {
-        addRule(new Parameter(path, key, values));
+        addRule(new Parameter(key, values));
         return this;
     }
 

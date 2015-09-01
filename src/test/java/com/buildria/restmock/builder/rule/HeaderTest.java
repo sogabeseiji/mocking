@@ -28,26 +28,23 @@ public class HeaderTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorNameNull() throws Exception {
-        String path = "/api/p";
         String name = null;
         Matcher<?> value = equalTo("application/json");
-        target = new Header(path, name, value);
+        target = new Header(name, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValueNull() throws Exception {
-        String path = "/api/p";
         String name = CONTENT_TYPE;
         Matcher<?> value = null;
-        target = new Header(path, name, value);
+        target = new Header(name, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCtxNull() throws Exception {
-        String path = "/api/p";
         String name = CONTENT_TYPE;
         Matcher<?> value = equalTo("application/json");
-        target = new Header(path, name, value);
+        target = new Header(name, value);
 
         RuleContext ctx  = null;
         target.apply(ctx);
@@ -55,10 +52,9 @@ public class HeaderTest {
 
     @Test
     public void testApplyTrue() throws Exception {
-        String path = "/api/p";
         String name = CONTENT_TYPE;
         Matcher<?> value = equalTo("application/json");
-        target = new Header(path, name, value);
+        target = new Header(name, value);
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();
@@ -72,11 +68,10 @@ public class HeaderTest {
 
     @Test
     public void testApplyTrue2() throws Exception {
-        String path = "/api/p";
         String name = CONTENT_TYPE;
         @SuppressWarnings("unchecked")
         Matcher<?> value = anyOf(equalTo("application/json"), equalTo("application/xml"));
-        target = new Header(path, name, value);
+        target = new Header(name, value);
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();
@@ -90,10 +85,9 @@ public class HeaderTest {
 
     @Test
     public void testApplyFalse() throws Exception {
-        String path = "/api/p";
         String name = CONTENT_TYPE;
         Matcher<?> value = equalTo("application/json");
-        target = new Header(path, name, value);
+        target = new Header(name, value);
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();

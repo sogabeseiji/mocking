@@ -30,8 +30,8 @@ public class RuleSpecTest {
     public void setUp() throws Exception {
         target = new RuleSpecImpl();
         target.addRule(new Method("/api/p", "get"));
-        target.addRule(new Parameter("/api/p", "name", new String[] {"bob"}));
-        target.addRule(new Header("/api/p", CONTENT_TYPE, equalTo("application/json")));
+        target.addRule(new Parameter("name", new String[] {"bob"}));
+        target.addRule(new Header(CONTENT_TYPE, equalTo("application/json")));
     }
 
     @Test

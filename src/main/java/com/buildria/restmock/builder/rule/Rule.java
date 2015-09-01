@@ -36,16 +36,8 @@ public abstract class Rule implements Predicate<RuleContext> {
 
     }
 
-    private final String path;
-
-    public Rule(@Nonnull String path) {
-        Objects.requireNonNull(path);
-        this.path = path;
-    }
-
-    @Nonnull
-    public String getPath() {
-        return path;
+    public Rule() {
+        super();
     }
 
     @Override
@@ -53,10 +45,13 @@ public abstract class Rule implements Predicate<RuleContext> {
 
     public static class Method extends Rule {
 
+        private final String path;
+
         private final String method;
 
         public Method(@Nonnull String path, @Nonnull String method) {
-            super(path);
+            super();
+            this.path = Objects.requireNonNull(path);
             this.method = Objects.requireNonNull(method);
         }
 
@@ -64,7 +59,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         public boolean apply(@Nonnull RuleContext ctx) {
             Objects.requireNonNull(ctx);
             Call call = ctx.getCall();
-            return call.getPath().equalsIgnoreCase(getPath())
+            return call.getPath().equalsIgnoreCase(path)
                     && method.equalsIgnoreCase(call.getMethod());
         }
 
@@ -76,9 +71,8 @@ public abstract class Rule implements Predicate<RuleContext> {
 
         private final Matcher<?> value;
 
-        public Header(@Nonnull String path,
-                @Nonnull String name, @Nonnull Matcher<?> value) {
-            super(path);
+        public Header(@Nonnull String name, @Nonnull Matcher<?> value) {
+            super();
             this.name = Objects.requireNonNull(name);
             this.value = Objects.requireNonNull(value);
         }
@@ -106,8 +100,8 @@ public abstract class Rule implements Predicate<RuleContext> {
 
         private final String[] values;
 
-        public Parameter(@Nonnull String path, String key, @Nonnull String[] values) {
-            super(path);
+        public Parameter(String key, @Nonnull String[] values) {
+            super();
             this.key = Objects.requireNonNull(key);
             this.values = Objects.requireNonNull(values);
             Arrays.sort(this.values);
