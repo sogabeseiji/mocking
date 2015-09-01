@@ -58,7 +58,7 @@ public class RuleSpecTest {
         List<Call> calls = new ArrayList<>();
         Call c1 = mock(Call.class);
         when(c1.getPath()).thenReturn("/api/p");
-        when(c1.getMethod()).thenReturn("get");
+        when(c1.getMethod()).thenReturn("post");
 
         Map<String, List<String>> params = new HashMap<>();
         params.put("name", Arrays.asList("bob"));
@@ -77,7 +77,7 @@ public class RuleSpecTest {
         List<Call> calls = new ArrayList<>();
         Call c1 = mock(Call.class);
         when(c1.getPath()).thenReturn("/api/p");
-        when(c1.getMethod()).thenReturn("post");
+        when(c1.getMethod()).thenReturn("get");
 
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
@@ -87,6 +87,24 @@ public class RuleSpecTest {
         target.validate(calls);
     }
 
+    @Test(expected = AssertionError.class)
+    public void testValidateUnMatch3() throws Exception {
+        List<Call> calls = new ArrayList<>();
+        Call c1 = mock(Call.class);
+        when(c1.getPath()).thenReturn("/api/q");
+        when(c1.getMethod()).thenReturn("get");
+
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("name", Arrays.asList("bob"));
+        when(c1.getParameters()).thenReturn(params);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CONTENT_TYPE, "application/json");
+        when(c1.getHeaders()).thenReturn(headers);
+        calls.add(c1);
+
+        target.validate(calls);
+    }
 
     private static class RuleSpecImpl extends RuleSpec {
         //
