@@ -1,8 +1,8 @@
-package com.buildria.restmock.builder.verify;
+package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.verify.Rule.Header;
-import com.buildria.restmock.builder.verify.Rule.RuleContext;
+import com.buildria.restmock.builder.rule.Rule.Header;
+import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.http.RMHttpHeaders;
 import com.buildria.restmock.stub.Call;
 import java.util.HashMap;

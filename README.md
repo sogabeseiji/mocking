@@ -20,7 +20,7 @@ public class SampleCodeTest {
     private static final int PORT = 8888;
 
     @Rule
-    public Restmock restmock = new Restmock(PORT);
+    public RestMock restmock = new RestMock(PORT);
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -35,14 +35,13 @@ public class SampleCodeTest {
     public void testReadMeSampleCode() {
         Person person = new Person("Bob", 20);
 
-         // Restmock
-        restmock.
-                when(
-                    path("/api/p").
-                then().
-                    statusCode(SC_200_OK).
-                    contentType("application/json").
-                    body(person)
+        // RestMock
+        restmock.$(
+                    when("/api/p").
+                    then().
+                        statusCode(SC_200_OK).
+                        contentType("application/json").
+                        body(person)
         );
 
         // Rest-assured
@@ -58,14 +57,12 @@ public class SampleCodeTest {
                 body("name", is("Bob")).
                 body("old", is(20));
 
-        // Restmock
-        restmock.
-                verify(
+        // RestMock
+        restmock.$(
                     get("/api/p").
                     accept("application/json")
         );
     }
-
 (snip)
     
 }

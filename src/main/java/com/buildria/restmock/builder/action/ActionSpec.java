@@ -1,10 +1,10 @@
-package com.buildria.restmock.builder.stub;
+package com.buildria.restmock.builder.action;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // CHECKSTYLE:OFF
-public abstract class Spec {
+public abstract class ActionSpec {
 // CHECKSTYLE:ON
 
     private final List<Action> actions = new ArrayList<>();

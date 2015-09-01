@@ -1,4 +1,4 @@
-package com.buildria.restmock.builder.stub;
+package com.buildria.restmock.builder.action;
 
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.serializer.ObjectSerializer;
@@ -29,7 +29,7 @@ import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 public abstract class Action {
 // CHECKSTYLE:ON
 
-    protected final Matcher<?> path;
+    private final Matcher<?> path;
 
     public Action(@Nonnull Matcher<?> path) {
         this.path = Objects.requireNonNull(path);
@@ -45,10 +45,10 @@ public abstract class Action {
     }
 
     @Nullable
-    public HeaderAction getHeaderAction(String path, String headerName, List<Action> actions) {
+    public Header getHeader(String path, String headerName, List<Action> actions) {
         for (Action action : actions) {
-            if (action.isApplicable(path) && action instanceof HeaderAction) {
-                HeaderAction ha = (HeaderAction) action;
+            if (action.isApplicable(path) && action instanceof Header) {
+                Header ha = (Header) action;
                 if (ha.getHeader().equalsIgnoreCase(headerName)) {
                     return ha;
                 }
@@ -70,13 +70,13 @@ public abstract class Action {
     }
 
     /**
-     * StatusCodeAction.
+     * StatusCode.
      */
-    public static class StatusCodeAction extends Action {
+    public static class StatusCode extends Action {
 
         private final int code;
 
-        public StatusCodeAction(@Nonnull Matcher<?> path, int code) {
+        public StatusCode(@Nonnull Matcher<?> path, int code) {
             super(path);
             this.code = code;
         }
@@ -97,16 +97,16 @@ public abstract class Action {
     }
 
     /**
-     * HeaderAction.
+     * Header.
      */
-    public static class HeaderAction extends Action {
+    public static class Header extends Action {
 
         private final String header;
 
         private final String value;
 
         @Nonnull
-        public HeaderAction(@Nonnull Matcher<?> path,
+        public Header(@Nonnull Matcher<?> path,
                 @Nonnull String header, @Nonnull String value) {
             super(path);
             this.header = Objects.requireNonNull(header);
@@ -139,13 +139,13 @@ public abstract class Action {
     }
 
     /**
-     * RawBodyAction.
+     * RawBody.
      */
-    public static class RawBodyAction extends Action {
+    public static class RawBody extends Action {
 
         private final byte[] content;
 
-        public RawBodyAction(@Nonnull Matcher<?> path, @Nonnull byte[] content) {
+        public RawBody(@Nonnull Matcher<?> path, @Nonnull byte[] content) {
             super(path);
             this.content = Objects.requireNonNull(content);
         }
@@ -178,15 +178,15 @@ public abstract class Action {
     }
 
     /**
-     * BodyAction.
+     * Body.
      */
-    public static class BodyAction extends Action {
+    public static class Body extends Action {
 
         private final Object content;
 
         private final List<Action> actions;
 
-        public BodyAction(@Nonnull Matcher<?> path, @Nonnull Object content,
+        public Body(@Nonnull Matcher<?> path, @Nonnull Object content,
                 @Nonnull List<Action> actions) {
             super(path);
             this.content = Objects.requireNonNull(content);
@@ -202,7 +202,7 @@ public abstract class Action {
         public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
             Objects.requireNonNull(req);
             Objects.requireNonNull(res);
-            HeaderAction contentType = getHeaderAction(req.getUri(), CONTENT_TYPE, actions);
+            Header contentType = getHeader(req.getUri(), CONTENT_TYPE, actions);
             if (contentType == null) {
                 throw new RestMockException("No Content-Type found.");
             }
@@ -210,8 +210,10 @@ public abstract class Action {
                     = new ObjectSerializerContext(content, contentType.getValue());
             ObjectSerializer os = ObjectSerializerFactory.create(ctx);
             try {
-                return new RawBodyAction(
-                        path, os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).apply(req, res);
+                return new RawBody(
+                        getPath(),
+                        os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).
+                        apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");
             }

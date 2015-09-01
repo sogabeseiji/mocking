@@ -1,7 +1,7 @@
-package com.buildria.restmock.builder.stub;
+package com.buildria.restmock.builder.action;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.stub.Action.RawBodyAction;
+import com.buildria.restmock.builder.action.Action.RawBody;
 import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -25,19 +25,19 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class RawBodyActionTest {
+public class RawBodyTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private RawBodyAction target;
+    private RawBody target;
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
         Matcher<?> path = null;
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(path, content);
+        Action action = new RawBody(path, content);
     }
 
     @Test(expected = NullPointerException.class)
@@ -45,7 +45,7 @@ public class RawBodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         byte[] content = null;
 
-        Action action = new RawBodyAction(path, content);
+        Action action = new RawBody(path, content);
     }
 
     @Test(expected = NullPointerException.class)
@@ -53,7 +53,7 @@ public class RawBodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(path, content);
+        Action action = new RawBody(path, content);
         action.apply(null, null);
     }
 
@@ -62,7 +62,7 @@ public class RawBodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(path, content);
+        Action action = new RawBody(path, content);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         res.headers().add(ACCEPT, "application/xml");
@@ -86,7 +86,7 @@ public class RawBodyActionTest {
         Matcher<?> path = equalTo("/api/p");
         byte[] content = "content".getBytes();
 
-        Action action = new RawBodyAction(path, content);
+        Action action = new RawBody(path, content);
 
         MoreObjects.ToStringHelper answer = action.objects();
         assertThat(answer, notNullValue());

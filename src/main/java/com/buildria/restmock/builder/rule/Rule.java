@@ -1,6 +1,6 @@
-package com.buildria.restmock.builder.verify;
+package com.buildria.restmock.builder.rule;
 
-import com.buildria.restmock.builder.verify.Rule.RuleContext;
+import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Predicate;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         }
     }
 
-    protected final String path;
+    private final String path;
 
     public Rule(@Nonnull String path) {
         Objects.requireNonNull(path);
@@ -54,7 +54,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         public boolean apply(@Nonnull RuleContext ctx) {
             Objects.requireNonNull(ctx);
             Call call = ctx.call;
-            return call.getPath().equalsIgnoreCase(path)
+            return call.getPath().equalsIgnoreCase(getPath())
                     && method.equalsIgnoreCase(call.getMethod());
         }
 
