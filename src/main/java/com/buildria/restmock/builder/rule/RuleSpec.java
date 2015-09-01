@@ -21,13 +21,14 @@ public abstract class RuleSpec {
     }
 
     public void validate(List<Call> calls) {
-        Iterator<Call> it = calls.iterator();
+        List<Call> wrapped = new ArrayList<>(calls);
+        Iterator<Call> it = wrapped.iterator();
         while (it.hasNext()) {
             Call call = it.next();
             for (Rule rule : rules) {
                 if (!rule.apply(new RuleContext(call, rules))) {
                     it.remove();
-                    if (calls.isEmpty()) {
+                    if (wrapped.isEmpty()) {
                         throw new AssertionError(rule.getDescription());
                     }
                     break;

@@ -26,7 +26,6 @@ public class SampleCodeTest {
 
     @Before
     public void setUp() throws Exception {
-        // ポート番号
         RestAssured.port = PORT;
     }
 

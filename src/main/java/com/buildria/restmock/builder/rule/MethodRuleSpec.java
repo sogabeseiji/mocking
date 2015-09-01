@@ -11,8 +11,9 @@ public class MethodRuleSpec extends RuleSpec {
     }
 
     private RequestRuleSpec method(String path, String method) {
-        addRule(new Method(path, method));
-        return new RequestRuleSpec();
+        RequestRuleSpec spec = new RequestRuleSpec();
+        spec.addRule(new Method(path, method));
+        return spec;
     }
 
     public static RequestRuleSpec get(String path) {
