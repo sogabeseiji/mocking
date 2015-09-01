@@ -116,7 +116,7 @@ public class RuleSpecTest {
         when(c1.getMethod()).thenReturn("get");
 
         Map<String, List<String>> params = new HashMap<>();
-        params.put("name", Arrays.asList("bob"));
+        params.put("name", Arrays.asList("Bob"));
         when(c1.getParameters()).thenReturn(params);
 
         Map<String, String> headers = new HashMap<>();
@@ -131,6 +131,33 @@ public class RuleSpecTest {
             LOG.warn(e.getMessage());
             assertThat(e.getMessage(), containsString("[Method]"));
             assertThat(e.getMessage(), containsString("/api/p"));
+        }
+    }
+
+    @Test
+    public void testValidateUnMatch4() throws Exception {
+        List<Call> calls = new ArrayList<>();
+        Call c1 = mock(Call.class);
+        when(c1.getPath()).thenReturn("/api/p");
+        when(c1.getMethod()).thenReturn("get");
+
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("name", Arrays.asList("Bob"));
+        when(c1.getParameters()).thenReturn(params);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CONTENT_TYPE, "application/xml");
+        when(c1.getHeaders()).thenReturn(headers);
+        calls.add(c1);
+
+        try {
+            target.validate(calls);
+            fail();
+        } catch (AssertionError e) {
+            LOG.warn(e.getMessage());
+            assertThat(e.getMessage(), containsString("[Header]"));
+            assertThat(e.getMessage(), containsString(CONTENT_TYPE));
+            assertThat(e.getMessage(), containsString("application/json"));
         }
     }
 
