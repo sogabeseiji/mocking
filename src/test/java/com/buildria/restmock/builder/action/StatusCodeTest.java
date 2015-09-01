@@ -1,6 +1,5 @@
 package com.buildria.restmock.builder.action;
 
-import com.buildria.restmock.builder.action.Action;
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.action.Action.Header;
 import com.buildria.restmock.stub.StubHttpServer;
@@ -24,7 +23,7 @@ import static org.junit.Assert.assertThat;
  *
  * @author Seiji Sogabe
  */
-public class StatusCodeATest {
+public class StatusCodeTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();

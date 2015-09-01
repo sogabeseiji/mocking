@@ -1,6 +1,5 @@
 package com.buildria.restmock.builder.action;
 
-import com.buildria.restmock.builder.action.Action;
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.action.Action.RawBody;
 import com.google.common.base.MoreObjects;
@@ -26,7 +25,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class RawBodyActionTest {
+public class RawBodyTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
