@@ -13,11 +13,11 @@ public class RequestActionSpec {
         this.path = path;
     }
 
-    public static RequestActionSpec path(String path) {
-        return path(equalTo(Objects.requireNonNull(path)));
+    public static RequestActionSpec when(String path) {
+        return when(equalTo(Objects.requireNonNull(path)));
     }
 
-    public static RequestActionSpec path(Matcher<?> path) {
+    public static RequestActionSpec when(Matcher<?> path) {
         return new RequestActionSpec(path);
     }
 

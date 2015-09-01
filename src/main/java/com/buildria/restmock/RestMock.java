@@ -6,7 +6,7 @@ import com.buildria.restmock.stub.StubHttpServer;
 import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
 
-public class Restmock extends ExternalResource {
+public class RestMock extends ExternalResource {
 
     public static final int PORT = 8888;
 
@@ -14,11 +14,11 @@ public class Restmock extends ExternalResource {
 
     private final int port;
 
-    public Restmock() {
+    public RestMock() {
         this(PORT);
     }
 
-    public Restmock(int port) {
+    public RestMock(int port) {
         this.port = port;
     }
 
@@ -44,12 +44,12 @@ public class Restmock extends ExternalResource {
     }
 
     @Nonnull
-    public void when(ActionSpec spec) {
+    public void $(ActionSpec spec) {
         server.addActions(spec.getActions());
     }
 
     @Nonnull
-    public void verify(RuleSpec spec) {
+    public void $(RuleSpec spec) {
         spec.validate(server.getCalls());
     }
 }
