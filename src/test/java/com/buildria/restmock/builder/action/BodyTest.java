@@ -4,7 +4,9 @@ import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.TestNameRule;
 import com.buildria.restmock.builder.action.Action.Body;
 import com.buildria.restmock.builder.action.Action.Header;
+import com.buildria.restmock.serializer.ObjectSerializer;
 import com.buildria.restmock.serializer.ObjectSerializerContext;
+import com.buildria.restmock.serializer.ObjectSerializerFactory;
 import com.buildria.restmock.serializer.Person;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
@@ -26,7 +28,6 @@ import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.restmock.serializer.ObjectSerializer.JACKSON;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
@@ -99,7 +100,8 @@ public class BodyTest {
 
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(person, MediaType.JSON_UTF_8.toString());
-        String expected = JACKSON.serialize(ctx);
+        ObjectSerializer serializer = ObjectSerializerFactory.create(ctx);
+        String expected = serializer.serialize();
 
         assertThat(json, is(expected));
     }

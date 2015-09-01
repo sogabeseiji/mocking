@@ -4,7 +4,6 @@ import com.buildria.restmock.TestNameRule;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.xml.XmlPath;
 import java.io.IOException;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -24,14 +23,9 @@ public class JAXBXmlSerializerTest {
 
     private JAXBXmlSerializer target;
 
-    @Before
-    public void setUp() {
-        target = new JAXBXmlSerializer();
-    }
-
     @Test(expected = NullPointerException.class)
-    public void testSerializeCtxNull() throws Exception {
-        target.serialize(null);
+    public void testConstructorCtxNull() throws Exception {
+        target = new JAXBXmlSerializer(null);
     }
 
     @Test
@@ -39,8 +33,9 @@ public class JAXBXmlSerializerTest {
         Person person = new Person("Bob", 20);
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(person, ContentType.XML.name());
+        target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize(ctx);
+        String xml = target.serialize();
 
         assertThat(xml, notNullValue());
         XmlPath xp = new XmlPath(xml);
@@ -53,8 +48,9 @@ public class JAXBXmlSerializerTest {
         Animal animal = new Animal("Pooh");
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(animal, ContentType.XML.name());
+        target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize(ctx);
+        String xml = target.serialize();
     }
 
     /**

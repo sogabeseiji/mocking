@@ -212,7 +212,7 @@ public abstract class Action {
             try {
                 return new RawBody(
                         getPath(),
-                        os.serialize(ctx).getBytes(StandardCharsets.UTF_8)).
+                        os.serialize().getBytes(StandardCharsets.UTF_8)).
                         apply(req, res);
             } catch (IOException ex) {
                 throw new RestMockException("failed to serialize body.");

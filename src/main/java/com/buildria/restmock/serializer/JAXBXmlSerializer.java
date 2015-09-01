@@ -2,25 +2,24 @@ package com.buildria.restmock.serializer;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.Objects;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-public class JAXBXmlSerializer implements ObjectSerializer {
+public class JAXBXmlSerializer extends ObjectSerializer {
 
-    JAXBXmlSerializer() {
-        //
+    public JAXBXmlSerializer(ObjectSerializerContext ctx) {
+        super(ctx);
     }
 
     @Override
-    public String serialize(ObjectSerializerContext ctx) throws IOException {
-        Objects.requireNonNull(ctx);
-        Object obj = ctx.getObjectToSerialize();
+    public String serialize() throws IOException {
+        Object obj = getCtx().getObjectToSerialize();
         try {
             JAXBContext contextObj = JAXBContext.newInstance(obj.getClass());
             Marshaller marshallerObj = contextObj.createMarshaller();
-            marshallerObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
+            marshallerObj.setProperty(
+                    Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
             StringWriter sw = new StringWriter();
             marshallerObj.marshal(obj, sw);
             return sw.toString();

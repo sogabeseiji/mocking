@@ -1,26 +1,21 @@
 package com.buildria.restmock.serializer;
 
 import java.io.IOException;
+import java.util.Objects;
 
-public interface ObjectSerializer {
+public abstract class ObjectSerializer {
 
-     // JSON
-    /**
-     * ObjectSerializer for Gson.
-     */
-    ObjectSerializer GSON = new GsonJsonSerializer();
+    private final ObjectSerializerContext ctx;
 
-    /**
-     * ObjectSerializer for Jackson.
-     */
-    ObjectSerializer JACKSON = new JacksonJsonSerializer();
+    public ObjectSerializer(ObjectSerializerContext ctx) {
+        Objects.requireNonNull(ctx);
+        this.ctx = ctx;
+    }
 
-    // XML
-    /**
-     * ObjectSerializer for JAXB.
-     */
-    ObjectSerializer JAXB = new JAXBXmlSerializer();
+    public ObjectSerializerContext getCtx() {
+        return ctx;
+    }
 
-    String serialize(ObjectSerializerContext ctx) throws IOException;
+    public abstract String serialize() throws IOException;
 
 }

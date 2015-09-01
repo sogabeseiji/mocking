@@ -12,7 +12,7 @@ public class ObjectSerializerFactory {
 
     public static ObjectSerializer create(ObjectSerializerContext ctx) {
         Objects.requireNonNull(ctx);
-        return ctx.createStrategy();
+        return ctx.createObjectSerializer();
     }
 
 }
