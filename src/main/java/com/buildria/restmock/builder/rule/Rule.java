@@ -1,5 +1,6 @@
 package com.buildria.restmock.builder.rule;
 
+import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Joiner;
@@ -179,7 +180,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         }
 
         @Override
-        public boolean apply(RuleContext ctx) {
+        public boolean apply(@Nonnull RuleContext ctx) {
             Objects.requireNonNull(ctx);
             Call call = ctx.getCall();
 
@@ -198,7 +199,7 @@ public abstract class Rule implements Predicate<RuleContext> {
             } else if (Type.XML.equals(type)) {
                 obj = new XmlPath(content).get(path);
             } else {
-                obj = content;
+                throw new RestMockException("Not supported Content-Type.");
             }
 
             return matcher.matches(obj);
