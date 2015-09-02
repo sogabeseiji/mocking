@@ -1,5 +1,6 @@
 package com.buildria.restmock.builder.rule;
 
+import com.buildria.restmock.builder.rule.Rule.Body;
 import com.buildria.restmock.builder.rule.Rule.Header;
 import com.buildria.restmock.builder.rule.Rule.Parameter;
 import com.google.common.net.MediaType;
@@ -69,4 +70,8 @@ public class RequestRuleSpec extends RuleSpec {
         return parameters(key, values);
     }
 
+    public RequestRuleSpec body(String path, Matcher<?> matcher) {
+        addRule(new Body(path, matcher));
+        return this;
+    }
 }

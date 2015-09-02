@@ -9,7 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import static com.buildria.restmock.builder.action.RequestActionSpec.when;
-import static com.buildria.restmock.builder.rule.MethodRuleSpec.get;
+import static com.buildria.restmock.builder.rule.MethodRuleSpec.post;
 import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -46,8 +46,10 @@ public class SampleCodeTest {
         given().
                 log().all().
                 accept("application/json").
+                contentType("application/json").
+                body(person).
         when().
-                get("/api/p").
+                post("/api/p").
         then().
                 log().all().
                 statusCode(SC_200_OK).
@@ -57,8 +59,11 @@ public class SampleCodeTest {
 
         // RestMock
         restmock.$(
-                    get("/api/p").
-                    accept("application/json")
+                    post("/api/p").
+                    accept("application/json").
+                    contentType("application/json; charset=ISO-8859-1").
+                    body("name", is("Bob")).
+                    body("old", is(20))
         );
     }
 

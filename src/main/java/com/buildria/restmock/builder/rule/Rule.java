@@ -4,6 +4,9 @@ import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
+import com.jayway.restassured.path.json.JsonPath;
+import com.jayway.restassured.path.xml.XmlPath;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +14,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
+
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 
 // CHECKSTYLE:OFF
 public abstract class Rule implements Predicate<RuleContext> {
@@ -103,7 +108,7 @@ public abstract class Rule implements Predicate<RuleContext> {
         @Override
         public String getDescription() {
             return String.format("[Header] name: (%s) value: (%s)",
-                    name, value);
+                    name, value.toString());
         }
 
     }
@@ -143,4 +148,76 @@ public abstract class Rule implements Predicate<RuleContext> {
         }
     }
 
+    public static class Body extends Rule {
+
+        private enum Type {
+
+            XML("xml"), JSON("json"), OTHER("other");
+
+            public final String name;
+
+            private Type(String name) {
+                this.name = name;
+            }
+
+            public boolean matches(String contentType) {
+                if (contentType == null) {
+                    return false;
+                }
+                return contentType.contains(name);
+            }
+        }
+
+        private final String path;
+
+        private final Matcher<?> matcher;
+
+        public Body(String path, Matcher<?> matcher) {
+            super();
+            this.path = Objects.requireNonNull(path);
+            this.matcher = Objects.requireNonNull(matcher);
+        }
+
+        @Override
+        public boolean apply(RuleContext ctx) {
+            Objects.requireNonNull(ctx);
+            Call call = ctx.getCall();
+
+            // TODO
+            byte[] body = call.getBody();
+            if (body == null || body.length == 0) {
+                return matcher.matches(body);
+            }
+
+            String content = new String(body, StandardCharsets.UTF_8);
+            Type type = resolveType(ctx);
+
+            Object obj;
+            if (Type.JSON.equals(type)) {
+                obj = new JsonPath(content).get(path);
+            } else {
+                obj = new XmlPath(content).get(path);
+            }
+
+            return matcher.matches(obj);
+        }
+
+        private Type resolveType(RuleContext ctx) {
+            Call call = ctx.getCall();
+            String contentType = call.getHeaders().get(CONTENT_TYPE);
+            if (contentType != null) {
+                if (Type.XML.matches(contentType)) {
+                    return Type.XML;
+                }
+            }
+            return Type.JSON;
+        }
+
+        @Override
+        public String getDescription() {
+            return String.format("[Body] path: (%s) matcher: (%s)",
+                    path, matcher.toString());
+        }
+
+    }
 }

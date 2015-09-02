@@ -179,7 +179,18 @@
             <version>2.3.1</version>
             <scope>provided</scope>
         </dependency>
-        
+
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jayway.restassured</groupId>
+            <artifactId>xml-path</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+                
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -220,18 +231,6 @@
         <dependency>
             <groupId>com.jayway.restassured</groupId>
             <artifactId>rest-assured</artifactId>
-            <version>2.5.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jayway.restassured</groupId>
-            <artifactId>json-path</artifactId>
-            <version>2.5.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.jayway.restassured</groupId>
-            <artifactId>xml-path</artifactId>
             <version>2.5.0</version>
             <scope>test</scope>
         </dependency>

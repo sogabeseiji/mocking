@@ -2,7 +2,7 @@ package com.buildria.restmock.stub;
 
 import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
-import io.netty.handler.codec.http.HttpContent;
+import io.netty.buffer.ByteBufHolder;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
 import java.util.List;
@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +41,8 @@ public class Call {
         for (Map.Entry<String, String> entry : req.headers().entries()) {
             call.headers.put(entry.getKey(), entry.getValue());
         }
-        if (req instanceof HttpContent) {
-            ByteBuf buf = ((HttpContent) req).content();
+        if (req instanceof ByteBufHolder) {
+            ByteBuf buf = ((ByteBufHolder) req).content();
             if (buf != null) {
                 call.body = buf.copy().array();
             }
@@ -71,7 +72,7 @@ public class Call {
         return parameters;
     }
 
-    @Nonnull
+    @Nullable
     public byte[] getBody() {
         return body;
     }
