@@ -1,6 +1,7 @@
 package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
+import com.buildria.restmock.builder.rule.Rule.Body;
 import com.buildria.restmock.builder.rule.Rule.Header;
 import com.buildria.restmock.builder.rule.Rule.Method;
 import com.buildria.restmock.builder.rule.Rule.Parameter;
@@ -19,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
@@ -29,6 +31,8 @@ public class RuleSpecTest {
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
+    private static final String EXPECTED_JSON
+            = "{ \"name\": \"Bob\", \"old\": 19}";
     private RuleSpec target;
 
     @Before
@@ -37,6 +41,7 @@ public class RuleSpecTest {
         target.addRule(new Method("/api/p", "get"));
         target.addRule(new Parameter("name", new String[] {"Bob"}));
         target.addRule(new Header(CONTENT_TYPE, equalTo("application/json")));
+        target.addRule(new Body("name", is("Bob")));
     }
 
     @Test
@@ -45,6 +50,7 @@ public class RuleSpecTest {
         Call c1 = mock(Call.class);
         when(c1.getPath()).thenReturn("/api/p");
         when(c1.getMethod()).thenReturn("get");
+        when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
         Map<String, List<String>> params = new HashMap<>();
         params.put("name", Arrays.asList("Bob"));
@@ -64,6 +70,7 @@ public class RuleSpecTest {
         Call c1 = mock(Call.class);
         when(c1.getPath()).thenReturn("/api/p");
         when(c1.getMethod()).thenReturn("post");
+        when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
         Map<String, List<String>> params = new HashMap<>();
         params.put("name", Arrays.asList("bob"));
@@ -91,6 +98,7 @@ public class RuleSpecTest {
         Call c1 = mock(Call.class);
         when(c1.getPath()).thenReturn("/api/p");
         when(c1.getMethod()).thenReturn("get");
+        when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
@@ -119,6 +127,8 @@ public class RuleSpecTest {
         params.put("name", Arrays.asList("Bob"));
         when(c1.getParameters()).thenReturn(params);
 
+        when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
+
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(c1.getHeaders()).thenReturn(headers);
@@ -145,6 +155,8 @@ public class RuleSpecTest {
         params.put("name", Arrays.asList("Bob"));
         when(c1.getParameters()).thenReturn(params);
 
+        when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
+
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/xml");
         when(c1.getHeaders()).thenReturn(headers);
@@ -158,6 +170,33 @@ public class RuleSpecTest {
             assertThat(e.getMessage(), containsString("[Header]"));
             assertThat(e.getMessage(), containsString(CONTENT_TYPE));
             assertThat(e.getMessage(), containsString("application/json"));
+        }
+    }
+
+    @Test
+    public void testValidateBodyUnMatch() throws Exception {
+        List<Call> calls = new ArrayList<>();
+        Call c1 = mock(Call.class);
+        when(c1.getPath()).thenReturn("/api/p");
+        when(c1.getMethod()).thenReturn("get");
+        when(c1.getBody()).thenReturn("".getBytes("UTF-8"));
+
+        Map<String, List<String>> params = new HashMap<>();
+        params.put("name", Arrays.asList("Bob"));
+        when(c1.getParameters()).thenReturn(params);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CONTENT_TYPE, "application/json");
+        when(c1.getHeaders()).thenReturn(headers);
+        calls.add(c1);
+
+        try {
+            target.validate(calls);
+        } catch (AssertionError e) {
+            LOG.warn(e.getMessage());
+            assertThat(e.getMessage(), containsString("[Body]"));
+            assertThat(e.getMessage(), containsString("name"));
+            assertThat(e.getMessage(), containsString("Bob"));
         }
     }
 
