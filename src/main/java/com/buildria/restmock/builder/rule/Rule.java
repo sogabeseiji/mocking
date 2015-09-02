@@ -154,7 +154,7 @@ public abstract class Rule implements Predicate<RuleContext> {
 
             XML("xml"), JSON("json"), OTHER("other");
 
-            public final String name;
+            private final String name;
 
             private Type(String name) {
                 this.name = name;
@@ -205,10 +205,8 @@ public abstract class Rule implements Predicate<RuleContext> {
         private Type resolveType(RuleContext ctx) {
             Call call = ctx.getCall();
             String contentType = call.getHeaders().get(CONTENT_TYPE);
-            if (contentType != null) {
-                if (Type.XML.matches(contentType)) {
-                    return Type.XML;
-                }
+            if (contentType != null && Type.XML.matches(contentType)) {
+                return Type.XML;
             }
             return Type.JSON;
         }
