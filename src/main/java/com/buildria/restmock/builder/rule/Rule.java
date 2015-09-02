@@ -151,6 +151,7 @@ public abstract class Rule implements Predicate<RuleContext> {
 
     public static class Body extends Rule {
 
+        // TODO
         private enum Type {
 
             XML("xml"), JSON("json"), OTHER("other");
@@ -191,29 +192,19 @@ public abstract class Rule implements Predicate<RuleContext> {
             }
 
             String content = new String(body, StandardCharsets.UTF_8);
-            Type type = resolveType(ctx);
-
-            Object obj;
-            if (Type.JSON.equals(type)) {
-                obj = new JsonPath(content).get(path);
-            } else if (Type.XML.equals(type)) {
-                obj = new XmlPath(content).get(path);
-            } else {
-                throw new RestMockException("Not supported Content-Type.");
-            }
+            String ContentType = call.getHeaders().get(CONTENT_TYPE);
+            Object obj = convertContent(ContentType, content, path);
 
             return matcher.matches(obj);
         }
 
-        private Type resolveType(RuleContext ctx) {
-            Call call = ctx.getCall();
-            String contentType = call.getHeaders().get(CONTENT_TYPE);
+        private Object convertContent(String contentType, String content, String path) {
             if (Type.XML.matches(contentType)) {
-                return Type.XML;
+                return  new XmlPath(content).get(path);
             } else if (Type.JSON.matches(contentType)) {
-                return Type.JSON;
+                return  new JsonPath(content).get(path);
             }
-            return Type.OTHER;
+            throw new RestMockException("Not supported Content-Type.");
         }
 
         @Override
