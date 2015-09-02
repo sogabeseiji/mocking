@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import static com.buildria.restmock.builder.action.RequestActionSpec.when;
 import static com.buildria.restmock.builder.rule.MethodRuleSpec.get;
+import static com.buildria.restmock.builder.rule.MethodRuleSpec.put;
 import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
@@ -181,27 +182,36 @@ public class StubSpecTest {
                 then().
                     statusCode(SC_200_OK).
                     body(p).
-                    contentType(MediaType.JSON_UTF_8)
+                    contentType(MediaType.XML_UTF_8)
         );
 
         Response r =
                 given().
                 log().all().
-                accept(ContentType.JSON).
-                contentType(ContentType.JSON).
+                accept(ContentType.XML).
+                contentType(ContentType.XML).
                 body(p).
         when().
                 put("/api/p").
         then().
                 log().all().
                 statusCode(200).
-                contentType(ContentType.JSON).
-                body("name", is("\u3042\u3044\u3046\u3048\u304a")).
-                body("old", is(19)).
+                contentType(ContentType.XML).
+                body("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
+                body("person.old", is("19")).
         extract().
                 response();
 
         LOG.debug("### body: {}", r.getBody().asString());
+
+        restmock.$(
+                put("/api/p").
+                        accept(containsString("application/xml")).
+                        contentType(containsString("pplication/xml")).
+                        body("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
+                        body("person.old", is("19"))
+
+        );
     }
 
     @Test

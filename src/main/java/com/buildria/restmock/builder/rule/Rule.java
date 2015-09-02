@@ -195,8 +195,10 @@ public abstract class Rule implements Predicate<RuleContext> {
             Object obj;
             if (Type.JSON.equals(type)) {
                 obj = new JsonPath(content).get(path);
-            } else {
+            } else if (Type.XML.equals(type)) {
                 obj = new XmlPath(content).get(path);
+            } else {
+                obj = content;
             }
 
             return matcher.matches(obj);
@@ -205,10 +207,12 @@ public abstract class Rule implements Predicate<RuleContext> {
         private Type resolveType(RuleContext ctx) {
             Call call = ctx.getCall();
             String contentType = call.getHeaders().get(CONTENT_TYPE);
-            if (contentType != null && Type.XML.matches(contentType)) {
+            if (Type.XML.matches(contentType)) {
                 return Type.XML;
+            } else if (Type.JSON.matches(contentType)) {
+                return Type.JSON;
             }
-            return Type.JSON;
+            return Type.OTHER;
         }
 
         @Override
