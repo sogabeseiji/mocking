@@ -15,13 +15,14 @@ public class GsonJsonSerializer extends ObjectSerializer {
         super(ctx);
     }
 
-    // TODO charrset
     @Override
     public byte[] serialize(@Nonnull Object obj) throws IOException {
         Objects.requireNonNull(obj);
+
         GsonBuilder builder = new GsonBuilder();
         builder.disableHtmlEscaping();
         Gson gson = builder.create();
+
         Charset charset = getCtx().getCharset();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (OutputStreamWriter osw = new OutputStreamWriter(baos, charset)) {
