@@ -1,7 +1,6 @@
 package com.buildria.restmock.builder.action;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.action.Action.Header;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpRequest;
@@ -59,13 +58,13 @@ public class ActionTest {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
-        server.addAction(new Action.StatusCode(path, 200));
-        server.addAction(new Action.Header(equalTo("/api/q"), CONTENT_TYPE, "application/json"));
-        server.addAction(new Action.Header(path, CONTENT_TYPE, "application/xml"));
+        server.addAction(new StatusCodeAction(path, 200));
+        server.addAction(new HeaderAction(equalTo("/api/q"), CONTENT_TYPE, "application/json"));
+        server.addAction(new HeaderAction(path, CONTENT_TYPE, "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        Header contentType = action.getHeader("/api/p", CONTENT_TYPE, server.getActions());
+        HeaderAction contentType = action.getHeader("/api/p", CONTENT_TYPE, server.getActions());
         assertThat(contentType, notNullValue());
         assertThat(contentType.getValue(), is("application/xml"));
     }
@@ -75,11 +74,11 @@ public class ActionTest {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
 
-        server.addAction(new Action.Header(path, ACCEPT, "application/xml"));
+        server.addAction(new HeaderAction(path, ACCEPT, "application/xml"));
 
         Action action = new ActionImpl(path);
 
-        Header contentType = action.getHeader("/api/p", CONTENT_TYPE, server.getActions());
+        HeaderAction contentType = action.getHeader("/api/p", CONTENT_TYPE, server.getActions());
         assertThat(contentType, nullValue());
     }
 

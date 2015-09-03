@@ -1,7 +1,6 @@
 package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.rule.Rule.Parameter;
 import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import java.util.Arrays;
@@ -16,32 +15,32 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ParameterTest {
+public class ParameterRuleTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private Parameter target;
+    private ParameterRule target;
 
     @Test(expected = NullPointerException.class)
     public void testConstructorKeyNull() throws Exception {
         String key = null;
         String[] values = new String[] {"values"};
-        target = new Parameter(key, values);
+        target = new ParameterRule(key, values);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValuesNull() throws Exception {
         String key = "key";
         String[] values = null;
-        target = new Parameter(key, values);
+        target = new ParameterRule(key, values);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
         String key = "key";
         String[] values = new String[] {"values"};
-        target = new Parameter(key, values);
+        target = new ParameterRule(key, values);
 
         Call call = null;
         boolean actual = target.apply(new RuleContext(call, null));
@@ -51,7 +50,7 @@ public class ParameterTest {
     public void testApplyOneParams() throws Exception {
         String key = "key";
         String[] values = new String[]{"value1"};
-        target = new Parameter(key, values);
+        target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -68,7 +67,7 @@ public class ParameterTest {
     public void testApplyTwoParams() throws Exception {
         String key = "key";
         String[] values = new String[]{"value1", "value2"};
-        target = new Parameter(key, values);
+        target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -85,7 +84,7 @@ public class ParameterTest {
     public void testApplyFalse() throws Exception {
         String key = "key";
         String[] values = new String[]{"value1"};
-        target = new Parameter(key, values);
+        target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();
@@ -102,7 +101,7 @@ public class ParameterTest {
     public void testApplyFalse2() throws Exception {
         String key = "key";
         String[] values = new String[]{"value1"};
-        target = new Parameter(key, values);
+        target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
         Map<String, List<String>> params = new HashMap<>();

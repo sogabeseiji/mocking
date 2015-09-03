@@ -2,9 +2,9 @@ package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.rule.Rule.Body;
 import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
+import com.google.common.net.MediaType;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,12 +20,12 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class BodyTest {
+public class BodyRuleTest {
 
     @org.junit.Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private Body target;
+    private BodyRule target;
 
     private static final String EXPECTED_XML
             = "<person>"
@@ -40,21 +40,21 @@ public class BodyTest {
     public void testConstructorPathNull() throws Exception {
         String path = null;
         Matcher<?> matcher = equalTo("20");
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorMatcherNull() throws Exception {
         String path = "person.name";
         Matcher<?> matcher = null;
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyNull() throws Exception {
         String path = "person.name";
         Matcher<?> matcher = equalTo("20");
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
         target.apply(null);
     }
 
@@ -62,7 +62,7 @@ public class BodyTest {
     public void testApplyBodyNull() throws Exception {
         String path = "person.name";
         Matcher<?> matcher = equalTo("20");
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(null);
@@ -78,7 +78,7 @@ public class BodyTest {
     public void testApplyBodyEmpty() throws Exception {
         String path = "person.name";
         Matcher<?> matcher = equalTo("20");
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(new byte[0]);
@@ -94,13 +94,14 @@ public class BodyTest {
     public void testApplyBodyXmlMatch() throws Exception {
         String path = "person.old";
         Matcher<?> matcher = equalTo("19");
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
+        when(call.getContentType()).thenReturn(MediaType.parse("application/xml"));
         List<Rule> rules = Collections.emptyList();
         RuleContext ctx = new RuleContext(call, rules);
 
@@ -113,13 +114,14 @@ public class BodyTest {
     public void testApplyBodyXmlUnMatch() throws Exception {
         String path = "person.old";
         Matcher<?> matcher = equalTo("20");
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
+        when(call.getContentType()).thenReturn(MediaType.parse("application/xml"));
         List<Rule> rules = Collections.emptyList();
         RuleContext ctx = new RuleContext(call, rules);
 
@@ -132,13 +134,14 @@ public class BodyTest {
     public void testApplyBodyJsonMatch() throws Exception {
         String path = "old";
         Matcher<?> matcher = equalTo(19);
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
+        when(call.getContentType()).thenReturn(MediaType.parse("application/json"));
         List<Rule> rules = Collections.emptyList();
         RuleContext ctx = new RuleContext(call, rules);
 
@@ -151,13 +154,14 @@ public class BodyTest {
     public void testApplyBodyJsonUnMatch() throws Exception {
         String path = "old";
         Matcher<?> matcher = equalTo(20);
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
+        when(call.getContentType()).thenReturn(MediaType.parse("application/json"));
         List<Rule> rules = Collections.emptyList();
         RuleContext ctx = new RuleContext(call, rules);
 
@@ -170,13 +174,28 @@ public class BodyTest {
     public void testApplyNotSupported() throws Exception {
         String path = "old";
         Matcher<?> matcher = equalTo(20);
-        target = new Body(path, matcher);
+        target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
         Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/png");
+        headers.put(CONTENT_TYPE, "image/png");
+        when(call.getContentType()).thenReturn(MediaType.parse("image/png"));
         when(call.getHeaders()).thenReturn(headers);
+        List<Rule> rules = Collections.emptyList();
+        RuleContext ctx = new RuleContext(call, rules);
+
+        boolean answer = target.apply(ctx);
+    }
+
+    @Test(expected = RestMockException.class)
+    public void testApplyNoConentType() throws Exception {
+        String path = "person.old";
+        Matcher<?> matcher = equalTo("20");
+        target = new BodyRule(path, matcher);
+
+        Call call = mock(Call.class);
+        when(call.getBody()).thenReturn(EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
         List<Rule> rules = Collections.emptyList();
         RuleContext ctx = new RuleContext(call, rules);
 

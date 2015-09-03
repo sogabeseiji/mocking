@@ -23,7 +23,7 @@ public class JacksonJsonSerializer extends ObjectSerializer {
             JsonGenerator g = new JsonFactory().createGenerator(
                     out, JsonEncoding.UTF8);
             mapper.writeValue(g, obj);
-            return out.toString("UTF-8");
+            return out.toString(getCtx().getCharset().toString());
         }
     }
 

@@ -1,7 +1,5 @@
 package com.buildria.restmock.builder.rule;
 
-import com.buildria.restmock.builder.rule.Rule.Method;
-
 public class MethodRuleSpec extends RuleSpec {
 
     private MethodRuleSpec() {
@@ -10,7 +8,7 @@ public class MethodRuleSpec extends RuleSpec {
 
     private static RequestRuleSpec method(String path, String method) {
         RequestRuleSpec spec = new RequestRuleSpec();
-        spec.addRule(new Method(path, method));
+        spec.addRule(new MethodRule(path, method));
         return spec;
     }
 

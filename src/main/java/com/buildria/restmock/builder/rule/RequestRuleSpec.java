@@ -1,8 +1,5 @@
 package com.buildria.restmock.builder.rule;
 
-import com.buildria.restmock.builder.rule.Rule.Body;
-import com.buildria.restmock.builder.rule.Rule.Header;
-import com.buildria.restmock.builder.rule.Rule.Parameter;
 import com.google.common.net.MediaType;
 import org.hamcrest.Matcher;
 
@@ -17,7 +14,7 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec header(String name, Matcher<?> value) {
-        addRule(new Header(name, value));
+        addRule(new HeaderRule(name, value));
         return this;
     }
 
@@ -58,7 +55,7 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec parameters(String key, String[] values) {
-        addRule(new Parameter(key, values));
+        addRule(new ParameterRule(key, values));
         return this;
     }
 
@@ -71,7 +68,7 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec body(String path, Matcher<?> matcher) {
-        addRule(new Body(path, matcher));
+        addRule(new BodyRule(path, matcher));
         return this;
     }
 }

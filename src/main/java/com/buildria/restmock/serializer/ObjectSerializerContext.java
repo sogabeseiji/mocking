@@ -3,7 +3,10 @@ package com.buildria.restmock.serializer;
 import com.buildria.restmock.RestMockException;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import javax.annotation.Nonnull;
 
 public class ObjectSerializerContext {
 
@@ -14,25 +17,49 @@ public class ObjectSerializerContext {
 
     private final String contentType;
 
+    private final String type;
+
+    private final String subtype;
+
+    private final Charset charset;
+
     public ObjectSerializerContext(String contentType) {
         this.contentType = Objects.requireNonNull(contentType);
+        MediaType mt = MediaType.parse(contentType);
+        this.type = mt.type();
+        this.subtype = mt.subtype();
+        this.charset = mt.charset().or(StandardCharsets.UTF_8);
     }
 
+    @Nonnull
     public String getContentType() {
         return contentType;
     }
 
-    protected ObjectSerializer createObjectSerializer() {
-        MediaType type = MediaType.parse(contentType);
+    @Nonnull
+    public String getType() {
+        return type;
+    }
 
-        if ("json".equalsIgnoreCase(type.subtype())) {
+    @Nonnull
+    public String getSubtype() {
+        return subtype;
+    }
+
+    @Nonnull
+    public Charset getCharset() {
+        return charset;
+    }
+
+    protected ObjectSerializer createObjectSerializer() {
+        if ("json".equalsIgnoreCase(subtype)) {
             if (isJacksonEnabled()) {
                 return new JacksonJsonSerializer(this);
             } else if (isGsonEnabled()) {
                 return new GsonJsonSerializer(this);
             }
             throw new RestMockException("No Json library found.");
-        } else if ("xml".equalsIgnoreCase(type.subtype())) {
+        } else if ("xml".equalsIgnoreCase(subtype)) {
             return new JAXBXmlSerializer(this);
         }
 

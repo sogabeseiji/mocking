@@ -1,11 +1,8 @@
 package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.rule.Rule.Body;
-import com.buildria.restmock.builder.rule.Rule.Header;
-import com.buildria.restmock.builder.rule.Rule.Method;
-import com.buildria.restmock.builder.rule.Rule.Parameter;
 import com.buildria.restmock.stub.Call;
+import com.google.common.net.MediaType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,10 +35,10 @@ public class RuleSpecTest {
     @Before
     public void setUp() throws Exception {
         target = new RuleSpecImpl();
-        target.addRule(new Method("/api/p", "get"));
-        target.addRule(new Parameter("name", new String[] {"Bob"}));
-        target.addRule(new Header(CONTENT_TYPE, equalTo("application/json")));
-        target.addRule(new Body("name", is("Bob")));
+        target.addRule(new MethodRule("/api/p", "get"));
+        target.addRule(new ParameterRule("name", new String[] {"Bob"}));
+        target.addRule(new HeaderRule(CONTENT_TYPE, equalTo("application/json")));
+        target.addRule(new BodyRule("name", is("Bob")));
     }
 
     @Test
@@ -59,6 +56,7 @@ public class RuleSpecTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(c1.getHeaders()).thenReturn(headers);
+        when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
 
         target.validate(calls);
@@ -79,6 +77,7 @@ public class RuleSpecTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(c1.getHeaders()).thenReturn(headers);
+        when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
 
         try {
@@ -103,6 +102,7 @@ public class RuleSpecTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(c1.getHeaders()).thenReturn(headers);
+        when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
 
         try {
@@ -132,6 +132,7 @@ public class RuleSpecTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(c1.getHeaders()).thenReturn(headers);
+        when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
 
         try {
@@ -159,6 +160,7 @@ public class RuleSpecTest {
 
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/xml");
+        when(c1.getContentType()).thenReturn(MediaType.parse("application/xml"));
         when(c1.getHeaders()).thenReturn(headers);
         calls.add(c1);
 
@@ -188,6 +190,7 @@ public class RuleSpecTest {
         Map<String, String> headers = new HashMap<>();
         headers.put(CONTENT_TYPE, "application/json");
         when(c1.getHeaders()).thenReturn(headers);
+        when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
 
         try {

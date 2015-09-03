@@ -1,6 +1,7 @@
 package com.buildria.restmock.stub;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.net.MediaType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.handler.codec.http.HttpRequest;
@@ -15,6 +16,8 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.buildria.restmock.http.RMHttpHeaders.CONTENT_TYPE;
+
 public class Call {
 
     private String path;
@@ -26,6 +29,8 @@ public class Call {
     private final Map<String, List<String>> parameters = new ConcurrentHashMap<>();
 
     private byte[] body = new byte[]{};
+
+    private MediaType contentType;
 
     private Call() {
         //
@@ -40,6 +45,9 @@ public class Call {
         call.method = req.getMethod().name();
         for (Map.Entry<String, String> entry : req.headers().entries()) {
             call.headers.put(entry.getKey(), entry.getValue());
+            if (CONTENT_TYPE.equalsIgnoreCase(entry.getKey())) {
+                call.contentType = MediaType.parse(entry.getValue());
+            }
         }
         if (req instanceof ByteBufHolder) {
             ByteBuf buf = ((ByteBufHolder) req).content();
@@ -75,6 +83,11 @@ public class Call {
     @Nullable
     public byte[] getBody() {
         return body;
+    }
+
+    @Nullable
+    public MediaType getContentType() {
+        return contentType;
     }
 
     @Override

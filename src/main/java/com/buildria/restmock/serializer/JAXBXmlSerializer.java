@@ -22,6 +22,7 @@ public class JAXBXmlSerializer extends ObjectSerializer {
             Marshaller marshallerObj = contextObj.createMarshaller();
             marshallerObj.setProperty(
                     Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
+            marshallerObj.setProperty(Marshaller.JAXB_ENCODING, getCtx().getCharset().toString());
             StringWriter sw = new StringWriter();
             marshallerObj.marshal(obj, sw);
             return sw.toString();

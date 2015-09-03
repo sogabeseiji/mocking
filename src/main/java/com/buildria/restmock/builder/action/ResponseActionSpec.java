@@ -1,9 +1,5 @@
 package com.buildria.restmock.builder.action;
 
-import com.buildria.restmock.builder.action.Action.Body;
-import com.buildria.restmock.builder.action.Action.Header;
-import com.buildria.restmock.builder.action.Action.RawBody;
-import com.buildria.restmock.builder.action.Action.StatusCode;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
@@ -29,7 +25,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec statusCode(int code) {
-        addAction(new StatusCode(path, code));
+        addAction(new StatusCodeAction(path, code));
         return this;
     }
 
@@ -42,7 +38,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec header(String name, String value) {
-        addAction(new Header(path, name, value));
+        addAction(new HeaderAction(path, name, value));
         return this;
     }
 
@@ -55,7 +51,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec rawBody(byte[] content) {
-        addAction(new RawBody(path, content));
+        addAction(new RawBodyAction(path, content));
         return this;
     }
 
@@ -68,7 +64,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec body(Object content) {
-        addAction(new Body(path, content, getActions()));
+        addAction(new BodyAction(path, content, getActions()));
         return this;
     }
 

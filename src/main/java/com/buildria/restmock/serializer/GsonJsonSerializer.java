@@ -12,10 +12,12 @@ public class GsonJsonSerializer extends ObjectSerializer {
         super(ctx);
     }
 
+    // TODO charrset
     @Override
     public String serialize(@Nonnull Object obj) throws IOException {
         Objects.requireNonNull(obj);
         GsonBuilder builder = new GsonBuilder();
+        builder.disableHtmlEscaping();
         Gson gson = builder.create();
         return gson.toJson(obj);
     }
