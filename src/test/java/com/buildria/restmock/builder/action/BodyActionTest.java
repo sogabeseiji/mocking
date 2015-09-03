@@ -8,7 +8,6 @@ import com.buildria.restmock.serializer.ObjectSerializerFactory;
 import com.buildria.restmock.serializer.Person;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
-import com.google.common.net.MediaType;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpRequest;
@@ -76,12 +75,12 @@ public class BodyActionTest {
     }
 
     @Test
-    public void testApplyResponse() throws Exception {
+    public void testApplyResponseUTF8() throws Exception {
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
 
         List<Action> actions = new ArrayList<>();
-        actions.add(new HeaderAction(equalTo("/api/p"), "Content-Type", "application/json"));
+        actions.add(new HeaderAction(equalTo("/api/p"), "Content-Type", "application/json; charset=UTF-8"));
 
         Action action = new BodyAction(path, content, actions);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
@@ -89,17 +88,48 @@ public class BodyActionTest {
         HttpResponse out = action.apply(req, res);
 
         assertThat(out, notNullValue());
-        assertThat(out.headers().get("Content-Length"), is("23"));
 
         assertThat(out, instanceOf(DefaultFullHttpResponse.class));
         DefaultFullHttpResponse response = (DefaultFullHttpResponse) out;
         ByteBuf buf = response.content();
-        String json = buf.toString(StandardCharsets.UTF_8);
+        byte[] json = buf.toString(StandardCharsets.UTF_8).getBytes();
+
+        assertThat(Integer.valueOf(out.headers().get("Content-Length")), is(json.length));
 
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
+                = new ObjectSerializerContext("application/json; charset=UTF-8");
         ObjectSerializer serializer = ObjectSerializerFactory.create(ctx);
-        String expected = serializer.serialize(person);
+        byte[] expected = serializer.serialize(person);
+
+        assertThat(json, is(expected));
+    }
+
+    @Test
+    public void testApplyResponseUTF16BE() throws Exception {
+        Matcher<?> path = equalTo("/api/p");
+        Object content = person;
+
+        List<Action> actions = new ArrayList<>();
+        actions.add(new HeaderAction(equalTo("/api/p"), "Content-Type", "application/json; charset=UTF-16BE"));
+
+        Action action = new BodyAction(path, content, actions);
+        HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
+        HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        HttpResponse out = action.apply(req, res);
+
+        assertThat(out, notNullValue());
+
+        assertThat(out, instanceOf(DefaultFullHttpResponse.class));
+        DefaultFullHttpResponse response = (DefaultFullHttpResponse) out;
+        ByteBuf buf = response.content();
+        byte[] json = buf.toString(StandardCharsets.UTF_8).getBytes();
+
+        assertThat(Integer.valueOf(out.headers().get("Content-Length")), is(json.length));
+
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext("application/json; charset=UTF-16BE");
+        ObjectSerializer serializer = ObjectSerializerFactory.create(ctx);
+        byte[] expected = serializer.serialize(person);
 
         assertThat(json, is(expected));
     }

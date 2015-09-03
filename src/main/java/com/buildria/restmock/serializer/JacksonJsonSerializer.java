@@ -1,11 +1,14 @@
 package com.buildria.restmock.serializer;
 
+import com.buildria.restmock.RestMockException;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
@@ -16,15 +19,35 @@ public class JacksonJsonSerializer extends ObjectSerializer {
     }
 
     @Override
-    public String serialize(@Nonnull Object obj) throws IOException {
+    public byte[] serialize(@Nonnull Object obj) throws IOException {
         Objects.requireNonNull(obj);
         ObjectMapper mapper = new ObjectMapper();
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+            JsonEncoding encoding = mappingFrom(getCtx().getCharset());
             JsonGenerator g = new JsonFactory().createGenerator(
-                    out, JsonEncoding.UTF8);
+                    out, encoding);
             mapper.writeValue(g, obj);
-            return out.toString(getCtx().getCharset().toString());
+            return out.toByteArray();
         }
+    }
+
+    private JsonEncoding mappingFrom(Charset charset) {
+        if (StandardCharsets.UTF_8.equals(charset)) {
+            return JsonEncoding.UTF8;
+        }
+        if (StandardCharsets.UTF_16BE.equals(charset)) {
+            return JsonEncoding.UTF16_BE;
+        }
+        if (StandardCharsets.UTF_16LE.equals(charset)) {
+            return JsonEncoding.UTF16_LE;
+        }
+        if (Charset.forName("UTF-32BE").equals(charset)) {
+            return JsonEncoding.UTF32_BE;
+        }
+        if (Charset.forName("UTF-32LE").equals(charset)) {
+            return JsonEncoding.UTF32_LE;
+        }
+        throw new RestMockException("No charset found. " + charset.toString());
     }
 
 }

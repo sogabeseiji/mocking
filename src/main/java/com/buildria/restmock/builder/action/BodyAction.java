@@ -8,7 +8,6 @@ import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -46,7 +45,7 @@ public class BodyAction extends Action {
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         try {
             return new RawBodyAction(getPath(),
-                    os.serialize(content).getBytes(StandardCharsets.UTF_8)).apply(req, res);
+                    os.serialize(content)).apply(req, res);
         } catch (IOException ex) {
             throw new RestMockException("failed to serialize body.");
         }

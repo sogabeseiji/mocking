@@ -18,6 +18,6 @@ public abstract class ObjectSerializer {
         return ctx;
     }
 
-    public abstract String serialize(@Nonnull Object obj) throws IOException;
+    public abstract byte[] serialize(@Nonnull Object obj) throws IOException;
 
 }

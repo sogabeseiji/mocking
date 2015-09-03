@@ -1,7 +1,7 @@
 package com.buildria.restmock.serializer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.xml.bind.JAXBContext;
@@ -15,7 +15,7 @@ public class JAXBXmlSerializer extends ObjectSerializer {
     }
 
     @Override
-    public String serialize(@Nonnull Object obj) throws IOException {
+    public byte[] serialize(@Nonnull Object obj) throws IOException {
         Objects.requireNonNull(obj);
         try {
             JAXBContext contextObj = JAXBContext.newInstance(obj.getClass());
@@ -23,9 +23,9 @@ public class JAXBXmlSerializer extends ObjectSerializer {
             marshallerObj.setProperty(
                     Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
             marshallerObj.setProperty(Marshaller.JAXB_ENCODING, getCtx().getCharset().toString());
-            StringWriter sw = new StringWriter();
-            marshallerObj.marshal(obj, sw);
-            return sw.toString();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            marshallerObj.marshal(obj, baos);
+            return baos.toByteArray();
         } catch (JAXBException ex) {
             throw new IOException(ex);
         }

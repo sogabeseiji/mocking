@@ -35,7 +35,7 @@ public class JAXBXmlSerializerTest {
                 = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
         target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize(person);
+        String xml = new String(target.serialize(person), "UTF-8");
     }
 
     @Test
@@ -45,7 +45,7 @@ public class JAXBXmlSerializerTest {
                 = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
         target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize(person);
+        String xml = new String(target.serialize(person), "UTF-8");
 
         assertThat(xml, notNullValue());
         XmlPath xp = new XmlPath(xml);
@@ -60,7 +60,7 @@ public class JAXBXmlSerializerTest {
                 = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
         target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize(animal);
+        target.serialize(animal);
     }
 
     @Test
@@ -70,7 +70,7 @@ public class JAXBXmlSerializerTest {
                 = new ObjectSerializerContext("application/xml; charset=EUC-JP");
         target = new JAXBXmlSerializer(ctx);
 
-        String xml = target.serialize(person);
+        String xml = new String(target.serialize(person), "EUC-JP");
 
         assertThat(xml, notNullValue());
         XmlPath xp = new XmlPath(xml);

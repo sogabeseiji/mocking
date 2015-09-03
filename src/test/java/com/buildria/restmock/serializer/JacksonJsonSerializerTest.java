@@ -1,9 +1,11 @@
 package com.buildria.restmock.serializer;
 
+import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.TestNameRule;
 import com.google.common.net.MediaType;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.path.json.JsonPath;
+import java.nio.charset.StandardCharsets;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -35,7 +37,7 @@ public class JacksonJsonSerializerTest {
                 new ObjectSerializerContext(ContentType.JSON.toString());
         target = new JacksonJsonSerializer(ctx);
 
-        String json = target.serialize(person);
+         target.serialize(person);
     }
 
     @Test
@@ -45,7 +47,7 @@ public class JacksonJsonSerializerTest {
                 new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
         target = new JacksonJsonSerializer(ctx);
 
-        String json = target.serialize(person);
+        String json = new String(target.serialize(person), StandardCharsets.UTF_8);
 
         assertThat(json, notNullValue());
         JsonPath js = new JsonPath(json);
@@ -60,12 +62,37 @@ public class JacksonJsonSerializerTest {
                 new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
         target = new JacksonJsonSerializer(ctx);
 
-        String json = target.serialize(person);
+        String json = new String(target.serialize(person), StandardCharsets.UTF_8);
 
         assertThat(json, notNullValue());
         JsonPath js = new JsonPath(json);
         assertThat(js.getString("name"), is("\u3042\u3044\u3046\u3048\u304a"));
         assertThat(js.getInt("old"), is(20));
+    }
+
+    @Test
+    public void testSerializeUTF16LE() throws Exception {
+        Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
+        ObjectSerializerContext ctx =
+                new ObjectSerializerContext("application/json; charset=UTF-16LE");
+        target = new JacksonJsonSerializer(ctx);
+
+        String json = new String(target.serialize(person), "UTF-16LE");
+
+        assertThat(json, notNullValue());
+        JsonPath js = new JsonPath(json);
+        assertThat(js.getString("name"), is("\u3042\u3044\u3046\u3048\u304a"));
+        assertThat(js.getInt("old"), is(20));
+    }
+
+    @Test(expected = RestMockException.class)
+    public void testSerializeNonSupportedCharset() throws Exception {
+        Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
+        ObjectSerializerContext ctx =
+                new ObjectSerializerContext("application/json; charset=EUC-JP");
+        target = new JacksonJsonSerializer(ctx);
+
+        String json = new String(target.serialize(person), "EUC-JP");
     }
 
 }
