@@ -21,14 +21,15 @@ public class JacksonJsonSerializer extends ObjectSerializer {
     @Override
     public byte[] serialize(@Nonnull Object obj) throws IOException {
         Objects.requireNonNull(obj);
-        ObjectMapper mapper = new ObjectMapper();
-        try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-            JsonEncoding encoding = mappingFrom(getCtx().getCharset());
-            JsonGenerator g = new JsonFactory().createGenerator(
-                    out, encoding);
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        JsonEncoding encoding = mappingFrom(getCtx().getCharset());
+        try (JsonGenerator g = new JsonFactory().createGenerator(out, encoding)) {
+            ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(g, obj);
-            return out.toByteArray();
         }
+        
+        return out.toByteArray();
     }
 
     private JsonEncoding mappingFrom(Charset charset) {
