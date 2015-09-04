@@ -1,7 +1,6 @@
 package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.http.RMHttpHeaders;
 import com.buildria.restmock.stub.Call;
 import java.util.HashMap;
@@ -45,8 +44,8 @@ public class HeaderRuleTest {
         Matcher<?> value = equalTo("application/json");
         target = new HeaderRule(name, value);
 
-        RuleContext ctx  = null;
-        target.apply(ctx);
+        Call call = null;
+        target.apply(call);
     }
 
     @Test
@@ -60,7 +59,7 @@ public class HeaderRuleTest {
         headers.put(RMHttpHeaders.CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(true));
     }
@@ -77,7 +76,7 @@ public class HeaderRuleTest {
         headers.put(CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(true));
     }
@@ -93,7 +92,7 @@ public class HeaderRuleTest {
         headers.put(CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(false));
     }

@@ -1,7 +1,6 @@
 package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -43,7 +42,7 @@ public class ParameterRuleTest {
         target = new ParameterRule(key, values);
 
         Call call = null;
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
     }
 
     @Test
@@ -58,7 +57,7 @@ public class ParameterRuleTest {
 
         when(call.getParameters()).thenReturn(params);
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(true));
     }
@@ -75,7 +74,7 @@ public class ParameterRuleTest {
 
         when(call.getParameters()).thenReturn(params);
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(true));
     }
@@ -92,7 +91,7 @@ public class ParameterRuleTest {
 
         when(call.getParameters()).thenReturn(params);
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(false));
     }
@@ -109,7 +108,7 @@ public class ParameterRuleTest {
 
         when(call.getParameters()).thenReturn(params);
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(false));
     }

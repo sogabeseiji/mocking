@@ -24,9 +24,8 @@ public class BodyRule extends Rule {
     }
 
     @Override
-    public boolean apply(@Nonnull RuleContext ctx) {
-        Objects.requireNonNull(ctx);
-        Call call = ctx.getCall();
+    public boolean apply(@Nonnull Call call) {
+        Objects.requireNonNull(call);
 
         byte[] body = call.getBody();
         if (body == null || body.length == 0) {

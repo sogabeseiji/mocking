@@ -1,6 +1,5 @@
 package com.buildria.restmock.builder.rule;
 
-import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,7 +25,7 @@ public abstract class RuleSpec {
         while (it.hasNext()) {
             Call call = it.next();
             for (Rule rule : rules) {
-                if (!rule.apply(new RuleContext(call, rules))) {
+                if (!rule.apply(call)) {
                     it.remove();
                     if (wrapped.isEmpty()) {
                         throw new AssertionError(rule.getDescription());

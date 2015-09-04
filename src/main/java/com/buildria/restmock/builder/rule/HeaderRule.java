@@ -23,9 +23,8 @@ public class HeaderRule extends Rule {
     }
 
     @Override
-    public boolean apply(@Nonnull RuleContext ctx) {
-        Objects.requireNonNull(ctx);
-        Call call = ctx.getCall();
+    public boolean apply(@Nonnull Call call) {
+        Objects.requireNonNull(call);
         Map<String, String> headers = call.getHeaders();
         for (Map.Entry<String, String> entry : headers.entrySet()) {
             String n = entry.getKey();

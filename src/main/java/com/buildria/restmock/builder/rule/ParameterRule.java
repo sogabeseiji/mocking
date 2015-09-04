@@ -22,9 +22,8 @@ public class ParameterRule extends Rule {
     }
 
     @Override
-    public boolean apply(@Nonnull RuleContext ctx) {
-        Objects.requireNonNull(ctx);
-        Call call = ctx.getCall();
+    public boolean apply(@Nonnull Call call) {
+        Objects.requireNonNull(call);
         Map<String, List<String>> params = call.getParameters();
         List<String> vals = params.get(key);
         if (vals == null) {

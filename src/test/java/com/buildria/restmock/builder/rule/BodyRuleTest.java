@@ -2,13 +2,10 @@ package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.RestMockException;
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import com.google.common.net.MediaType;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.hamcrest.Matcher;
 import org.junit.Test;
@@ -66,10 +63,8 @@ public class BodyRuleTest {
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(null);
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
 
         assertThat(answer, is(false));
     }
@@ -82,10 +77,8 @@ public class BodyRuleTest {
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(new byte[0]);
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
 
         assertThat(answer, is(false));
     }
@@ -102,10 +95,8 @@ public class BodyRuleTest {
         headers.put(CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
         when(call.getContentType()).thenReturn(MediaType.parse("application/xml"));
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
 
         assertThat(answer, is(true));
     }
@@ -122,10 +113,8 @@ public class BodyRuleTest {
         headers.put(CONTENT_TYPE, "application/xml");
         when(call.getHeaders()).thenReturn(headers);
         when(call.getContentType()).thenReturn(MediaType.parse("application/xml"));
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
 
         assertThat(answer, is(false));
     }
@@ -142,10 +131,8 @@ public class BodyRuleTest {
         headers.put(CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
         when(call.getContentType()).thenReturn(MediaType.parse("application/json"));
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
 
         assertThat(answer, is(true));
     }
@@ -162,10 +149,8 @@ public class BodyRuleTest {
         headers.put(CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
         when(call.getContentType()).thenReturn(MediaType.parse("application/json"));
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
 
         assertThat(answer, is(false));
     }
@@ -182,10 +167,8 @@ public class BodyRuleTest {
         headers.put(CONTENT_TYPE, "image/png");
         when(call.getContentType()).thenReturn(MediaType.parse("image/png"));
         when(call.getHeaders()).thenReturn(headers);
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
     }
 
     @Test(expected = RestMockException.class)
@@ -196,10 +179,8 @@ public class BodyRuleTest {
 
         Call call = mock(Call.class);
         when(call.getBody()).thenReturn(EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
-        List<Rule> rules = Collections.emptyList();
-        RuleContext ctx = new RuleContext(call, rules);
 
-        boolean answer = target.apply(ctx);
+        boolean answer = target.apply(call);
     }
 
 }

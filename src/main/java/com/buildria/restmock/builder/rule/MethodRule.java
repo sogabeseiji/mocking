@@ -17,9 +17,8 @@ public class MethodRule extends Rule {
     }
 
     @Override
-    public boolean apply(@Nonnull RuleContext ctx) {
-        Objects.requireNonNull(ctx);
-        Call call = ctx.getCall();
+    public boolean apply(@Nonnull Call call) {
+        Objects.requireNonNull(call);
         return call.getPath().equalsIgnoreCase(path)
                 && method.equalsIgnoreCase(call.getMethod());
     }

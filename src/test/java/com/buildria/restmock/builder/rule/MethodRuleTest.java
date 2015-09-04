@@ -1,7 +1,6 @@
 package com.buildria.restmock.builder.rule;
 
 import com.buildria.restmock.TestNameRule;
-import com.buildria.restmock.builder.rule.Rule.RuleContext;
 import com.buildria.restmock.stub.Call;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +38,7 @@ public class MethodRuleTest {
         target = new MethodRule(path, method);
 
         Call call = null;
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
     }
 
     @Test
@@ -52,7 +51,7 @@ public class MethodRuleTest {
         when(call.getMethod()).thenReturn("get");
         when(call.getPath()).thenReturn("/api/p");
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(true));
     }
@@ -67,7 +66,7 @@ public class MethodRuleTest {
         when(call.getMethod()).thenReturn("post");
         when(call.getPath()).thenReturn("/api/p");
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(false));
     }
@@ -82,7 +81,7 @@ public class MethodRuleTest {
         when(call.getMethod()).thenReturn("get");
         when(call.getPath()).thenReturn("/api/q");
 
-        boolean actual = target.apply(new RuleContext(call, null));
+        boolean actual = target.apply(call);
 
         assertThat(actual, is(false));
     }
