@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import static com.buildria.restmock.builder.action.RequestActionSpec.when;
 import static com.buildria.restmock.builder.rule.MethodRuleSpec.post;
-import static com.buildria.restmock.http.RMHttpStatus.SC_200_OK;
+import static com.buildria.restmock.http.RMHttpStatus.SC_201_CREATED;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
@@ -37,7 +37,7 @@ public class SampleCodeTest {
         restmock.$(
                     when("/api/p").
                     then().
-                        statusCode(SC_200_OK).
+                        statusCode(SC_201_CREATED).
                         contentType("application/json").
                         body(person)
         );
@@ -52,7 +52,7 @@ public class SampleCodeTest {
                 post("/api/p").
         then().
                 log().all().
-                statusCode(SC_200_OK).
+                statusCode(SC_201_CREATED).
                 contentType("application/json").
                 body("name", is("Bob")).
                 body("old", is(20));

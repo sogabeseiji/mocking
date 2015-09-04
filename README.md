@@ -39,7 +39,7 @@ public class SampleCodeTest {
         restmock.$(
                     when("/api/p").
                     then().
-                        statusCode(SC_200_OK).
+                        statusCode(SC_201_CREATED).
                         contentType("application/json").
                         body(person)
         );
@@ -48,21 +48,27 @@ public class SampleCodeTest {
         given().
                 log().all().
                 accept("application/json").
+                contentType("application/json").
+                body(person).
         when().
-                get("/api/p").
+                post("/api/p").
         then().
                 log().all().
-                statusCode(SC_200_OK).
+                statusCode(SC_201_CREATED).
                 contentType("application/json").
                 body("name", is("Bob")).
                 body("old", is(20));
 
         // RestMock
         restmock.$(
-                    get("/api/p").
-                    accept("application/json")
+                    post("/api/p").
+                    accept("application/json").
+                    contentType("application/json; charset=ISO-8859-1").
+                    body("name", is("Bob")).
+                    body("old", is(20))
         );
     }
+
 (snip)
     
 }
