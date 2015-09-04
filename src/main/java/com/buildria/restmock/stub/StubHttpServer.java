@@ -130,19 +130,9 @@ public class StubHttpServer {
         }
     }
 
-    public void clear() {
-        synchronized (lockObj) {
-            actions.clear();
-        }
-    }
-
     public void stop() {
-        if (workerGroup != null) {
-            workerGroup.shutdownGracefully();
-        }
-        if (bossGroup != null) {
-            bossGroup.shutdownGracefully();
-        }
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
         LOG.debug("### StubHttpServer stopped.");
     }
 
