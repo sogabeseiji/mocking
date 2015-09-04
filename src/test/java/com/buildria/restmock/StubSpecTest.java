@@ -3,7 +3,6 @@ package com.buildria.restmock;
 import com.buildria.restmock.stub.StubHttpServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
-import com.google.common.net.MediaType;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
@@ -55,7 +54,7 @@ public class StubSpecTest {
                 then().
                     statusCode(SC_200_OK).
                     rawBody(json, Charset.defaultCharset()).
-                    contentType(MediaType.JSON_UTF_8)
+                    contentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -84,7 +83,7 @@ public class StubSpecTest {
                     statusCode(SC_200_OK).
                     rawBody(json, Charset.defaultCharset()).
                     header("X-header", "restmock1").
-                    contentType(MediaType.JSON_UTF_8)
+                    contentType("application/json; charset=UTF-8")
         );
 
         restmock.$(
@@ -93,7 +92,7 @@ public class StubSpecTest {
                     statusCode(SC_200_OK).
                     rawBody(json).
                     header("X-header", "restmock2").
-                    contentType(MediaType.JSON_UTF_8)
+                    contentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -134,7 +133,7 @@ public class StubSpecTest {
                 then().
                     statusCode(SC_200_OK).
                     rawBody(json).
-                    contentType(MediaType.JSON_UTF_8)
+                    contentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -151,13 +150,13 @@ public class StubSpecTest {
     }
 
     @Test
-    public void testResourceBody() throws Exception {
+    public void testURIBody() throws Exception {
         restmock.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
                     rawBody(Resources.getResource("com/buildria/restmock/person.json")).
-                    contentType(MediaType.JSON_UTF_8)
+                    contentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -171,6 +170,30 @@ public class StubSpecTest {
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
                 body("old", is(19));
+    }
+
+    @Test
+    public void testStreamBody() throws Exception {
+        restmock.$(
+                when("/api/p").
+                then().
+                    statusCode(SC_200_OK).
+                    rawBody(Resources.getResource("com/buildria/restmock/person.json").openStream()).
+                    contentType("application/json; charset=UTF-8")
+        );
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+        when().
+                get("/api/p").
+        then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                body("name", is("hoge")).
+                body("old", is(19));
+
     }
 
     @Test
@@ -182,7 +205,7 @@ public class StubSpecTest {
                 then().
                     statusCode(SC_200_OK).
                     body(p).
-                    contentType(MediaType.XML_UTF_8)
+                    contentType("application/xml; charset=UTF-8")
         );
 
         Response r =
@@ -223,7 +246,7 @@ public class StubSpecTest {
                 then().
                     statusCode(SC_200_OK).
                     body(p).
-                    contentType(MediaType.XML_UTF_8)
+                    contentType("application/xml; charset=UTF-8")
         );
 
         given().
@@ -250,7 +273,7 @@ public class StubSpecTest {
                 then().
                     statusCode(SC_200_OK).
                     rawBody(json, Charset.defaultCharset()).
-                    contentType(MediaType.JSON_UTF_8)
+                    contentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -284,7 +307,7 @@ public class StubSpecTest {
                then().
                 statusCode(SC_200_OK).
                 rawBody(json, Charset.defaultCharset()).
-                contentType(MediaType.JSON_UTF_8)
+                contentType("application/json; charset=UTF-8")
        );
 
         given().

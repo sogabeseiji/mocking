@@ -2,7 +2,6 @@ package com.buildria.restmock.builder.action;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
-import com.google.common.net.MediaType;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -31,10 +30,6 @@ public class ResponseActionSpec extends ActionSpec {
 
     public ResponseActionSpec contentType(String contentType) {
         return header(CONTENT_TYPE, contentType);
-    }
-
-    public ResponseActionSpec contentType(MediaType contentType) {
-        return header(CONTENT_TYPE, contentType.toString());
     }
 
     public ResponseActionSpec header(String name, String value) {

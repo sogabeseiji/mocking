@@ -1,6 +1,5 @@
 package com.buildria.restmock.builder.rule;
 
-import com.google.common.net.MediaType;
 import org.hamcrest.Matcher;
 
 import static com.buildria.restmock.http.RMHttpHeaders.ACCEPT;
@@ -22,10 +21,6 @@ public class RequestRuleSpec extends RuleSpec {
         return header(name, equalTo(value));
     }
 
-    public RequestRuleSpec header(String name, MediaType value) {
-        return header(name, value.toString());
-    }
-
     public RequestRuleSpec contentType(Matcher<?> value) {
         return header(CONTENT_TYPE, value);
     }
@@ -34,19 +29,11 @@ public class RequestRuleSpec extends RuleSpec {
         return header(CONTENT_TYPE, value);
     }
 
-    public RequestRuleSpec contentType(MediaType value) {
-        return header(CONTENT_TYPE, value);
-    }
-
     public RequestRuleSpec accept(Matcher<?> value) {
         return header(ACCEPT, value);
     }
 
     public RequestRuleSpec accept(String value) {
-        return header(ACCEPT, value);
-    }
-
-    public RequestRuleSpec accept(MediaType value) {
         return header(ACCEPT, value);
     }
 
