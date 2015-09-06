@@ -45,14 +45,12 @@ public class SampleCodeTest {
 
         // Rest-assured
         given().
-//                log().all().
                 accept("application/json").
                 contentType("application/json; charset=UTF-8").
                 body(person).
         when().
                 post("/api/p").
         then().
-//                log().all().
                 statusCode(SC_201_CREATED).
                 contentType("application/json; charset=UTF-8").
                 body("name", is("Bob")).

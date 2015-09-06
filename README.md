@@ -9,7 +9,7 @@ Mocking provides a DSL to:
  * Mimic rest server behavior
  * Record HTTP calls to the server
  * Perform verification against happened calls 
-
+ * Automatic serialization
 
 ## Quick example
 
@@ -40,22 +40,20 @@ public class SampleCodeTest {
                     when("/api/p").
                     then().
                         statusCode(SC_201_CREATED).
-                        contentType("application/json").
+                        contentType("application/json; charset=UTF-8").
                         body(person)
         );
 
         // Rest-assured
         given().
-                log().all().
                 accept("application/json").
-                contentType("application/json").
+                contentType("application/json; charset=UTF-8").
                 body(person).
         when().
                 post("/api/p").
         then().
-                log().all().
                 statusCode(SC_201_CREATED).
-                contentType("application/json").
+                contentType("application/json; charset=UTF-8").
                 body("name", is("Bob")).
                 body("old", is(20));
 
@@ -63,7 +61,7 @@ public class SampleCodeTest {
         mocking.$(
                     post("/api/p").
                     accept("application/json").
-                    contentType("application/json; charset=ISO-8859-1").
+                    contentType("application/json; charset=UTF-8").
                     body("name", is("Bob")).
                     body("old", is(20))
         );
