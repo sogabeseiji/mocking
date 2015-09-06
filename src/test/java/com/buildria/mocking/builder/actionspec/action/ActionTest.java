@@ -1,5 +1,6 @@
 package com.buildria.mocking.builder.actionspec.action;
 
+import com.buildria.mocking.Mocking;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.StubHttpServer;
 import com.google.common.base.MoreObjects.ToStringHelper;
@@ -55,7 +56,7 @@ public class ActionTest {
 
     @Test
     public void testGetHeader() {
-        StubHttpServer server = new StubHttpServer();
+        StubHttpServer server = new StubHttpServer(new Mocking());
         Matcher<?> path = equalTo("/api/p");
 
         server.addAction(new StatusCodeAction(path, 200));
@@ -71,7 +72,7 @@ public class ActionTest {
 
     @Test
     public void testGetHeaderCotentTypeNone() {
-        StubHttpServer server = new StubHttpServer();
+        StubHttpServer server = new StubHttpServer(new Mocking());
         Matcher<?> path = equalTo("/api/p");
 
         server.addAction(new HeaderAction(path, ACCEPT, "application/xml"));

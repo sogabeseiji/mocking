@@ -6,7 +6,6 @@ import com.buildria.mocking.serializer.ObjectSerializer;
 import com.buildria.mocking.serializer.ObjectSerializerContext;
 import com.buildria.mocking.serializer.ObjectSerializerFactory;
 import com.buildria.mocking.serializer.Person;
-import com.buildria.mocking.stub.StubHttpServer;
 import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -136,7 +135,6 @@ public class BodyActionTest {
 
     @Test(expected = MockingException.class)
     public void testApplyResponseNoContentType() throws Exception {
-        StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");
         Object content = person;
 

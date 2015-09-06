@@ -27,7 +27,7 @@ public class SampleCodeTest {
 
     @Before
     public void setUp() throws Exception {
-        mocking.port(PORT);
+        mocking.port(PORT).logging(true);
         RestAssured.port = PORT;
     }
 

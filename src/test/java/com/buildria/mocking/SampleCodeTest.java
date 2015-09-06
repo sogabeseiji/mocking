@@ -26,7 +26,7 @@ public class SampleCodeTest {
 
     @Before
     public void setUp() throws Exception {
-        mocking.port(PORT);
+        mocking.port(PORT).logging(true);
         RestAssured.port = PORT;
     }
 
@@ -45,14 +45,14 @@ public class SampleCodeTest {
 
         // Rest-assured
         given().
-                log().all().
+//                log().all().
                 accept("application/json").
                 contentType("application/json; charset=UTF-8").
                 body(person).
         when().
                 post("/api/p").
         then().
-                log().all().
+//                log().all().
                 statusCode(SC_201_CREATED).
                 contentType("application/json; charset=UTF-8").
                 body("name", is("Bob")).

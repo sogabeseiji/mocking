@@ -1,5 +1,6 @@
 package com.buildria.mocking.stub;
 
+import com.buildria.mocking.Mocking;
 import com.buildria.mocking.builder.actionspec.action.Action;
 import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.ServerBootstrap;
@@ -21,6 +22,7 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.QueryStringDecoder;
+import io.netty.handler.logging.LoggingHandler;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -52,8 +54,6 @@ public class StubHttpServer {
 
     private static final int SO_BACKLOG = 128;
 
-    private final int port;
-
     private EventLoopGroup bossGroup;
 
     private EventLoopGroup workerGroup;
@@ -64,12 +64,10 @@ public class StubHttpServer {
 
     private final Object lockObj = new Object();
 
-    public StubHttpServer() {
-        this(DEFAULT_PORT);
-    }
+    private final Mocking mocking;
 
-    public StubHttpServer(int port) {
-        this.port = port;
+    public StubHttpServer(Mocking mocking) {
+        this.mocking = mocking;
     }
 
     public StubHttpServer run() throws InterruptedException {
@@ -90,6 +88,9 @@ public class StubHttpServer {
                                 new HttpRequestDecoder(MAX_INITIALLINE_LENGH, MAX_HEADERS_SIZE, MAX_CHUNK_SIZE));
                         ch.pipeline().addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
                         ch.pipeline().addLast("encoder", new HttpResponseEncoder());
+                        if (mocking.isLogging()) {
+                            ch.pipeline().addLast("logging", new LoggingHandler(StubHttpServer.class));
+                        }
                         ch.pipeline().addLast("handler", new Handler());
                     }
                 })
@@ -97,6 +98,7 @@ public class StubHttpServer {
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
         // Bind and start to accept incoming connections.
+        int port = mocking.getPort();
         ChannelFuture f = b.bind(port).sync();
         f.awaitUninterruptibly();
         sw.stop();

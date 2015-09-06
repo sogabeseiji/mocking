@@ -14,6 +14,8 @@ public class Mocking extends ExternalResource {
 
     private int port = PORT;
 
+    private boolean logging = false;
+
     public Mocking() {
         super();
     }
@@ -23,7 +25,15 @@ public class Mocking extends ExternalResource {
     protected void before() throws Throwable {
         // CHECKSTYLE:ON
         super.before();
-        server = new StubHttpServer(port).run();
+        server = new StubHttpServer(this).run();
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public boolean isLogging() {
+        return logging;
     }
 
     @Override
@@ -51,6 +61,12 @@ public class Mocking extends ExternalResource {
             throw new IllegalArgumentException("port should be between 0 and 65535");
         }
         this.port = port;
+        return this;
+    }
+
+    @Nonnull
+    public Mocking logging(boolean logging) {
+        this.logging = logging;
         return this;
     }
 }
