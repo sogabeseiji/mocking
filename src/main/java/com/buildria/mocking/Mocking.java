@@ -10,11 +10,15 @@ public class Mocking extends ExternalResource {
 
     public static final int PORT = 8888;
 
+    private static final int PORT_MIN = 0;
+
+    private static final int PORT_MAX = 65535;
+
     private StubHttpServer server;
 
     private int port = PORT;
 
-    private boolean logging = false;
+    private boolean logging;
 
     public Mocking() {
         super();
@@ -57,7 +61,7 @@ public class Mocking extends ExternalResource {
 
     @Nonnull
     public Mocking port(int port) {
-        if (port < 0 || port > 65535) {
+        if (port < PORT_MIN || port > PORT_MAX) {
             throw new IllegalArgumentException("port should be between 0 and 65535");
         }
         this.port = port;
