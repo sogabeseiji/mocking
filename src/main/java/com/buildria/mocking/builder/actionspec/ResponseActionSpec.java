@@ -1,9 +1,10 @@
 package com.buildria.mocking.builder.actionspec;
 
-import com.buildria.mocking.builder.actionspec.action.StatusCodeAction;
+import com.buildria.mocking.builder.actionspec.action.BodyAction;
+import com.buildria.mocking.builder.actionspec.action.DelayAction;
 import com.buildria.mocking.builder.actionspec.action.HeaderAction;
 import com.buildria.mocking.builder.actionspec.action.RawBodyAction;
-import com.buildria.mocking.builder.actionspec.action.BodyAction;
+import com.buildria.mocking.builder.actionspec.action.StatusCodeAction;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import java.io.IOException;
@@ -64,6 +65,11 @@ public class ResponseActionSpec extends ActionSpec {
 
     public ResponseActionSpec body(Object content) {
         addAction(new BodyAction(path, content, getActions()));
+        return this;
+    }
+
+    public ResponseActionSpec delay(long wait) {
+        addAction(new DelayAction(path, wait));
         return this;
     }
 
