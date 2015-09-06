@@ -5,11 +5,11 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.buildria.restmock</groupId>
-    <artifactId>restmock</artifactId>
+    <groupId>com.buildria.mocking</groupId>
+    <artifactId>mocking</artifactId>
     <version>0.1-SNAPSHOT</version>
 
-    <name>RESTMock</name>
+    <name>Mocking</name>
 
     <packaging>jar</packaging>
 
@@ -26,13 +26,13 @@
     
     <ciManagement>
         <system>Jenkins</system>
-        <url>http://ci.buildria.com/job/restmock/</url>
+        <url>http://ci.buildria.com/job/mocking/</url>
     </ciManagement>
      
     <scm>
-        <url>http://gitbucket.buildria.com/sogabe/restmock</url>
+        <url>http://gitbucket.buildria.com/sogabe/mocking</url>
+        <connection>scm:http://gitbucket.buildria.com/git/sogabe/mocking.git</connection>
         <tag>master</tag>
-        <connection>scm:http://gitbucket.buildria.com/git/sogabe/restmock.git</connection>
     </scm>        
               
     <licenses>

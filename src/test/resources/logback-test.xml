@@ -13,7 +13,7 @@
         <appender-ref ref="STDOUT"/>
     </appender>
  
-    <logger name="com.buildria.restmock" level="DEBUG" />
+    <logger name="com.buildria.mocking" level="DEBUG" />
 
     <root level="${ROOT_LEVEL}">
         <appender-ref ref="ASYNC_STDOUT"/>

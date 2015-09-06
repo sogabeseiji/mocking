@@ -1,20 +1,20 @@
-# Mocking
+package com.buildria.mocking;
 
-[![Build Status](http://ci.buildria.com/job/mocking/badge/icon)](http://ci.buildria.com/job/mocking/)
+import com.buildria.mocking.RestMock;
+import com.jayway.restassured.RestAssured;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
-Mocking is a test framework  which is inspired by [Restito](https://github.com/mkotsur/restito).
+import static com.buildria.mocking.builder.actionspec.RequestActionSpec.when;
+import static com.buildria.mocking.builder.rulespec.MethodRuleSpec.post;
+import static com.buildria.mocking.http.RMHttpStatus.SC_201_CREATED;
+import static com.jayway.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.is;
 
-Mocking provides a DSL to:
-
- * Mimic rest server behavior
- * Record HTTP calls to the server
- * Perform verification against happened calls 
-
-
-## Quick example
-
-
-``` java
 public class SampleCodeTest {
 
     private static final int PORT = 8888;
@@ -27,7 +27,6 @@ public class SampleCodeTest {
 
     @Before
     public void setUp() throws Exception {
-        // ポート番号
         RestAssured.port = PORT;
     }
 
@@ -69,7 +68,32 @@ public class SampleCodeTest {
         );
     }
 
-(snip)
-    
+    @XmlRootElement(name = "person")
+    @XmlType
+    private static class Person {
+
+        private String name;
+
+        private int old;
+
+        public Person() {
+            //
+        }
+
+        public Person(String name, int old) {
+            this.name = name;
+            this.old = old;
+        }
+
+        @XmlElement
+        public String getName() {
+            return name;
+        }
+
+        @XmlElement
+        public int getOld() {
+            return old;
+        }
+
+    }
 }
-```
