@@ -32,7 +32,7 @@
     <scm>
         <url>http://gitbucket.buildria.com/sogabe/mocking</url>
         <connection>scm:http://gitbucket.buildria.com/git/sogabe/mocking.git</connection>
-        <developerConnection>scm:ssh://sogabe@gitbucket.buildria.com:29418/sogabe/mocking.git</developerConnection>
+        <developerConnection>scm:git:ssh://sogabe@gitbucket.buildria.com:29418/sogabe/mocking.git</developerConnection>
         <tag>master</tag>
     </scm>        
               
