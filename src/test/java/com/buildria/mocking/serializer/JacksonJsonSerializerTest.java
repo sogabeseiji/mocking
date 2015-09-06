@@ -1,8 +1,6 @@
 package com.buildria.mocking.serializer;
 
-import com.buildria.mocking.serializer.ObjectSerializerContext;
-import com.buildria.mocking.serializer.JacksonJsonSerializer;
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
 import com.google.common.net.MediaType;
 import com.jayway.restassured.http.ContentType;
@@ -117,7 +115,7 @@ public class JacksonJsonSerializerTest {
         assertThat(js.getInt("old"), is(20));
     }
 
-    @Test(expected = RestMockException.class)
+    @Test(expected = MockingException.class)
     public void testSerializeNonSupportedCharset() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
         ObjectSerializerContext ctx

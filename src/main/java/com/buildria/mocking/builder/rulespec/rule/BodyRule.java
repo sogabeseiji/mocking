@@ -1,6 +1,6 @@
 package com.buildria.mocking.builder.rulespec.rule;
 
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.stub.Call;
 import com.google.common.net.MediaType;
 import com.jayway.restassured.path.json.JsonPath;
@@ -34,7 +34,7 @@ public class BodyRule extends Rule {
 
         MediaType contentType = call.getContentType();
         if (contentType == null) {
-            throw new RestMockException("No Content-Type header.");
+            throw new MockingException("No Content-Type header.");
         }
         Charset charset = contentType.charset().or(StandardCharsets.UTF_8);
         String content = new String(body, charset);
@@ -48,7 +48,7 @@ public class BodyRule extends Rule {
         } else if ("json".equalsIgnoreCase(subtype)) {
             return new JsonPath(content).get(path);
         }
-        throw new RestMockException("Not supported Content-Type.");
+        throw new MockingException("Not supported Content-Type.");
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.buildria.mocking.serializer;
 
-import com.buildria.mocking.serializer.ObjectSerializerFactory;
 import com.buildria.mocking.TestNameRule;
 import org.junit.Rule;
 import org.junit.Test;

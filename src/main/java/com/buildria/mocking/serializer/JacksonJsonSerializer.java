@@ -1,6 +1,6 @@
 package com.buildria.mocking.serializer;
 
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -48,7 +48,7 @@ public class JacksonJsonSerializer extends ObjectSerializer {
         if (Charset.forName("UTF-32LE").equals(charset)) {
             return JsonEncoding.UTF32_LE;
         }
-        throw new RestMockException("No charset found. " + charset.toString());
+        throw new MockingException("No charset found. " + charset.toString());
     }
 
 }

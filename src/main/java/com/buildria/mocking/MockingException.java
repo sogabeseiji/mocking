@@ -1,26 +1,26 @@
 package com.buildria.mocking;
 
-public class RestMockException extends RuntimeException {
+public class MockingException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    public RestMockException() {
+    public MockingException() {
         super();
     }
 
-    public RestMockException(String message) {
+    public MockingException(String message) {
         super(message);
     }
 
-    public RestMockException(String message, Throwable cause) {
+    public MockingException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public RestMockException(Throwable cause) {
+    public MockingException(Throwable cause) {
         super(cause);
     }
 
-    public RestMockException(String message, Throwable cause,
+    public MockingException(String message, Throwable cause,
             boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }

@@ -1,9 +1,6 @@
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.buildria.mocking.builder.actionspec.action.HeaderAction;
-import com.buildria.mocking.builder.actionspec.action.BodyAction;
-import com.buildria.mocking.builder.actionspec.action.Action;
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.serializer.ObjectSerializer;
 import com.buildria.mocking.serializer.ObjectSerializerContext;
@@ -137,7 +134,7 @@ public class BodyActionTest {
         assertThat(json, is(expected));
     }
 
-    @Test(expected = RestMockException.class)
+    @Test(expected = MockingException.class)
     public void testApplyResponseNoContentType() throws Exception {
         StubHttpServer server = new StubHttpServer();
         Matcher<?> path = equalTo("/api/p");

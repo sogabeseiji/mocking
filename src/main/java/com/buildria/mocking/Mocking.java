@@ -6,7 +6,7 @@ import com.buildria.mocking.stub.StubHttpServer;
 import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
 
-public class RestMock extends ExternalResource {
+public class Mocking extends ExternalResource {
 
     public static final int PORT = 8888;
 
@@ -14,11 +14,11 @@ public class RestMock extends ExternalResource {
 
     private final int port;
 
-    public RestMock() {
+    public Mocking() {
         this(PORT);
     }
 
-    public RestMock(int port) {
+    public Mocking(int port) {
         this.port = port;
     }
 

@@ -1,6 +1,6 @@
 package com.buildria.mocking.serializer;
 
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.google.common.io.Resources;
 import com.google.common.net.MediaType;
 import java.nio.charset.Charset;
@@ -58,12 +58,12 @@ public class ObjectSerializerContext {
             } else if (isGsonEnabled()) {
                 return new GsonJsonSerializer(this);
             }
-            throw new RestMockException("No Json library found.");
+            throw new MockingException("No Json library found.");
         } else if ("xml".equalsIgnoreCase(subtype)) {
             return new JAXBXmlSerializer(this);
         }
 
-        throw new RestMockException("No valid Content-Type header found.");
+        throw new MockingException("No valid Content-Type header found.");
     }
 
     protected boolean isJacksonEnabled() {

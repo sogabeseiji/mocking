@@ -1,6 +1,5 @@
 package com.buildria.mocking;
 
-import com.buildria.mocking.RestMock;
 import com.jayway.restassured.RestAssured;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,7 +19,7 @@ public class SampleCodeTest {
     private static final int PORT = 8888;
 
     @Rule
-    public RestMock restmock = new RestMock(PORT);
+    public Mocking mocking = new Mocking(PORT);
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -34,8 +33,8 @@ public class SampleCodeTest {
     public void testReadMeSampleCode() {
         Person person = new Person("Bob", 20);
 
-        // RestMock
-        restmock.$(
+        // Mocking
+        mocking.$(
                     when("/api/p").
                     then().
                         statusCode(SC_201_CREATED).
@@ -58,8 +57,8 @@ public class SampleCodeTest {
                 body("name", is("Bob")).
                 body("old", is(20));
 
-        // RestMock
-        restmock.$(
+        // Mocking
+        mocking.$(
                     post("/api/p").
                     accept("application/json").
                     contentType("application/json; charset=ISO-8859-1").

@@ -32,7 +32,7 @@ public class StubSpecTest {
     private static final int PORT = 8888;
 
     @Rule
-    public RestMock restmock = new RestMock(PORT);
+    public Mocking restmock = new Mocking(PORT);
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();

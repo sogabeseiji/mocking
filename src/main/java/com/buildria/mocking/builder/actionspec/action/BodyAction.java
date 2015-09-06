@@ -1,6 +1,6 @@
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.serializer.ObjectSerializer;
 import com.buildria.mocking.serializer.ObjectSerializerContext;
 import com.buildria.mocking.serializer.ObjectSerializerFactory;
@@ -38,7 +38,7 @@ public class BodyAction extends Action {
         Objects.requireNonNull(res);
         HeaderAction contentType = getHeader(req.getUri(), CONTENT_TYPE, actions);
         if (contentType == null) {
-            throw new RestMockException("No Content-Type found.");
+            throw new MockingException("No Content-Type found.");
         }
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(contentType.getValue());
@@ -47,7 +47,7 @@ public class BodyAction extends Action {
             return new RawBodyAction(getPath(),
                     os.serialize(content)).apply(req, res);
         } catch (IOException ex) {
-            throw new RestMockException("failed to serialize body.");
+            throw new MockingException("failed to serialize body.");
         }
     }
 

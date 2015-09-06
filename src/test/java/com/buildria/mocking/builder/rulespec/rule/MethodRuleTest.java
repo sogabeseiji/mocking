@@ -1,6 +1,5 @@
 package com.buildria.mocking.builder.rulespec.rule;
 
-import com.buildria.mocking.builder.rulespec.rule.MethodRule;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.Call;
 import org.junit.Rule;

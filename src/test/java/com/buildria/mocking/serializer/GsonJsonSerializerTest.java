@@ -1,7 +1,5 @@
 package com.buildria.mocking.serializer;
 
-import com.buildria.mocking.serializer.ObjectSerializerContext;
-import com.buildria.mocking.serializer.GsonJsonSerializer;
 import com.buildria.mocking.TestNameRule;
 import com.google.common.net.MediaType;
 import com.jayway.restassured.path.json.JsonPath;

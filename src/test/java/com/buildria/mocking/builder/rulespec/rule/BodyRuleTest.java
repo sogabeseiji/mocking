@@ -1,7 +1,6 @@
 package com.buildria.mocking.builder.rulespec.rule;
 
-import com.buildria.mocking.builder.rulespec.rule.BodyRule;
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.Call;
 import com.google.common.net.MediaType;
@@ -156,7 +155,7 @@ public class BodyRuleTest {
         assertThat(answer, is(false));
     }
 
-    @Test(expected = RestMockException.class)
+    @Test(expected = MockingException.class)
     public void testApplyNotSupported() throws Exception {
         String path = "old";
         Matcher<?> matcher = equalTo(20);
@@ -172,7 +171,7 @@ public class BodyRuleTest {
         boolean answer = target.apply(call);
     }
 
-    @Test(expected = RestMockException.class)
+    @Test(expected = MockingException.class)
     public void testApplyNoConentType() throws Exception {
         String path = "person.old";
         Matcher<?> matcher = equalTo("20");

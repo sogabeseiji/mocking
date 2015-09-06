@@ -1,12 +1,6 @@
 package com.buildria.mocking.serializer;
 
-import com.buildria.mocking.serializer.ObjectSerializerContext;
-import com.buildria.mocking.serializer.JAXBXmlSerializer;
-import com.buildria.mocking.serializer.ObjectSerializer;
-import com.buildria.mocking.serializer.JacksonJsonSerializer;
-import com.buildria.mocking.serializer.ObjectSerializerFactory;
-import com.buildria.mocking.serializer.GsonJsonSerializer;
-import com.buildria.mocking.RestMockException;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
 import com.google.common.net.MediaType;
 import org.junit.Rule;
@@ -22,7 +16,7 @@ public class ObjectSerializerContextTest {
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    @Test(expected = RestMockException.class)
+    @Test(expected = MockingException.class)
     public void testCreateInvalidContentType() {
         Person person = new Person("Bob", 20);
         ObjectSerializerContext ctx
@@ -82,7 +76,7 @@ public class ObjectSerializerContextTest {
         assertThat(os, instanceOf(GsonJsonSerializer.class));
     }
 
-    @Test(expected = RestMockException.class)
+    @Test(expected = MockingException.class)
     public void testCreateNoJsonFound() throws Exception {
         ObjectSerializerContext ctx
                 = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString()) {

@@ -1,7 +1,5 @@
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.buildria.mocking.builder.actionspec.action.StatusCodeAction;
-import com.buildria.mocking.builder.actionspec.action.Action;
 import com.buildria.mocking.TestNameRule;
 import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.DefaultHttpRequest;

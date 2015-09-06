@@ -1,6 +1,5 @@
 package com.buildria.mocking.builder.rulespec;
 
-import com.buildria.mocking.builder.rulespec.RuleSpec;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.builder.rulespec.rule.BodyRule;
 import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
