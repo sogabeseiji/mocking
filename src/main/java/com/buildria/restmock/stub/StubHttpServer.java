@@ -1,6 +1,6 @@
 package com.buildria.restmock.stub;
 
-import com.buildria.restmock.builder.action.Action;
+import com.buildria.restmock.builder.actionspec.action.Action;
 import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

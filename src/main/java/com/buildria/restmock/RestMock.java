@@ -1,7 +1,7 @@
 package com.buildria.restmock;
 
-import com.buildria.restmock.builder.action.ActionSpec;
-import com.buildria.restmock.builder.rule.RuleSpec;
+import com.buildria.restmock.builder.actionspec.ActionSpec;
+import com.buildria.restmock.builder.rulespec.RuleSpec;
 import com.buildria.restmock.stub.StubHttpServer;
 import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
