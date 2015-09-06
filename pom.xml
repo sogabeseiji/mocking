@@ -32,6 +32,7 @@
     <scm>
         <url>http://gitbucket.buildria.com/sogabe/mocking</url>
         <connection>scm:http://gitbucket.buildria.com/git/sogabe/mocking.git</connection>
+        <developerConnection>scm:ssh://sogabe@gitbucket.buildria.com:29418/sogabe/mocking.git</developerConnection>
         <tag>master</tag>
     </scm>        
               
@@ -142,6 +143,15 @@
                         </goals>
                     </execution>                    
                 </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <useReleaseProfile>false</useReleaseProfile>
+                    <releaseProfiles>release</releaseProfiles>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                </configuration>
             </plugin>            
         </plugins>
     </build>
@@ -238,5 +248,11 @@
         
     </dependencies>
 
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <url> https://api.bintray.com/content/ssogabe/maven/mocking/</url>
+        </repository>
+    </distributionManagement>
 
 </project>
