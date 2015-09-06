@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.buildria.mocking</groupId>
     <artifactId>mocking</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
 
     <name>Mocking</name>
 
@@ -33,7 +31,7 @@
         <url>http://gitbucket.buildria.com/sogabe/mocking</url>
         <connection>scm:http://gitbucket.buildria.com/git/sogabe/mocking.git</connection>
         <developerConnection>scm:git:ssh://sogabe@gitbucket.buildria.com:29418/sogabe/mocking.git</developerConnection>
-        <tag>master</tag>
+        <tag>mocking-0.1</tag>
     </scm>        
               
     <licenses>
