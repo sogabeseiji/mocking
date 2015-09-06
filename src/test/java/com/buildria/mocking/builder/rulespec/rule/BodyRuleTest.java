@@ -10,7 +10,7 @@ import java.util.Map;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
-import static com.buildria.mocking.http.RMHttpHeaders.CONTENT_TYPE;
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;

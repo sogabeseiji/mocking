@@ -1,7 +1,7 @@
 package com.buildria.mocking.builder.rulespec.rule;
 
 import com.buildria.mocking.TestNameRule;
-import com.buildria.mocking.http.RMHttpHeaders;
+import com.buildria.mocking.http.MockingHttpHeaders;
 import com.buildria.mocking.stub.Call;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +9,7 @@ import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.mocking.http.RMHttpHeaders.CONTENT_TYPE;
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -56,7 +56,7 @@ public class HeaderRuleTest {
 
         Call call = mock(Call.class);
         Map<String, String> headers = new HashMap<>();
-        headers.put(RMHttpHeaders.CONTENT_TYPE, "application/json");
+        headers.put(MockingHttpHeaders.CONTENT_TYPE, "application/json");
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);

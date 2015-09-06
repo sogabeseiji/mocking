@@ -5,8 +5,8 @@ import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
 import com.buildria.mocking.builder.rulespec.rule.BodyRule;
 import org.hamcrest.Matcher;
 
-import static com.buildria.mocking.http.RMHttpHeaders.ACCEPT;
-import static com.buildria.mocking.http.RMHttpHeaders.CONTENT_TYPE;
+import static com.buildria.mocking.http.MockingHttpHeaders.ACCEPT;
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.equalTo;
 
 public class RequestRuleSpec extends RuleSpec {

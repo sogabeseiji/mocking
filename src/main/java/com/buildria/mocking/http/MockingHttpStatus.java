@@ -1,6 +1,6 @@
 package com.buildria.mocking.http;
 
-public final class RMHttpStatus {
+public final class MockingHttpStatus {
 
     // 1xx
     public static final int SC_100_CONTINUE = 100;
@@ -48,7 +48,7 @@ public final class RMHttpStatus {
     public static final int SC_504_GATEWAY_TIMEOUT = 504 ;
     public static final int SC_505_HTTP_VERSION_NOT_SUPPORTED = 505;
 
-    private RMHttpStatus() {
+    private MockingHttpStatus() {
         super();
     }
 

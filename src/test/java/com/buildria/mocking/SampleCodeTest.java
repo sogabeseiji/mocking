@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import static com.buildria.mocking.builder.actionspec.RequestActionSpec.when;
 import static com.buildria.mocking.builder.rulespec.MethodRuleSpec.post;
-import static com.buildria.mocking.http.RMHttpStatus.SC_201_CREATED;
+import static com.buildria.mocking.http.MockingHttpStatus.SC_201_CREATED;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
@@ -39,7 +39,7 @@ public class SampleCodeTest {
                     when("/api/p").
                     then().
                         statusCode(SC_201_CREATED).
-                        contentType("application/json").
+                        contentType("application/json; charset=UTF-8").
                         body(person)
         );
 
@@ -47,14 +47,14 @@ public class SampleCodeTest {
         given().
                 log().all().
                 accept("application/json").
-                contentType("application/json").
+                contentType("application/json; charset=UTF-8").
                 body(person).
         when().
                 post("/api/p").
         then().
                 log().all().
                 statusCode(SC_201_CREATED).
-                contentType("application/json").
+                contentType("application/json; charset=UTF-8").
                 body("name", is("Bob")).
                 body("old", is(20));
 
@@ -62,7 +62,7 @@ public class SampleCodeTest {
         mocking.$(
                     post("/api/p").
                     accept("application/json").
-                    contentType("application/json; charset=ISO-8859-1").
+                    contentType("application/json; charset=UTF-8").
                     body("name", is("Bob")).
                     body("old", is(20))
         );

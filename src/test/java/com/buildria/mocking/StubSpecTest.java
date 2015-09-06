@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import static com.buildria.mocking.builder.actionspec.RequestActionSpec.when;
 import static com.buildria.mocking.builder.rulespec.MethodRuleSpec.get;
 import static com.buildria.mocking.builder.rulespec.MethodRuleSpec.put;
-import static com.buildria.mocking.http.RMHttpStatus.SC_200_OK;
+import static com.buildria.mocking.http.MockingHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
@@ -231,7 +231,7 @@ public class StubSpecTest {
         mocking.$(
                 put("/api/p").
                         accept(containsString("application/xml")).
-                        contentType(containsString("pplication/xml")).
+                        contentType(containsString("application/xml")).
                         body("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
                         body("person.old", is("19"))
 

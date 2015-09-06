@@ -15,8 +15,8 @@ import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.mocking.http.RMHttpHeaders.ACCEPT;
-import static com.buildria.mocking.http.RMHttpHeaders.CONTENT_LENGTH;
+import static com.buildria.mocking.http.MockingHttpHeaders.ACCEPT;
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;

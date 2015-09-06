@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.buildria.mocking.http.RMHttpHeaders.CONTENT_TYPE;
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;

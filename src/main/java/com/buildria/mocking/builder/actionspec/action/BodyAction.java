@@ -13,7 +13,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
-import static com.buildria.mocking.http.RMHttpHeaders.CONTENT_TYPE;
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 
 /**
  * BodyAction.

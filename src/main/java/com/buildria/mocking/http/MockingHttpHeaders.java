@@ -32,9 +32,9 @@ package com.buildria.mocking.http;
  *
  * @since 4.1
  */
-public final class RMHttpHeaders {
+public final class MockingHttpHeaders {
 
-    private RMHttpHeaders() {
+    private MockingHttpHeaders() {
         super();
     }
 

@@ -14,7 +14,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.hamcrest.Matcher;
 
-import static com.buildria.mocking.http.RMHttpHeaders.CONTENT_TYPE;
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 
 /**
  *
