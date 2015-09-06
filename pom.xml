@@ -5,7 +5,7 @@
 
     <groupId>com.buildria.mocking</groupId>
     <artifactId>mocking</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
 
     <name>Mocking</name>
 
@@ -31,7 +31,7 @@
         <url>http://gitbucket.buildria.com/sogabe/mocking</url>
         <connection>scm:http://gitbucket.buildria.com/git/sogabe/mocking.git</connection>
         <developerConnection>scm:git:ssh://sogabe@gitbucket.buildria.com:29418/sogabe/mocking.git</developerConnection>
-        <tag>master</tag>
+        <tag>mocking-0.2</tag>
     </scm>        
               
     <licenses>
