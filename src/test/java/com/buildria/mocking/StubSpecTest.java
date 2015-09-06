@@ -32,7 +32,7 @@ public class StubSpecTest {
     private static final int PORT = 8888;
 
     @Rule
-    public Mocking restmock = new Mocking(PORT);
+    public Mocking mocking = new Mocking();
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -40,6 +40,7 @@ public class StubSpecTest {
     @Before
     public void setUp() throws Exception {
         // ポート番号
+        mocking.port(PORT);
         RestAssured.port = PORT;
     }
 
@@ -49,7 +50,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -77,7 +78,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -86,7 +87,7 @@ public class StubSpecTest {
                     contentType("application/json; charset=UTF-8")
         );
 
-        restmock.$(
+        mocking.$(
                 when("/api/q").
                 then().
                     statusCode(SC_200_OK).
@@ -128,7 +129,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
 
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -151,7 +152,7 @@ public class StubSpecTest {
 
     @Test
     public void testURIBody() throws Exception {
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -174,7 +175,7 @@ public class StubSpecTest {
 
     @Test
     public void testStreamBody() throws Exception {
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -200,7 +201,7 @@ public class StubSpecTest {
     public void testRequestBodyMultibytes() throws Exception {
         Person p = new Person("\u3042\u3044\u3046\u3048\u304a", 19);
 
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -227,7 +228,7 @@ public class StubSpecTest {
 
         LOG.debug("### body: {}", r.getBody().asString());
 
-        restmock.$(
+        mocking.$(
                 put("/api/p").
                         accept(containsString("application/xml")).
                         contentType(containsString("pplication/xml")).
@@ -241,7 +242,7 @@ public class StubSpecTest {
     public void testRequestXmlBody() throws Exception {
         Person p = new Person("あいうえお", 19);
 
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -268,7 +269,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        restmock.$(
+        mocking.$(
                 when("/api/p").
                 then().
                     statusCode(SC_200_OK).
@@ -289,7 +290,7 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        restmock.$(
+        mocking.$(
                 get("/api/p").
                 accept(containsString("application/json")).
                 queryParam("name", "value 1")
@@ -302,7 +303,7 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-       restmock.$(
+       mocking.$(
                when("/api/p").
                then().
                 statusCode(SC_200_OK).
@@ -324,7 +325,7 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        restmock.$(
+        mocking.$(
                 get("/api/p").
                 accept(containsString("application/json")).
                 queryParams("name", "value 1", "value 2")

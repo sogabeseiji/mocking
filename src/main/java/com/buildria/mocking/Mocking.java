@@ -12,24 +12,16 @@ public class Mocking extends ExternalResource {
 
     private StubHttpServer server;
 
-    private final int port;
+    private int port = PORT;
 
     public Mocking() {
-        this(PORT);
-    }
-
-    public Mocking(int port) {
-        this.port = port;
-    }
-
-    public int getPort() {
-        return port;
+        super();
     }
 
     // CHECKSTYLE:OFF
     @Override
     protected void before() throws Throwable {
-    // CHECKSTYLE:ON
+        // CHECKSTYLE:ON
         super.before();
         server = new StubHttpServer(port).run();
     }
@@ -51,5 +43,14 @@ public class Mocking extends ExternalResource {
     @Nonnull
     public void $(RuleSpec spec) {
         spec.validate(server.getCalls());
+    }
+
+    @Nonnull
+    public Mocking port(int port) {
+        if (port < 0 || port > 65535) {
+            throw new IllegalArgumentException("port should be between 0 and 65535");
+        }
+        this.port = port;
+        return this;
     }
 }

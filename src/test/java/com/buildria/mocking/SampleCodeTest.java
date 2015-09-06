@@ -19,13 +19,14 @@ public class SampleCodeTest {
     private static final int PORT = 8888;
 
     @Rule
-    public Mocking mocking = new Mocking(PORT);
+    public Mocking mocking = new Mocking();
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
     @Before
     public void setUp() throws Exception {
+        mocking.port(PORT);
         RestAssured.port = PORT;
     }
 
