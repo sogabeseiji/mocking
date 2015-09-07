@@ -27,12 +27,15 @@ import com.google.common.base.MoreObjects;
 import com.google.common.net.MediaType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
+import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.QueryStringDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
@@ -47,7 +50,7 @@ public class Call {
 
     private String method;
 
-    private final Map<String, String> headers = new ConcurrentHashMap<>();
+    private final List<Pair> headers = new CopyOnWriteArrayList<>();
 
     private final Map<String, List<String>> parameters = new ConcurrentHashMap<>();
 
@@ -62,16 +65,23 @@ public class Call {
     public static Call fromRequest(HttpRequest req) {
         Objects.requireNonNull(req);
         Call call = new Call();
+
+        call.method = req.getMethod().name();
         QueryStringDecoder decoder = new QueryStringDecoder(req.getUri());
         call.path = decoder.path();
         call.parameters.putAll(decoder.parameters());
-        call.method = req.getMethod().name();
-        for (Map.Entry<String, String> entry : req.headers().entries()) {
-            call.headers.put(entry.getKey(), entry.getValue());
-            if (CONTENT_TYPE.equalsIgnoreCase(entry.getKey())) {
-                call.contentType = MediaType.parse(entry.getValue());
+
+        HttpHeaders headers = req.headers();
+        for (String name : headers.names()) {
+            List<String> values = headers.getAll(name);
+            for (String value : values) {
+                call.headers.add(new Pair(name, value));
+            }
+            if (CONTENT_TYPE.equalsIgnoreCase(name)) {
+                call.contentType = MediaType.parse(headers.get(CONTENT_TYPE));
             }
         }
+
         if (req instanceof ByteBufHolder) {
             ByteBuf buf = ((ByteBufHolder) req).content();
             if (buf != null) {
@@ -95,8 +105,8 @@ public class Call {
     }
 
     @Nonnull
-    public Map<String, String> getHeaders() {
-        return headers;
+    public List<Pair> getHeaders() {
+        return new ArrayList<>(headers);
     }
 
     @Nonnull

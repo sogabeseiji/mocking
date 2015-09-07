@@ -24,7 +24,8 @@
 package com.buildria.mocking.builder.rulespec.rule;
 
 import com.buildria.mocking.stub.Call;
-import java.util.Map;
+import com.buildria.mocking.stub.Pair;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
@@ -48,10 +49,10 @@ public class HeaderRule extends Rule {
     @Override
     public boolean apply(@Nonnull Call call) {
         Objects.requireNonNull(call);
-        Map<String, String> headers = call.getHeaders();
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            String n = entry.getKey();
-            String v = entry.getValue();
+        List<Pair> headers = call.getHeaders();
+        for (Pair pair : headers) {
+            String n = pair.getName();
+            String v = pair.getValue();
             if (name.equalsIgnoreCase(n) && value.matches(v)) {
                 return true;
             }

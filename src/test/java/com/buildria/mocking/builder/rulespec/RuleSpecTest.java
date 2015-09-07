@@ -29,6 +29,7 @@ import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
 import com.buildria.mocking.builder.rulespec.rule.MethodRule;
 import com.buildria.mocking.builder.rulespec.rule.ParameterRule;
 import com.buildria.mocking.stub.Call;
+import com.buildria.mocking.stub.Pair;
 import com.google.common.net.MediaType;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -80,8 +81,8 @@ public class RuleSpecTest {
         params.put("name", Arrays.asList("Bob"));
         when(c1.getParameters()).thenReturn(params);
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/json");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(c1.getHeaders()).thenReturn(headers);
         when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
@@ -101,8 +102,8 @@ public class RuleSpecTest {
         params.put("name", Arrays.asList("bob"));
         when(c1.getParameters()).thenReturn(params);
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/json");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(c1.getHeaders()).thenReturn(headers);
         when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
@@ -126,8 +127,8 @@ public class RuleSpecTest {
         when(c1.getMethod()).thenReturn("get");
         when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/json");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(c1.getHeaders()).thenReturn(headers);
         when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
@@ -156,8 +157,8 @@ public class RuleSpecTest {
 
         when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/json");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(c1.getHeaders()).thenReturn(headers);
         when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);
@@ -185,10 +186,10 @@ public class RuleSpecTest {
 
         when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/xml");
-        when(c1.getContentType()).thenReturn(MediaType.parse("application/xml"));
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/xml"));
         when(c1.getHeaders()).thenReturn(headers);
+        when(c1.getContentType()).thenReturn(MediaType.parse("application/xml"));
         calls.add(c1);
 
         try {
@@ -214,8 +215,8 @@ public class RuleSpecTest {
         params.put("name", Arrays.asList("Bob"));
         when(c1.getParameters()).thenReturn(params);
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/json");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(c1.getHeaders()).thenReturn(headers);
         when(c1.getContentType()).thenReturn(MediaType.parse("application/json"));
         calls.add(c1);

@@ -18,18 +18,19 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 package com.buildria.mocking.builder.rulespec.rule;
 
 import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.Call;
+import com.buildria.mocking.stub.Pair;
 import com.google.common.net.MediaType;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
@@ -113,11 +114,14 @@ public class BodyRuleTest {
         target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
-        when(call.getBody()).thenReturn(EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/xml");
+        when(call.getBody()).thenReturn(
+                EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
+
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/xml"));
         when(call.getHeaders()).thenReturn(headers);
-        when(call.getContentType()).thenReturn(MediaType.parse("application/xml"));
+        when(call.getContentType()).thenReturn(
+                MediaType.parse("application/xml"));
 
         boolean answer = target.apply(call);
 
@@ -131,11 +135,13 @@ public class BodyRuleTest {
         target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
-        when(call.getBody()).thenReturn(EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/xml");
+        when(call.getBody()).thenReturn(
+                EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/xml"));
         when(call.getHeaders()).thenReturn(headers);
-        when(call.getContentType()).thenReturn(MediaType.parse("application/xml"));
+        when(call.getContentType()).thenReturn(
+                MediaType.parse("application/xml"));
 
         boolean answer = target.apply(call);
 
@@ -149,11 +155,13 @@ public class BodyRuleTest {
         target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
-        when(call.getBody()).thenReturn(EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/json");
+        when(call.getBody()).thenReturn(
+                EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(call.getHeaders()).thenReturn(headers);
-        when(call.getContentType()).thenReturn(MediaType.parse("application/json"));
+        when(call.getContentType()).thenReturn(
+                MediaType.parse("application/json"));
 
         boolean answer = target.apply(call);
 
@@ -167,11 +175,13 @@ public class BodyRuleTest {
         target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
-        when(call.getBody()).thenReturn(EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/json");
+        when(call.getBody()).thenReturn(
+                EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(call.getHeaders()).thenReturn(headers);
-        when(call.getContentType()).thenReturn(MediaType.parse("application/json"));
+        when(call.getContentType()).thenReturn(
+                MediaType.parse("application/json"));
 
         boolean answer = target.apply(call);
 
@@ -185,11 +195,13 @@ public class BodyRuleTest {
         target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
-        when(call.getBody()).thenReturn(EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "image/png");
-        when(call.getContentType()).thenReturn(MediaType.parse("image/png"));
+        when(call.getBody()).thenReturn(
+                EXPECTED_JSON.getBytes(StandardCharsets.UTF_8));
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "image/png"));
         when(call.getHeaders()).thenReturn(headers);
+        when(call.getContentType()).thenReturn(
+                MediaType.parse("image/png"));
 
         boolean answer = target.apply(call);
     }
@@ -201,7 +213,8 @@ public class BodyRuleTest {
         target = new BodyRule(path, matcher);
 
         Call call = mock(Call.class);
-        when(call.getBody()).thenReturn(EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
+        when(call.getBody()).thenReturn(
+                EXPECTED_XML.getBytes(StandardCharsets.UTF_8));
 
         boolean answer = target.apply(call);
     }

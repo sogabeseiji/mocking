@@ -37,6 +37,7 @@ import org.junit.Test;
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
@@ -61,7 +62,8 @@ public class CallTest {
         when(req.getMethod()).thenReturn(GET);
 
         HttpHeaders headers = new DefaultHttpHeaders();
-        headers.add("key", "value");
+        headers.add("key", "value1");
+        headers.add("key", "value2");
         when(req.headers()).thenReturn(headers);
 
         ByteBuf buf = ByteBufAllocator.DEFAULT.buffer();
@@ -73,7 +75,11 @@ public class CallTest {
         assertThat(call.getPath(), is("/api/p"));
         assertThat(call.getParameters(), hasEntry("name", Arrays.asList("\u3042")));
         assertThat(call.getMethod(), is(equalToIgnoringCase("GET")));
-        assertThat(call.getHeaders().get("key"), is("value"));
+        assertThat(call.getHeaders(), hasSize(2));
+        assertThat(call.getHeaders().get(0).getName(), is("key"));
+        assertThat(call.getHeaders().get(0).getValue(), is("value1"));
+        assertThat(call.getHeaders().get(1).getName(), is("key"));
+        assertThat(call.getHeaders().get(1).getValue(), is("value2"));
         assertThat(call.getBody()[0], is((byte) 0xff));
     }
 

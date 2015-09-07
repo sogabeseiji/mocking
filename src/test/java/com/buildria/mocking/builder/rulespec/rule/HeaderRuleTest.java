@@ -24,10 +24,10 @@
 package com.buildria.mocking.builder.rulespec.rule;
 
 import com.buildria.mocking.TestNameRule;
-import com.buildria.mocking.http.MockingHttpHeaders;
 import com.buildria.mocking.stub.Call;
-import java.util.HashMap;
-import java.util.Map;
+import com.buildria.mocking.stub.Pair;
+import java.util.ArrayList;
+import java.util.List;
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
@@ -78,8 +78,8 @@ public class HeaderRuleTest {
         target = new HeaderRule(name, value);
 
         Call call = mock(Call.class);
-        Map<String, String> headers = new HashMap<>();
-        headers.put(MockingHttpHeaders.CONTENT_TYPE, "application/json");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/json"));
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);
@@ -91,12 +91,13 @@ public class HeaderRuleTest {
     public void testApplyTrue2() throws Exception {
         String name = CONTENT_TYPE;
         @SuppressWarnings("unchecked")
-        Matcher<?> value = anyOf(equalTo("application/json"), equalTo("application/xml"));
+        Matcher<?> value = anyOf(
+                equalTo("application/json"), equalTo("application/xml"));
         target = new HeaderRule(name, value);
 
         Call call = mock(Call.class);
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/xml");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/xml"));
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);
@@ -111,8 +112,8 @@ public class HeaderRuleTest {
         target = new HeaderRule(name, value);
 
         Call call = mock(Call.class);
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CONTENT_TYPE, "application/xml");
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(CONTENT_TYPE, "application/xml"));
         when(call.getHeaders()).thenReturn(headers);
 
         boolean actual = target.apply(call);
@@ -120,4 +121,22 @@ public class HeaderRuleTest {
         assertThat(actual, is(false));
     }
 
+    @Test
+    public void testApplyMultipleHeaders() throws Exception {
+        String name = "X-Header";
+        @SuppressWarnings("unchecked")
+        Matcher<?> value = anyOf(
+                equalTo("value1"), equalTo("value2"));
+        target = new HeaderRule(name, value);
+
+        Call call = mock(Call.class);
+        List<Pair> headers = new ArrayList<>();
+        headers.add(new Pair(name, "value1"));
+        headers.add(new Pair(name, "value2"));
+        when(call.getHeaders()).thenReturn(headers);
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(true));
+    }
 }
