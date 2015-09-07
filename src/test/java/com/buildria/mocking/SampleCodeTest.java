@@ -18,8 +18,8 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 package com.buildria.mocking;
 
@@ -59,11 +59,11 @@ public class SampleCodeTest {
 
         // Mocking
         mocking.$(
-                    when("/api/p").
-                    then().
-                        statusCode(SC_201_CREATED).
-                        contentType("application/json; charset=UTF-8").
-                        body(person)
+                when("/api/p").
+                then().
+                statusCode(SC_201_CREATED).
+                contentType("application/json; charset=UTF-8").
+                body(person)
         );
 
         // Rest-assured
@@ -71,9 +71,9 @@ public class SampleCodeTest {
                 accept("application/json").
                 contentType("application/json; charset=UTF-8").
                 body(person).
-        when().
+                when().
                 post("/api/p").
-        then().
+                then().
                 statusCode(SC_201_CREATED).
                 contentType("application/json; charset=UTF-8").
                 body("name", is("Bob")).
@@ -81,11 +81,11 @@ public class SampleCodeTest {
 
         // Mocking
         mocking.$(
-                    post("/api/p").
-                    accept("application/json").
-                    contentType("application/json; charset=UTF-8").
-                    body("name", is("Bob")).
-                    body("old", is(20))
+                post("/api/p").
+                accept("application/json").
+                contentType("application/json; charset=UTF-8").
+                body("name", is("Bob")).
+                body("old", is(20))
         );
     }
 
