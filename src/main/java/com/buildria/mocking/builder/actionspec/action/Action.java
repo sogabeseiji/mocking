@@ -27,6 +27,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
@@ -53,9 +54,11 @@ public abstract class Action {
     }
 
     @Nullable
-    public HeaderAction getHeader(String path, String headerName, List<Action> actions) {
+    public HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
+        QueryStringDecoder decoder = new QueryStringDecoder(uri);
+        String p = decoder.path();
         for (Action action : actions) {
-            if (action.isApplicable(path) && action instanceof HeaderAction) {
+            if (action.isApplicable(p) && action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;
                 if (ha.getHeader().equalsIgnoreCase(headerName)) {
                     return ha;
@@ -64,7 +67,7 @@ public abstract class Action {
         }
         return null;
     }
-
+    
     @Nonnull
     public abstract HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 

@@ -321,6 +321,38 @@ public class StubSpecTest {
     }
 
     @Test
+    public void testQueryParam2() throws Exception {
+        Person p = new Person("hoge", 19);
+
+        mocking.$(
+                when("/api/p").
+                then().
+                    statusCode(SC_200_OK).
+                    body(p).
+                    contentType("application/json; charset=UTF-8")
+        );
+
+        given().
+                log().all().
+                accept(ContentType.JSON).
+                queryParam("name", "value 1").
+         when().
+                get("/api/p").
+         then().
+                log().all().
+                statusCode(200).
+                contentType(ContentType.JSON).
+                body("name", is("hoge")).
+                body("old", is(19));
+
+        mocking.$(
+                get("/api/p").
+                accept(containsString("application/json")).
+                queryParam("name", "value 1")
+        );
+    }
+
+    @Test
     public void testQueryParams() throws Exception {
         Person p = new Person("hoge", 19);
         ObjectMapper mapper = new ObjectMapper();
