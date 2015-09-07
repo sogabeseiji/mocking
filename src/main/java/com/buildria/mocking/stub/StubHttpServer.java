@@ -21,7 +21,6 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseEncoder;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.codec.http.QueryStringDecoder;
 import io.netty.handler.logging.LoggingHandler;
 import java.util.Collections;
 import java.util.List;
@@ -149,11 +148,12 @@ public class StubHttpServer {
             }
 
             HttpRequest req = (HttpRequest) msg;
-            calls.add(Call.fromRequest(req));
+            Call call = Call.fromRequest(req);
+            calls.add(call);
 
             HttpResponse res = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             boolean proceed = false;
-            String path = getPath(req.getUri());
+            String path = call.getPath();
             for (Action action : actions) {
                 if (action.isApplicable(path)) {
                     proceed = true;
@@ -172,11 +172,6 @@ public class StubHttpServer {
                 }
             });
 
-        }
-
-        private String getPath(String uri) {
-            QueryStringDecoder decoder = new QueryStringDecoder(uri);
-            return decoder.path();
         }
 
         // CHECKSTYLE:OFF
