@@ -30,10 +30,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RequestActionSpec extends ActionSpec {
 
-    private final Matcher<?>  path;
-
     private RequestActionSpec(Matcher<?> path) {
-        this.path = path;
+        super(path);
     }
 
     public static RequestActionSpec when(String path) {
@@ -45,7 +43,7 @@ public class RequestActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec then() {
-        return new ResponseActionSpec(path);
+        return new ResponseActionSpec(getPath());
     }
 
 }

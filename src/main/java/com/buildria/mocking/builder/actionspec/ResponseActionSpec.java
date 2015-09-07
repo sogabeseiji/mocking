@@ -39,20 +39,14 @@ import org.hamcrest.Matcher;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 
-/**
- *
- * @author sogabe
- */
 public class ResponseActionSpec extends ActionSpec {
 
-    private final Matcher<?> path;
-
     ResponseActionSpec(Matcher<?> path) {
-        this.path = path;
+        super(path);
     }
 
     public ResponseActionSpec statusCode(int code) {
-        addAction(new StatusCodeAction(path, code));
+        addAction(new StatusCodeAction(getPath(), code));
         return this;
     }
 
@@ -61,7 +55,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec header(String name, String value) {
-        addAction(new HeaderAction(path, name, value));
+        addAction(new HeaderAction(getPath(), name, value));
         return this;
     }
 
@@ -74,7 +68,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec rawBody(byte[] content) {
-        addAction(new RawBodyAction(path, content));
+        addAction(new RawBodyAction(getPath(), content));
         return this;
     }
 
@@ -87,12 +81,12 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec body(Object content) {
-        addAction(new BodyAction(path, content, getActions()));
+        addAction(new BodyAction(getPath(), content, getActions()));
         return this;
     }
 
     public ResponseActionSpec delay(long wait) {
-        addAction(new DelayAction(path, wait));
+        addAction(new DelayAction(getPath(), wait));
         return this;
     }
 
