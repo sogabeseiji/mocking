@@ -52,7 +52,8 @@ public class Call {
         if (req instanceof ByteBufHolder) {
             ByteBuf buf = ((ByteBufHolder) req).content();
             if (buf != null) {
-                call.body = buf.copy().array();
+                call.body = new byte[buf.readableBytes()];;
+                buf.readBytes(call.body);
             }
         }
 
