@@ -1,6 +1,7 @@
 package com.buildria.mocking.builder.actionspec.action;
 
 import com.buildria.mocking.TestNameRule;
+import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
@@ -12,9 +13,11 @@ import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 public class DelayActionTest {
@@ -56,5 +59,18 @@ public class DelayActionTest {
         long actual = end - start;
         assertThat(actual, greaterThanOrEqualTo((long) (wait * 0.9)));
         assertThat(actual, lessThanOrEqualTo((long) (wait * 1.1)));
+    }
+
+    @Test
+    public void testObjects() {
+        Matcher<?> path = equalTo("/api/p");
+        long wait = 500;
+
+        Action action = new DelayAction(path, wait);
+
+        MoreObjects.ToStringHelper answer = action.objects();
+        assertThat(answer, notNullValue());
+        assertThat(answer.toString(), containsString("path"));
+        assertThat(answer.toString(), containsString("wait"));
     }
 }
