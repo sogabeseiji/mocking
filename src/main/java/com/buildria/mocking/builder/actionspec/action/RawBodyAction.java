@@ -1,6 +1,5 @@
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.buildria.mocking.http.MockingHttpHeaders;
 import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -12,6 +11,8 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.xml.bind.DatatypeConverter;
 import org.hamcrest.Matcher;
+
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
 
 /**
  * RawBodyAction.
@@ -36,7 +37,8 @@ public class RawBodyAction extends Action {
         for (Map.Entry<String, String> entry : res.headers()) {
             r.headers().add(entry.getKey(), entry.getValue());
         }
-        r.headers().add(MockingHttpHeaders.CONTENT_LENGTH, content.length);
+        r.headers().remove(CONTENT_LENGTH);
+        r.headers().add(CONTENT_LENGTH, content.length);
         return r;
     }
 
