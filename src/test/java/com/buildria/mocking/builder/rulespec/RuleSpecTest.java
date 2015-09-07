@@ -32,10 +32,7 @@ import com.buildria.mocking.stub.Call;
 import com.buildria.mocking.stub.Pair;
 import com.google.common.net.MediaType;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -77,8 +74,8 @@ public class RuleSpecTest {
         when(c1.getMethod()).thenReturn("get");
         when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("name", Arrays.asList("Bob"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("name", "Bob"));
         when(c1.getParameters()).thenReturn(params);
 
         List<Pair> headers = new ArrayList<>();
@@ -98,8 +95,8 @@ public class RuleSpecTest {
         when(c1.getMethod()).thenReturn("post");
         when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
 
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("name", Arrays.asList("bob"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("name", "bob"));
         when(c1.getParameters()).thenReturn(params);
 
         List<Pair> headers = new ArrayList<>();
@@ -151,8 +148,8 @@ public class RuleSpecTest {
         when(c1.getPath()).thenReturn("/api/q");
         when(c1.getMethod()).thenReturn("get");
 
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("name", Arrays.asList("Bob"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("name", "Bob"));
         when(c1.getParameters()).thenReturn(params);
 
         when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
@@ -180,8 +177,8 @@ public class RuleSpecTest {
         when(c1.getPath()).thenReturn("/api/p");
         when(c1.getMethod()).thenReturn("get");
 
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("name", Arrays.asList("Bob"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("name", "Bob"));
         when(c1.getParameters()).thenReturn(params);
 
         when(c1.getBody()).thenReturn(EXPECTED_JSON.getBytes("UTF-8"));
@@ -211,8 +208,8 @@ public class RuleSpecTest {
         when(c1.getMethod()).thenReturn("get");
         when(c1.getBody()).thenReturn("".getBytes("UTF-8"));
 
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("name", Arrays.asList("Bob"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("name", "Bob"));
         when(c1.getParameters()).thenReturn(params);
 
         List<Pair> headers = new ArrayList<>();

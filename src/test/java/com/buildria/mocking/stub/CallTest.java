@@ -30,13 +30,11 @@ import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpRequest;
-import java.util.Arrays;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static io.netty.handler.codec.http.HttpMethod.GET;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
-import static org.hamcrest.Matchers.hasEntry;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -73,7 +71,9 @@ public class CallTest {
         Call call = Call.fromRequest(req);
 
         assertThat(call.getPath(), is("/api/p"));
-        assertThat(call.getParameters(), hasEntry("name", Arrays.asList("\u3042")));
+        assertThat(call.getParameters().size(), is(1));
+        assertThat(call.getParameters().get(0).getName(), is("name"));
+        assertThat(call.getParameters().get(0).getValue(), is("\u3042"));
         assertThat(call.getMethod(), is(equalToIgnoringCase("GET")));
         assertThat(call.getHeaders(), hasSize(2));
         assertThat(call.getHeaders().get(0).getName(), is("key"));

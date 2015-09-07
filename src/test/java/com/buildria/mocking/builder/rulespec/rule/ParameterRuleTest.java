@@ -25,10 +25,9 @@ package com.buildria.mocking.builder.rulespec.rule;
 
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.Call;
-import java.util.Arrays;
-import java.util.HashMap;
+import com.buildria.mocking.stub.Pair;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -75,8 +74,8 @@ public class ParameterRuleTest {
         target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("key", Arrays.asList("value1"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("key", "value1"));
 
         when(call.getParameters()).thenReturn(params);
 
@@ -92,8 +91,9 @@ public class ParameterRuleTest {
         target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("key", Arrays.asList("value1", "value2"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("key", "value1"));
+        params.add(new Pair("key", "value2"));
 
         when(call.getParameters()).thenReturn(params);
 
@@ -109,8 +109,8 @@ public class ParameterRuleTest {
         target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("key", Arrays.asList("value11"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("key", "value11"));
 
         when(call.getParameters()).thenReturn(params);
 
@@ -126,8 +126,8 @@ public class ParameterRuleTest {
         target = new ParameterRule(key, values);
 
         Call call = mock(Call.class);
-        Map<String, List<String>> params = new HashMap<>();
-        params.put("key1", Arrays.asList("value11"));
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("key1", "value11"));
 
         when(call.getParameters()).thenReturn(params);
 

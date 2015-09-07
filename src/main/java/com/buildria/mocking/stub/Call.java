@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -52,7 +51,7 @@ public class Call {
 
     private final List<Pair> headers = new CopyOnWriteArrayList<>();
 
-    private final Map<String, List<String>> parameters = new ConcurrentHashMap<>();
+    private final List<Pair> parameters = new CopyOnWriteArrayList<>();
 
     private byte[] body = new byte[]{};
 
@@ -69,7 +68,14 @@ public class Call {
         call.method = req.getMethod().name();
         QueryStringDecoder decoder = new QueryStringDecoder(req.getUri());
         call.path = decoder.path();
-        call.parameters.putAll(decoder.parameters());
+
+        Map<String, List<String>> params = decoder.parameters();
+        for (String name : params.keySet()) {
+            List<String> values = params.get(name);
+            for (String value : values) {
+                call.parameters.add(new Pair(name, value));
+            }
+        }
 
         HttpHeaders headers = req.headers();
         for (String name : headers.names()) {
@@ -110,8 +116,8 @@ public class Call {
     }
 
     @Nonnull
-    public Map<String, List<String>> getParameters() {
-        return parameters;
+    public List<Pair> getParameters() {
+        return new ArrayList<>(parameters);
     }
 
     @Nullable
@@ -127,7 +133,10 @@ public class Call {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this).
-                add("path", path).add("method", method).add("headers", headers).add("parameters", parameters).
+                add("path", path).
+                add("method", method).
+                add("headers", headers).
+                add("parameters", parameters).
                 add("body", DatatypeConverter.printHexBinary(body)).
                 toString();
     }

@@ -383,7 +383,8 @@ public class StubSpecTest {
         mocking.$(
                 get("/api/p").
                 accept(containsString("application/json")).
-                queryParams("name", "value 1", "value 2")
+                queryParam("name", "value 1").
+                queryParam("name", "value 2")
         );
     }
 
