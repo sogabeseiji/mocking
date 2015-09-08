@@ -33,7 +33,6 @@ import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.xml.bind.DatatypeConverter;
-import org.hamcrest.Matcher;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
 
@@ -44,7 +43,7 @@ public class RawBodyAction extends Action {
 
     private final byte[] content;
 
-    public RawBodyAction(@Nonnull Matcher<?> path, @Nonnull byte[] content) {
+    public RawBodyAction(@Nonnull String path, @Nonnull byte[] content) {
         super(path);
         this.content = Objects.requireNonNull(content);
     }

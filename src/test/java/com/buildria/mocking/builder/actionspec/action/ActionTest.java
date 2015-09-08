@@ -29,15 +29,12 @@ import com.buildria.mocking.stub.StubHttpServer;
 import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
-import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.ACCEPT;
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -55,13 +52,13 @@ public class ActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        Matcher<?> path = null;
+        String path = null;
         Action action = new ActionImpl(path);
     }
 
     @Test
     public void testIsApplicableTrue() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Action action = new ActionImpl(path);
 
         boolean answer = action.isApplicable("/api/p");
@@ -70,7 +67,7 @@ public class ActionTest {
 
     @Test
     public void testIsApplicableFalse() throws Exception {
-        Matcher<?> path = Matchers.startsWith("/api/p");
+        String path = "/api/p";
         Action action = new ActionImpl(path);
 
         boolean answer = action.isApplicable("/api/q");
@@ -80,10 +77,10 @@ public class ActionTest {
     @Test
     public void testGetHeader() {
         StubHttpServer server = new StubHttpServer(new Mocking());
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
 
         server.addAction(new StatusCodeAction(path, 200));
-        server.addAction(new HeaderAction(equalTo("/api/q"), CONTENT_TYPE, "application/json"));
+        server.addAction(new HeaderAction("/api/q", CONTENT_TYPE, "application/json"));
         server.addAction(new HeaderAction(path, CONTENT_TYPE, "application/xml"));
 
         Action action = new ActionImpl(path);
@@ -96,7 +93,7 @@ public class ActionTest {
     @Test
     public void testGetHeaderCotentTypeNone() {
         StubHttpServer server = new StubHttpServer(new Mocking());
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
 
         server.addAction(new HeaderAction(path, ACCEPT, "application/xml"));
 
@@ -108,7 +105,7 @@ public class ActionTest {
 
     @Test
     public void testObjects() {
-        Matcher<?> path = Matchers.startsWith("/api/p");
+        String path = "/api/p";
         Action action = new ActionImpl(path);
 
         ToStringHelper answer = action.objects();
@@ -118,7 +115,7 @@ public class ActionTest {
 
     @Test
     public void testToString() {
-        Matcher<?> path = Matchers.startsWith("/api/p");
+        String path = "/api/p";
         Action action = new ActionImpl(path);
 
         String answer = action.toString();
@@ -128,7 +125,7 @@ public class ActionTest {
 
     private static class ActionImpl extends Action {
 
-        public ActionImpl(Matcher<?> path) {
+        public ActionImpl(String path) {
             super(path);
         }
 

@@ -32,12 +32,10 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -51,7 +49,7 @@ public class HeaderActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        Matcher<?> path = null;
+        String path = null;
         String header = "Content-Type";
         String value = "application/xml";
         Action action = new HeaderAction(path, header, value);
@@ -59,7 +57,7 @@ public class HeaderActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorHeaderNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         String header = null;
         String value = "application/xml";
         Action action = new HeaderAction(path, header, value);
@@ -67,7 +65,7 @@ public class HeaderActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValueNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         String header = "Content-Type";
         String value = null;
         Action action = new HeaderAction(path, header, value);
@@ -75,7 +73,7 @@ public class HeaderActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         String header = "Content-Type";
         String value = "application/xml";
 
@@ -85,7 +83,7 @@ public class HeaderActionTest {
 
     @Test
     public void testApplyResponse() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         String header = "Content-Type";
         String value = "application/xml";
 
@@ -100,7 +98,7 @@ public class HeaderActionTest {
 
     @Test
     public void testObjects() {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         String header = "Content-Type";
         String value = "application/xml";
 

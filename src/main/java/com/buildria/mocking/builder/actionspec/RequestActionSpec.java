@@ -23,22 +23,13 @@
  */
 package com.buildria.mocking.builder.actionspec;
 
-import java.util.Objects;
-import org.hamcrest.Matcher;
-
-import static org.hamcrest.Matchers.equalTo;
-
 public class RequestActionSpec extends ActionSpec {
 
-    private RequestActionSpec(Matcher<?> path) {
+    private RequestActionSpec(String path) {
         super(path);
     }
 
     public static RequestActionSpec when(String path) {
-        return when(equalTo(Objects.requireNonNull(path)));
-    }
-
-    public static RequestActionSpec when(Matcher<?> path) {
         return new RequestActionSpec(path);
     }
 
