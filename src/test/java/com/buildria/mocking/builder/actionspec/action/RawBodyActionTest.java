@@ -34,14 +34,12 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.ACCEPT;
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -56,7 +54,7 @@ public class RawBodyActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        Matcher<?> path = null;
+        String path = null;
         byte[] content = "content".getBytes();
 
         Action action = new RawBodyAction(path, content);
@@ -64,7 +62,7 @@ public class RawBodyActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorContentNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         byte[] content = null;
 
         Action action = new RawBodyAction(path, content);
@@ -72,7 +70,7 @@ public class RawBodyActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         byte[] content = "content".getBytes();
 
         Action action = new RawBodyAction(path, content);
@@ -81,7 +79,7 @@ public class RawBodyActionTest {
 
     @Test
     public void testApplyResponse() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         byte[] content = "content".getBytes();
 
         Action action = new RawBodyAction(path, content);
@@ -105,7 +103,7 @@ public class RawBodyActionTest {
 
     @Test
     public void testObjects() {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         byte[] content = "content".getBytes();
 
         Action action = new RawBodyAction(path, content);

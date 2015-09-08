@@ -32,25 +32,24 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.hamcrest.Matcher;
 
 // CHECKSTYLE:OFF
 public abstract class Action {
 // CHECKSTYLE:ON
 
-    private final Matcher<?> path;
+    private final String path;
 
-    public Action(@Nonnull Matcher<?> path) {
+    public Action(@Nonnull String path) {
         this.path = Objects.requireNonNull(path);
     }
 
     @Nonnull
-    public Matcher<?> getPath() {
+    public String getPath() {
         return path;
     }
 
     public boolean isApplicable(String path) {
-        return this.path.matches(path);
+        return this.path.equals(path);
     }
 
     @Nullable
@@ -67,7 +66,7 @@ public abstract class Action {
         }
         return null;
     }
-    
+
     @Nonnull
     public abstract HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 

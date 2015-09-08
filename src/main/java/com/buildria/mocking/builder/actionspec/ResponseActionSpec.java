@@ -35,13 +35,12 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import org.hamcrest.Matcher;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 
 public class ResponseActionSpec extends ActionSpec {
 
-    ResponseActionSpec(Matcher<?> path) {
+    ResponseActionSpec(String path) {
         super(path);
     }
 

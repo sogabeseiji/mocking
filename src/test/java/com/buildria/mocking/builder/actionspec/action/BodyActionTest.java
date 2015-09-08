@@ -43,12 +43,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -65,7 +63,7 @@ public class BodyActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        Matcher<?> path = null;
+        String path = null;
         Object content = person;
         List<Action> actions = Collections.<Action>emptyList();
         Action action = new BodyAction(path, content, actions);
@@ -73,7 +71,7 @@ public class BodyActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorContentNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Object content = null;
         List<Action> actions = Collections.<Action>emptyList();
         Action action = new BodyAction(path, content, actions);
@@ -81,7 +79,7 @@ public class BodyActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorActionsNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Object content = person;
         List<Action> actions = null;
         Action action = new BodyAction(path, content, actions);
@@ -89,7 +87,7 @@ public class BodyActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Object content = person;
         List<Action> actions = Collections.<Action>emptyList();
         Action action = new BodyAction(path, content, actions);
@@ -98,11 +96,11 @@ public class BodyActionTest {
 
     @Test
     public void testApplyResponseUTF8() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Object content = person;
 
         List<Action> actions = new ArrayList<>();
-        actions.add(new HeaderAction(equalTo("/api/p"), "Content-Type", "application/json; charset=UTF-8"));
+        actions.add(new HeaderAction("/api/p", "Content-Type", "application/json; charset=UTF-8"));
 
         Action action = new BodyAction(path, content, actions);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
@@ -128,11 +126,11 @@ public class BodyActionTest {
 
     @Test
     public void testApplyResponseUTF16BE() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Object content = person;
 
         List<Action> actions = new ArrayList<>();
-        actions.add(new HeaderAction(equalTo("/api/p"), "Content-Type", "application/json; charset=UTF-16BE"));
+        actions.add(new HeaderAction("/api/p", "Content-Type", "application/json; charset=UTF-16BE"));
 
         Action action = new BodyAction(path, content, actions);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
@@ -158,7 +156,7 @@ public class BodyActionTest {
 
     @Test(expected = MockingException.class)
     public void testApplyResponseNoContentType() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Object content = person;
 
         Action action = new BodyAction(path, content, Collections.<Action>emptyList());
@@ -169,7 +167,7 @@ public class BodyActionTest {
 
     @Test
     public void testObjects() {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         Object content = person;
         List<Action> actions = Collections.<Action>emptyList();
 

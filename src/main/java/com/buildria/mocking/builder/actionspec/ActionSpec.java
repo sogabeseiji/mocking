@@ -27,21 +27,20 @@ import com.buildria.mocking.builder.actionspec.action.Action;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.hamcrest.Matcher;
 
 // CHECKSTYLE:OFF
 public abstract class ActionSpec {
 // CHECKSTYLE:ON
 
-    private final Matcher<?>  path;
+    private final String  path;
 
     private final List<Action> actions = new ArrayList<>();
 
-    public ActionSpec(Matcher<?> path) {
+    public ActionSpec(String path) {
         this.path = Objects.requireNonNull(path);
     }
 
-    public Matcher<?> getPath() {
+    public String getPath() {
         return path;
     }
 

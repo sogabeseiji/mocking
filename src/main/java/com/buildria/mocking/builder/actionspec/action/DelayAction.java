@@ -26,7 +26,7 @@ package com.buildria.mocking.builder.actionspec.action;
 import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
-import org.hamcrest.Matcher;
+import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +34,7 @@ public class DelayAction extends Action {
 
     private final long wait;
 
-    public DelayAction(Matcher<?> path, long wait) {
+    public DelayAction(@Nonnull String path, long wait) {
         super(path);
         if (wait < 0) {
             throw new IllegalArgumentException("wait should be non negative");

@@ -29,16 +29,15 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import org.hamcrest.Matcher;
 
 /**
  * StatusCodeAction.
  */
 public class StatusCodeAction extends Action {
-    
+
     private final int code;
 
-    public StatusCodeAction(@Nonnull Matcher<?> path, int code) {
+    public StatusCodeAction(@Nonnull String path, int code) {
         super(path);
         this.code = code;
     }

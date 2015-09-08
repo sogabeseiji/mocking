@@ -28,7 +28,6 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import org.hamcrest.Matcher;
 
 /**
  * HeaderAction.
@@ -40,7 +39,7 @@ public class HeaderAction extends Action {
     private final String value;
 
     @Nonnull
-    public HeaderAction(@Nonnull Matcher<?> path, @Nonnull String header,
+    public HeaderAction(@Nonnull String path, @Nonnull String header,
             @Nonnull String value) {
         super(path);
         this.header = Objects.requireNonNull(header);

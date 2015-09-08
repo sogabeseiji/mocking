@@ -32,12 +32,10 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -51,14 +49,14 @@ public class StatusCodeActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathNull() throws Exception {
-        Matcher<?> path = null;
+        String path = null;
         int code = 200;
         Action action = new StatusCodeAction(path, code);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         int code = 200;
 
         StatusCodeAction action = new StatusCodeAction(path, code);
@@ -67,7 +65,7 @@ public class StatusCodeActionTest {
 
     @Test
     public void testApplyResponse() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         int code = 404;
 
         StatusCodeAction action = new StatusCodeAction(path, code);
@@ -81,7 +79,7 @@ public class StatusCodeActionTest {
 
     @Test
     public void testObjects() {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         int code = 404;
 
         StatusCodeAction action = new StatusCodeAction(path, code);

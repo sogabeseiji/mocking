@@ -32,12 +32,10 @@ import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
-import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -52,21 +50,21 @@ public class DelayActionTest {
 
     @Test(expected = NullPointerException.class)
     public void testConstructorPathIsNull() throws Exception {
-        Matcher<?> path = null;
+        String path = null;
         long wait = 1000;
         target = new DelayAction(path, wait);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWaitNegative() {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         long wait = -100;
         target = new DelayAction(path, wait);
     }
 
     @Test
     public void testApply() throws Exception {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         long wait = 500;
         target = new DelayAction(path, wait);
 
@@ -86,7 +84,7 @@ public class DelayActionTest {
 
     @Test
     public void testObjects() {
-        Matcher<?> path = equalTo("/api/p");
+        String path = "/api/p";
         long wait = 500;
 
         Action action = new DelayAction(path, wait);

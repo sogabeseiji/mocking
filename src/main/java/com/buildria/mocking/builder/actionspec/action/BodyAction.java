@@ -34,7 +34,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import org.hamcrest.Matcher;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 
@@ -47,7 +46,7 @@ public class BodyAction extends Action {
 
     private final List<Action> actions;
 
-    public BodyAction(@Nonnull Matcher<?> path, @Nonnull Object content,
+    public BodyAction(@Nonnull String path, @Nonnull Object content,
             @Nonnull List<Action> actions) {
         super(path);
         this.content = Objects.requireNonNull(content);
