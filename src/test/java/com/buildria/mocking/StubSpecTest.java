@@ -76,9 +76,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    rawBody(json, Charset.defaultCharset()).
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withRawBody(json, Charset.defaultCharset()).
+                        withContentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -104,19 +104,19 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    rawBody(json, Charset.defaultCharset()).
-                    header("X-header", "restmock1").
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withRawBody(json, Charset.defaultCharset()).
+                        withHeader("X-header", "restmock1").
+                        withContentType("application/json; charset=UTF-8")
         );
 
         mocking.$(
                 when("/api/q").
                 then().
-                    statusCode(SC_200_OK).
-                    rawBody(json).
-                    header("X-header", "restmock2").
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withRawBody(json).
+                        withHeader("X-header", "restmock2").
+                        withContentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -155,9 +155,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    rawBody(json).
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withRawBody(json).
+                        withContentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -178,9 +178,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    rawBody(Resources.getResource("com/buildria/mocking/person.json")).
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withRawBody(Resources.getResource("com/buildria/mocking/person.json")).
+                        withContentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -201,9 +201,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    rawBody(Resources.getResource("com/buildria/mocking/person.json").openStream()).
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withRawBody(Resources.getResource("com/buildria/mocking/person.json").openStream()).
+                        withContentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -227,9 +227,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    body(p).
-                    contentType("application/xml; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withBody(p).
+                        withContentType("application/xml; charset=UTF-8")
         );
 
         Response r =
@@ -253,10 +253,10 @@ public class StubSpecTest {
 
         mocking.$(
                 put("/api/p").
-                        accept(containsString("application/xml")).
-                        contentType(containsString("application/xml")).
-                        body("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
-                        body("person.old", is("19"))
+                        withAccept(containsString("application/xml")).
+                        withContentType(containsString("application/xml")).
+                        withBody("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
+                        withBody("person.old", is("19"))
 
         );
     }
@@ -268,9 +268,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    body(p).
-                    contentType("application/xml; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withBody(p).
+                        withContentType("application/xml; charset=UTF-8")
         );
 
         given().
@@ -295,9 +295,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    rawBody(json, Charset.defaultCharset()).
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withRawBody(json, Charset.defaultCharset()).
+                        withContentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -315,8 +315,8 @@ public class StubSpecTest {
 
         mocking.$(
                 get("/api/p").
-                accept(containsString("application/json")).
-                queryParam("name", "value 1")
+                        withAccept(containsString("application/json")).
+                        withQueryParam("name", "value 1")
         );
     }
 
@@ -327,9 +327,9 @@ public class StubSpecTest {
         mocking.$(
                 when("/api/p").
                 then().
-                    statusCode(SC_200_OK).
-                    body(p).
-                    contentType("application/json; charset=UTF-8")
+                        withStatusCode(SC_200_OK).
+                        withBody(p).
+                        withContentType("application/json; charset=UTF-8")
         );
 
         given().
@@ -347,8 +347,8 @@ public class StubSpecTest {
 
         mocking.$(
                 get("/api/p").
-                accept(containsString("application/json")).
-                queryParam("name", "value 1")
+                        withAccept(containsString("application/json")).
+                        withQueryParam("name", "value 1")
         );
     }
 
@@ -361,9 +361,9 @@ public class StubSpecTest {
        mocking.$(
                when("/api/p").
                then().
-                statusCode(SC_200_OK).
-                rawBody(json, Charset.defaultCharset()).
-                contentType("application/json; charset=UTF-8")
+                       withStatusCode(SC_200_OK).
+                       withRawBody(json, Charset.defaultCharset()).
+                       withContentType("application/json; charset=UTF-8")
        );
 
         given().
@@ -382,9 +382,9 @@ public class StubSpecTest {
 
         mocking.$(
                 get("/api/p").
-                accept(containsString("application/json")).
-                queryParam("name", "value 1").
-                queryParam("name", "value 2")
+                        withAccept(containsString("application/json")).
+                        withQueryParam("name", "value 1").
+                        withQueryParam("name", "value 2")
         );
     }
 

@@ -61,9 +61,9 @@ public class SampleCodeTest {
         mocking.$(
                 when("/api/p").
                 then().
-                statusCode(SC_201_CREATED).
-                contentType("application/json; charset=UTF-8").
-                body(person)
+                        withStatusCode(SC_201_CREATED).
+                        withContentType("application/json; charset=UTF-8").
+                        withBody(person)
         );
 
         // Rest-assured
@@ -71,9 +71,9 @@ public class SampleCodeTest {
                 accept("application/json").
                 contentType("application/json; charset=UTF-8").
                 body(person).
-                when().
+        when().
                 post("/api/p").
-                then().
+        then().
                 statusCode(SC_201_CREATED).
                 contentType("application/json; charset=UTF-8").
                 body("name", is("Bob")).
@@ -82,10 +82,10 @@ public class SampleCodeTest {
         // Mocking
         mocking.$(
                 post("/api/p").
-                accept("application/json").
-                contentType("application/json; charset=UTF-8").
-                body("name", is("Bob")).
-                body("old", is(20))
+                        withAccept("application/json").
+                        withContentType("application/json; charset=UTF-8").
+                        withBody("name", is("Bob")).
+                        withBody("old", is(20))
         );
     }
 

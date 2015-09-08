@@ -45,47 +45,47 @@ public class ResponseActionSpec extends ActionSpec {
         super(path);
     }
 
-    public ResponseActionSpec statusCode(int code) {
+    public ResponseActionSpec withStatusCode(int code) {
         addAction(new StatusCodeAction(getPath(), code));
         return this;
     }
 
-    public ResponseActionSpec contentType(String contentType) {
-        return header(CONTENT_TYPE, contentType);
+    public ResponseActionSpec withContentType(String contentType) {
+        return withHeader(CONTENT_TYPE, contentType);
     }
 
-    public ResponseActionSpec header(String name, String value) {
+    public ResponseActionSpec withHeader(String name, String value) {
         addAction(new HeaderAction(getPath(), name, value));
         return this;
     }
 
-    public ResponseActionSpec rawBody(String content) {
-        return rawBody(content, StandardCharsets.UTF_8);
+    public ResponseActionSpec withRawBody(String content) {
+        return ResponseActionSpec.this.withRawBody(content, StandardCharsets.UTF_8);
     }
 
-    public ResponseActionSpec rawBody(String content, Charset charset) {
-        return rawBody(content.getBytes(charset));
+    public ResponseActionSpec withRawBody(String content, Charset charset) {
+        return ResponseActionSpec.this.withRawBody(content.getBytes(charset));
     }
 
-    public ResponseActionSpec rawBody(byte[] content) {
+    public ResponseActionSpec withRawBody(byte[] content) {
         addAction(new RawBodyAction(getPath(), content));
         return this;
     }
 
-    public ResponseActionSpec rawBody(URL url) throws IOException {
-        return rawBody(Resources.toByteArray(url));
+    public ResponseActionSpec withRawBody(URL url) throws IOException {
+        return ResponseActionSpec.this.withRawBody(Resources.toByteArray(url));
     }
 
-    public ResponseActionSpec rawBody(InputStream is) throws IOException {
-        return rawBody(ByteStreams.toByteArray(is));
+    public ResponseActionSpec withRawBody(InputStream is) throws IOException {
+        return ResponseActionSpec.this.withRawBody(ByteStreams.toByteArray(is));
     }
 
-    public ResponseActionSpec body(Object content) {
+    public ResponseActionSpec withBody(Object content) {
         addAction(new BodyAction(getPath(), content, getActions()));
         return this;
     }
 
-    public ResponseActionSpec delay(long wait) {
+    public ResponseActionSpec withDelay(long wait) {
         addAction(new DelayAction(getPath(), wait));
         return this;
     }

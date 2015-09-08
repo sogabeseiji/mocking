@@ -38,49 +38,49 @@ public class RequestRuleSpec extends RuleSpec {
         super();
     }
 
-    public RequestRuleSpec header(String name, Matcher<?> value) {
+    public RequestRuleSpec withHeader(String name, Matcher<?> value) {
         addRule(new HeaderRule(name, value));
         return this;
     }
 
-    public RequestRuleSpec header(String name, String value) {
-        return header(name, equalTo(value));
+    public RequestRuleSpec withHeader(String name, String value) {
+        return RequestRuleSpec.this.withHeader(name, equalTo(value));
     }
 
-    public RequestRuleSpec contentType(Matcher<?> value) {
-        return header(CONTENT_TYPE, value);
+    public RequestRuleSpec withContentType(Matcher<?> value) {
+        return RequestRuleSpec.this.withHeader(CONTENT_TYPE, value);
     }
 
-    public RequestRuleSpec contentType(String value) {
-        return header(CONTENT_TYPE, value);
+    public RequestRuleSpec withContentType(String value) {
+        return withHeader(CONTENT_TYPE, value);
     }
 
-    public RequestRuleSpec accept(Matcher<?> value) {
-        return header(ACCEPT, value);
+    public RequestRuleSpec withAccept(Matcher<?> value) {
+        return RequestRuleSpec.this.withHeader(ACCEPT, value);
     }
 
-    public RequestRuleSpec accept(String value) {
-        return header(ACCEPT, value);
+    public RequestRuleSpec withAccept(String value) {
+        return withHeader(ACCEPT, value);
     }
 
-    public RequestRuleSpec parameter(String key, String value) {
-        return parameters(key, new String[]{value});
+    public RequestRuleSpec withParameter(String key, String value) {
+        return withParameters(key, new String[]{value});
     }
 
-    public RequestRuleSpec parameters(String key, String[] values) {
+    public RequestRuleSpec withParameters(String key, String[] values) {
         addRule(new ParameterRule(key, values));
         return this;
     }
 
-    public RequestRuleSpec queryParam(String key, String value) {
-        return parameter(key, value);
+    public RequestRuleSpec withQueryParam(String key, String value) {
+        return withParameter(key, value);
     }
 
-    public RequestRuleSpec queryParams(String key, String... values) {
-        return parameters(key, values);
+    public RequestRuleSpec withQueryParams(String key, String... values) {
+        return withParameters(key, values);
     }
 
-    public RequestRuleSpec body(String path, Matcher<?> matcher) {
+    public RequestRuleSpec withBody(String path, Matcher<?> matcher) {
         addRule(new BodyRule(path, matcher));
         return this;
     }
