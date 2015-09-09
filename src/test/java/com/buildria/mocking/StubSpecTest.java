@@ -63,7 +63,7 @@ public class StubSpecTest {
     @Before
     public void setUp() throws Exception {
         // ポート番号
-        mocking.port(PORT);
+        mocking.port(PORT).logging(true);
         RestAssured.port = PORT;
     }
 
@@ -82,12 +82,10 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
          when().
                 get("/api/p").
          then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
@@ -120,12 +118,10 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
         when().
                 post("/api/p").
         then().
-                log().all().
                 statusCode(SC_200_OK).
                 contentType(ContentType.JSON).
                 header("X-header", "restmock1").
@@ -138,7 +134,6 @@ public class StubSpecTest {
         when().
                 get("/api/q").
         then().
-                log().all().
                 statusCode(SC_200_OK).
                 contentType(ContentType.JSON).
                 header("X-header", "restmock2").
@@ -161,12 +156,10 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
         when().
                 get("/api/p").
         then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
@@ -184,12 +177,10 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
         when().
                 get("/api/p").
         then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
@@ -207,12 +198,10 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
         when().
                 get("/api/p").
         then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
@@ -234,14 +223,12 @@ public class StubSpecTest {
 
         Response r =
                 given().
-                log().all().
                 accept(ContentType.XML).
                 contentType(ContentType.XML).
                 body(p).
         when().
                 put("/api/p").
         then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.XML).
                 body("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
@@ -275,12 +262,10 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.XML).
         when().
                 put("/api/p").
         then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.XML).
                 body("persson.name", is("あいうえお")).
@@ -302,13 +287,11 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
                 queryParam("name", "value 1").
          when().
                 get("/api/p").
          then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
@@ -335,13 +318,11 @@ public class StubSpecTest {
         );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
                 queryParam("name", "value 1").
          when().
                 get("/api/p").
          then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
@@ -370,14 +351,12 @@ public class StubSpecTest {
        );
 
         given().
-                log().all().
                 accept(ContentType.JSON).
                 queryParam("name", "value 1").
                 queryParam("name", "value 2").
          when().
                 get("/api/p").
          then().
-                log().all().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
