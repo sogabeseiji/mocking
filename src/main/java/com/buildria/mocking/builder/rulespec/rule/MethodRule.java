@@ -48,7 +48,7 @@ public class MethodRule extends Rule {
 
     @Override
     public String getDescription() {
-        return String.format("[Method] path: (%s) method: (%s)", path, method);
+        return String.format("(Method) path: [%s] method: [%s]", path, method);
     }
 
 }

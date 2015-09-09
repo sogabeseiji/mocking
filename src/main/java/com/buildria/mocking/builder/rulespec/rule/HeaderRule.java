@@ -62,7 +62,7 @@ public class HeaderRule extends Rule {
 
     @Override
     public String getDescription() {
-        return String.format("[Header] name: (%s) value: (%s)", name, value.toString());
+        return String.format("(Header) name: [%s] value: [%s]", name, value.toString());
     }
 
 }

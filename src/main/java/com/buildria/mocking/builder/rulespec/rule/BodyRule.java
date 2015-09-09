@@ -76,7 +76,7 @@ public class BodyRule extends Rule {
 
     @Override
     public String getDescription() {
-        return String.format("[Body] path: (%s) matcher: (%s)", path, matcher.toString());
+        return String.format("(Body) path: [%s] matcher: [%s]", path, matcher.toString());
     }
 
 }

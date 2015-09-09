@@ -61,7 +61,7 @@ public class ParameterRule extends Rule {
 
     @Override
     public String getDescription() {
-        return String.format("[Parameter] key: (%s) value: (%s)",
+        return String.format("(Parameter) key: [%s] value: [%s]",
                 key, Joiner.on(",").join(values));
     }
 
