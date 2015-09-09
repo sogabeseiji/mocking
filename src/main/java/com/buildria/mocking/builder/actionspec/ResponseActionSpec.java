@@ -59,11 +59,11 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec withRawBody(String content) {
-        return ResponseActionSpec.this.withRawBody(content, StandardCharsets.UTF_8);
+        return withRawBody(content, StandardCharsets.UTF_8);
     }
 
     public ResponseActionSpec withRawBody(String content, Charset charset) {
-        return ResponseActionSpec.this.withRawBody(content.getBytes(charset));
+        return withRawBody(content.getBytes(charset));
     }
 
     public ResponseActionSpec withRawBody(byte[] content) {
@@ -72,11 +72,11 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec withRawBody(URL url) throws IOException {
-        return ResponseActionSpec.this.withRawBody(Resources.toByteArray(url));
+        return withRawBody(Resources.toByteArray(url));
     }
 
     public ResponseActionSpec withRawBody(InputStream is) throws IOException {
-        return ResponseActionSpec.this.withRawBody(ByteStreams.toByteArray(is));
+        return withRawBody(ByteStreams.toByteArray(is));
     }
 
     public ResponseActionSpec withBody(Object content) {

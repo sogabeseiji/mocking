@@ -30,10 +30,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
-/**
- *
- * @author sogabe
- */
 public class HeaderRule extends Rule {
 
     private final String name;
