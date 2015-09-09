@@ -53,7 +53,7 @@ public abstract class Action {
     }
 
     @Nullable
-    public HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
+    protected HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
         String p = QueryStringDecoder.decodeComponent(decoder.path());
         for (Action action : actions) {
