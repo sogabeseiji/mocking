@@ -136,4 +136,38 @@ public class ParameterRuleTest {
         assertThat(actual, is(false));
     }
 
+    @Test
+    public void testApplyCaseSensitive1() throws Exception {
+        String key = "key";
+        String[] values = new String[]{"value1"};
+        target = new ParameterRule(key, values);
+
+        Call call = mock(Call.class);
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("kEy", "value1"));
+
+        when(call.getParameters()).thenReturn(params);
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(false));
+    }
+
+    @Test
+    public void testApplyCaseSensitive2() throws Exception {
+        String key = "key";
+        String[] values = new String[]{"value1"};
+        target = new ParameterRule(key, values);
+
+        Call call = mock(Call.class);
+        List<Pair> params = new ArrayList<>();
+        params.add(new Pair("key", "Value1"));
+
+        when(call.getParameters()).thenReturn(params);
+
+        boolean actual = target.apply(call);
+
+        assertThat(actual, is(false));
+    }
+
 }

@@ -50,8 +50,8 @@ public class ParameterRule extends Rule {
         List<Pair> params = call.getParameters();
         for (String value :values) {
             for (Pair pair : params) {
-                if (key.equalsIgnoreCase(pair.getName()) &&
-                        value.equalsIgnoreCase(pair.getValue())) {
+                if (key.equals(pair.getName()) &&
+                        value.equals(pair.getValue())) {
                     return true;
                 }
             }
