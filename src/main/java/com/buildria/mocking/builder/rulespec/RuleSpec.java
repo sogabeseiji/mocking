@@ -67,5 +67,5 @@ public abstract class RuleSpec {
         }
     }
 
-    private final Logger LOG = LoggerFactory.getLogger(RuleSpec.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RuleSpec.class);
 }
