@@ -89,7 +89,8 @@ public class SampleCodeTest {
                         withAccept("application/json").
                         withContentType("application/json; charset=UTF-8").
                         withBody("name", is("Bob")).
-                        withBody("old", is(20))
+                        withBody("old", is(20)).
+                        withoutHeader("Referer")
         );
     }
 

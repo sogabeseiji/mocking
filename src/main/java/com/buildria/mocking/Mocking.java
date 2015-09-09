@@ -55,14 +55,6 @@ public class Mocking extends ExternalResource {
         server = new StubHttpServer(this).run();
     }
 
-    public int getPort() {
-        return port;
-    }
-
-    public boolean isLogging() {
-        return logging;
-    }
-
     @Override
     protected void after() {
         if (server != null) {
@@ -70,6 +62,14 @@ public class Mocking extends ExternalResource {
             server = null;
         }
         super.after();
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public boolean isLogging() {
+        return logging;
     }
 
     @Nonnull

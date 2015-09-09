@@ -25,6 +25,7 @@ package com.buildria.mocking.builder.rulespec;
 
 import com.buildria.mocking.builder.rulespec.rule.BodyRule;
 import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
+import com.buildria.mocking.builder.rulespec.rule.NoHeaderRule;
 import com.buildria.mocking.builder.rulespec.rule.ParameterRule;
 import com.buildria.mocking.builder.rulespec.rule.Rule;
 import java.util.List;
@@ -84,6 +85,11 @@ public class RequestRuleSpec extends RuleSpec {
 
     public RequestRuleSpec withBody(String path, Matcher<?> matcher) {
         addRule(new BodyRule(path, matcher));
+        return this;
+    }
+
+    public RequestRuleSpec withoutHeader(String name) {
+        addRule(new NoHeaderRule(name));
         return this;
     }
 }
