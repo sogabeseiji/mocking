@@ -27,7 +27,7 @@ import com.buildria.mocking.stub.Call;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
-public class MethodRule extends Rule {
+public class MethodRule implements Rule {
 
     private final String path;
 

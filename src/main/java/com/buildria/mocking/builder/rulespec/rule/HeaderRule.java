@@ -30,7 +30,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
-public class HeaderRule extends Rule {
+public class HeaderRule implements Rule {
 
     private final String name;
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
-public class NoHeaderRule extends Rule {
+public class NoHeaderRule implements Rule {
 
     private final String name;
 

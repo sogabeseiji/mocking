@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
-public class ParameterRule extends Rule {
+public class ParameterRule implements Rule {
 
     private final String key;
 

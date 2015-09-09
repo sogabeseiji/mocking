@@ -34,7 +34,7 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.hamcrest.Matcher;
 
-public class BodyRule extends Rule {
+public class BodyRule implements Rule {
 
     private final String path;
 
