@@ -23,7 +23,6 @@
  */
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -49,11 +48,6 @@ public class StatusCodeAction extends Action {
         Objects.requireNonNull(res);
         res.setStatus(HttpResponseStatus.valueOf(code));
         return res;
-    }
-
-    @Override
-    public MoreObjects.ToStringHelper objects() {
-        return super.objects().add("code", code);
     }
 
 }

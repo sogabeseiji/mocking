@@ -23,7 +23,6 @@
  */
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import javax.annotation.Nonnull;
@@ -51,11 +50,6 @@ public class DelayAction extends Action {
         }
 
         return res;
-    }
-
-    @Override
-    public MoreObjects.ToStringHelper objects() {
-        return super.objects().add("wait", wait);
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(DelayAction.class);

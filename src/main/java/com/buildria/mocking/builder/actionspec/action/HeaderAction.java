@@ -23,7 +23,6 @@
  */
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import java.util.Objects;
@@ -63,11 +62,6 @@ public class HeaderAction extends Action {
         Objects.requireNonNull(res);
         res.headers().add(header, value);
         return res;
-    }
-
-    @Override
-    public MoreObjects.ToStringHelper objects() {
-        return super.objects().add("header", header).add("value", value);
     }
 
 }
