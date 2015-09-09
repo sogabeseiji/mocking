@@ -23,6 +23,9 @@
  */
 package com.buildria.mocking.stub;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class Pair {
 
     private final String name;
@@ -40,6 +43,11 @@ public class Pair {
 
     public String getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }

@@ -23,7 +23,6 @@
  */
 package com.buildria.mocking.stub;
 
-import com.google.common.base.MoreObjects;
 import com.google.common.net.MediaType;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
@@ -37,7 +36,8 @@ import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.xml.bind.DatatypeConverter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,13 +132,7 @@ public class Call {
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).
-                add("path", path).
-                add("method", method).
-                add("headers", headers).
-                add("parameters", parameters).
-                add("body", DatatypeConverter.printHexBinary(body)).
-                toString();
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(Call.class);
