@@ -110,7 +110,7 @@ public class RuleSpecTest {
             fail();
         } catch (AssertionError e) {
             LOG.warn(e.getMessage());
-            assertThat(e.getMessage(), containsString("[Method]"));
+            assertThat(e.getMessage(), containsString("Method"));
             assertThat(e.getMessage(), containsString("get"));
             assertThat(e.getMessage(), containsString("/api/p"));
         }
@@ -135,7 +135,7 @@ public class RuleSpecTest {
             fail();
         } catch (AssertionError e) {
             LOG.warn(e.getMessage());
-            assertThat(e.getMessage(), containsString("[Parameter]"));
+            assertThat(e.getMessage(), containsString("Parameter"));
             assertThat(e.getMessage(), containsString("name"));
             assertThat(e.getMessage(), containsString("Bob"));
         }
@@ -165,7 +165,7 @@ public class RuleSpecTest {
             fail();
         } catch (AssertionError e) {
             LOG.warn(e.getMessage());
-            assertThat(e.getMessage(), containsString("[Method]"));
+            assertThat(e.getMessage(), containsString("Method"));
             assertThat(e.getMessage(), containsString("/api/p"));
         }
     }
@@ -194,7 +194,7 @@ public class RuleSpecTest {
             fail();
         } catch (AssertionError e) {
             LOG.warn(e.getMessage());
-            assertThat(e.getMessage(), containsString("[Header]"));
+            assertThat(e.getMessage(), containsString("Header"));
             assertThat(e.getMessage(), containsString(CONTENT_TYPE));
             assertThat(e.getMessage(), containsString("application/json"));
         }
@@ -222,7 +222,7 @@ public class RuleSpecTest {
             target.validate(calls);
         } catch (AssertionError e) {
             LOG.warn(e.getMessage());
-            assertThat(e.getMessage(), containsString("[Body]"));
+            assertThat(e.getMessage(), containsString("Body"));
             assertThat(e.getMessage(), containsString("name"));
             assertThat(e.getMessage(), containsString("Bob"));
         }
