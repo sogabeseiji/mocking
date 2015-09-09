@@ -24,7 +24,6 @@
 package com.buildria.mocking.builder.actionspec.action;
 
 import com.buildria.mocking.TestNameRule;
-import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpRequest;
@@ -39,7 +38,6 @@ import org.junit.Test;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.ACCEPT;
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -101,16 +99,4 @@ public class RawBodyActionTest {
         assertThat(actual, is(content));
     }
 
-    @Test
-    public void testObjects() {
-        String path = "/api/p";
-        byte[] content = "content".getBytes();
-
-        Action action = new RawBodyAction(path, content);
-
-        MoreObjects.ToStringHelper answer = action.objects();
-        assertThat(answer, notNullValue());
-        assertThat(answer.toString(), containsString("path"));
-        assertThat(answer.toString(), containsString("content"));
-    }
 }

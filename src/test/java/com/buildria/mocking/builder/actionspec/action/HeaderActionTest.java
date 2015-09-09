@@ -24,7 +24,6 @@
 package com.buildria.mocking.builder.actionspec.action;
 
 import com.buildria.mocking.TestNameRule;
-import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpResponse;
 import io.netty.handler.codec.http.HttpMethod;
@@ -35,7 +34,6 @@ import io.netty.handler.codec.http.HttpVersion;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
@@ -94,21 +92,6 @@ public class HeaderActionTest {
 
         assertThat(out, notNullValue());
         assertThat(out.headers().get("Content-Type"), is("application/xml"));
-    }
-
-    @Test
-    public void testObjects() {
-        String path = "/api/p";
-        String header = "Content-Type";
-        String value = "application/xml";
-
-        Action action = new HeaderAction(path, header, value);
-
-        MoreObjects.ToStringHelper answer = action.objects();
-        assertThat(answer, notNullValue());
-        assertThat(answer.toString(), containsString("path"));
-        assertThat(answer.toString(), containsString("header"));
-        assertThat(answer.toString(), containsString("value"));
     }
 
 }

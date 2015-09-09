@@ -29,7 +29,6 @@ import com.buildria.mocking.serializer.ObjectSerializer;
 import com.buildria.mocking.serializer.ObjectSerializerContext;
 import com.buildria.mocking.serializer.ObjectSerializerFactory;
 import com.buildria.mocking.serializer.Person;
-import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.DefaultHttpRequest;
@@ -46,7 +45,6 @@ import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -165,17 +163,4 @@ public class BodyActionTest {
         HttpResponse out = action.apply(req, res);
     }
 
-    @Test
-    public void testObjects() {
-        String path = "/api/p";
-        Object content = person;
-        List<Action> actions = Collections.<Action>emptyList();
-
-        Action action = new BodyAction(path, content, actions);
-
-        MoreObjects.ToStringHelper answer = action.objects();
-        assertThat(answer, notNullValue());
-        assertThat(answer.toString(), containsString("path"));
-        assertThat(answer.toString(), containsString("content"));
-    }
 }

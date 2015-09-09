@@ -26,7 +26,6 @@ package com.buildria.mocking.builder.actionspec.action;
 import com.buildria.mocking.Mocking;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.StubHttpServer;
-import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import org.junit.Rule;
@@ -101,16 +100,6 @@ public class ActionTest {
 
         HeaderAction contentType = action.getHeader("/api/p", CONTENT_TYPE, server.getActions());
         assertThat(contentType, nullValue());
-    }
-
-    @Test
-    public void testObjects() {
-        String path = "/api/p";
-        Action action = new ActionImpl(path);
-
-        ToStringHelper answer = action.objects();
-        assertThat(answer, notNullValue());
-        assertThat(answer.toString(), containsString("path"));
     }
 
     @Test
