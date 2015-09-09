@@ -23,7 +23,6 @@
  */
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.google.common.base.MoreObjects;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
@@ -32,7 +31,6 @@ import io.netty.handler.codec.http.HttpResponse;
 import java.util.Map;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import javax.xml.bind.DatatypeConverter;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
 
@@ -62,11 +60,6 @@ public class RawBodyAction extends Action {
         r.headers().remove(CONTENT_LENGTH);
         r.headers().add(CONTENT_LENGTH, content.length);
         return r;
-    }
-
-    @Override
-    public MoreObjects.ToStringHelper objects() {
-        return super.objects().add("content", DatatypeConverter.printHexBinary(content));
     }
 
 }

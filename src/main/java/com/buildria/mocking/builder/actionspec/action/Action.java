@@ -23,8 +23,6 @@
  */
 package com.buildria.mocking.builder.actionspec.action;
 
-import com.google.common.base.MoreObjects;
-import com.google.common.base.MoreObjects.ToStringHelper;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.QueryStringDecoder;
@@ -32,6 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 // CHECKSTYLE:OFF
 public abstract class Action {
@@ -70,13 +69,9 @@ public abstract class Action {
     @Nonnull
     public abstract HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 
-    public ToStringHelper objects() {
-        return MoreObjects.toStringHelper(this).add("path", path);
-    }
-
     @Override
     public String toString() {
-        return objects().toString();
+        return ToStringBuilder.reflectionToString(this);
     }
 
 }

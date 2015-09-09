@@ -27,7 +27,6 @@ import com.buildria.mocking.MockingException;
 import com.buildria.mocking.serializer.ObjectSerializer;
 import com.buildria.mocking.serializer.ObjectSerializerContext;
 import com.buildria.mocking.serializer.ObjectSerializerFactory;
-import com.google.common.base.MoreObjects;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
 import java.io.IOException;
@@ -71,11 +70,6 @@ public class BodyAction extends Action {
         } catch (IOException ex) {
             throw new MockingException("failed to serialize body.");
         }
-    }
-
-    @Override
-    public MoreObjects.ToStringHelper objects() {
-        return super.objects().add("content", content.toString());
     }
 
 }
