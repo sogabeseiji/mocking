@@ -33,6 +33,11 @@ public class RequestActionSpec extends ActionSpec {
         return new RequestActionSpec(path);
     }
 
+    public RequestActionSpec withPathParam(String name, Object value) {
+        resolvePath(name, String.valueOf(value));
+        return this;
+    }
+
     public ResponseActionSpec then() {
         return new ResponseActionSpec(getPath());
     }

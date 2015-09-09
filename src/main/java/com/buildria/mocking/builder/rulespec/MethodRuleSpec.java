@@ -24,33 +24,56 @@
 package com.buildria.mocking.builder.rulespec;
 
 import com.buildria.mocking.builder.rulespec.rule.MethodRule;
+import com.buildria.mocking.builder.rulespec.rule.Rule;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 public class MethodRuleSpec extends RuleSpec {
 
-    private MethodRuleSpec() {
-        super();
+    private String path;
+
+    private final String method;
+
+    private MethodRuleSpec(String path, String method) {
+        super(new ArrayList<Rule>());
+        this.path = Objects.requireNonNull(path);
+        this.method = Objects.requireNonNull(method);
     }
 
-    private static RequestRuleSpec method(String path, String method) {
-        RequestRuleSpec spec = new RequestRuleSpec();
-        spec.addRule(new MethodRule(path, method));
-        return spec;
+    private static MethodRuleSpec method(String path, String method) {
+        return new MethodRuleSpec(path, method);
     }
 
-    public static RequestRuleSpec get(String path) {
+    public static MethodRuleSpec get(String path) {
         return method(path, "get");
     }
 
-    public static RequestRuleSpec post(String path) {
+    public static MethodRuleSpec post(String path) {
         return method(path, "post");
     }
 
-    public static RequestRuleSpec put(String path) {
+    public static MethodRuleSpec put(String path) {
         return method(path, "put");
     }
 
-    public static RequestRuleSpec delete(String path) {
+    public static MethodRuleSpec delete(String path) {
         return method(path, "delete");
     }
 
+    public MethodRuleSpec withPathParam(String name, Object value) {
+        Map<String, String> map = new HashMap<>();
+        map.put(name, String.valueOf(value));
+        this.path = StrSubstitutor.replace(path, map, "{", "}");
+        return this;
+    }
+
+    public RequestRuleSpec then() {
+        List<Rule> rules = new ArrayList<>();
+        rules.add(new MethodRule(path, method));
+        return new RequestRuleSpec(rules);
+    }
 }

@@ -229,7 +229,11 @@ public class RuleSpecTest {
     }
 
     private static class RuleSpecImpl extends RuleSpec {
-        //
+
+        public RuleSpecImpl() {
+            super(new ArrayList<com.buildria.mocking.builder.rulespec.rule.Rule>());
+        }
+
     }
 
     private static final Logger LOG = LoggerFactory.getLogger(RuleSpecTest.class);

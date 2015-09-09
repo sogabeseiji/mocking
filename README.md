@@ -37,7 +37,8 @@ public class SampleCodeTest {
 
         // Mocking
         mocking.$(
-                when("/api/p").
+                when("/api/p/{id}").
+                        withPathParam("id", 5).
                 then().
                         withStatusCode(SC_201_CREATED).
                         withContentType("application/json; charset=UTF-8").
@@ -46,11 +47,12 @@ public class SampleCodeTest {
 
         // Rest-assured
         given().
+                pathParam("id", 5).
                 accept("application/json").
                 contentType("application/json; charset=UTF-8").
                 body(person).
         when().
-                post("/api/p").
+                put("/api/p/{id}").
         then().
                 statusCode(SC_201_CREATED).
                 contentType("application/json; charset=UTF-8").
@@ -59,7 +61,9 @@ public class SampleCodeTest {
 
         // Mocking
         mocking.$(
-                post("/api/p").
+                put("/api/p/{id}").
+                        withPathParam("id", 5).
+                then().
                         withAccept("application/json").
                         withContentType("application/json; charset=UTF-8").
                         withBody("name", is("Bob")).

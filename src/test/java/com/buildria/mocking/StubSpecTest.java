@@ -253,6 +253,7 @@ public class StubSpecTest {
 
         mocking.$(
                 put("/api/p").
+                then().
                         withAccept(containsString("application/xml")).
                         withContentType(containsString("application/xml")).
                         withBody("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
@@ -315,6 +316,7 @@ public class StubSpecTest {
 
         mocking.$(
                 get("/api/p").
+                then().
                         withAccept(containsString("application/json")).
                         withQueryParam("name", "value 1")
         );
@@ -347,6 +349,7 @@ public class StubSpecTest {
 
         mocking.$(
                 get("/api/p").
+                then().
                         withAccept(containsString("application/json")).
                         withQueryParam("name", "value 1")
         );
@@ -382,6 +385,7 @@ public class StubSpecTest {
 
         mocking.$(
                 get("/api/p").
+                then().
                         withAccept(containsString("application/json")).
                         withQueryParam("name", "value 1").
                         withQueryParam("name", "value 2")

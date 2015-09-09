@@ -55,7 +55,7 @@ public abstract class Action {
     @Nullable
     public HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
-        String p = decoder.path();
+        String p = QueryStringDecoder.decodeComponent(decoder.path());
         for (Action action : actions) {
             if (action.isApplicable(p) && action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;

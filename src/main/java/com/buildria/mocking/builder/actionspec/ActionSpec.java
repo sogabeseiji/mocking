@@ -25,14 +25,17 @@ package com.buildria.mocking.builder.actionspec;
 
 import com.buildria.mocking.builder.actionspec.action.Action;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 // CHECKSTYLE:OFF
 public abstract class ActionSpec {
 // CHECKSTYLE:ON
 
-    private final String  path;
+    private String path;
 
     private final List<Action> actions = new ArrayList<>();
 
@@ -52,4 +55,9 @@ public abstract class ActionSpec {
         actions.add(action);
     }
 
+    protected void resolvePath(String name, String value) {
+        Map<String, String> map = new HashMap<>();
+        map.put(name, value);
+        this.path = StrSubstitutor.replace(path, map, "{", "}");
+    }
 }

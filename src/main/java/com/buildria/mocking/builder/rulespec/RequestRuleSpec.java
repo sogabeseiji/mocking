@@ -23,9 +23,11 @@
  */
 package com.buildria.mocking.builder.rulespec;
 
-import com.buildria.mocking.builder.rulespec.rule.ParameterRule;
-import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
 import com.buildria.mocking.builder.rulespec.rule.BodyRule;
+import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
+import com.buildria.mocking.builder.rulespec.rule.ParameterRule;
+import com.buildria.mocking.builder.rulespec.rule.Rule;
+import java.util.List;
 import org.hamcrest.Matcher;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.ACCEPT;
@@ -34,8 +36,8 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RequestRuleSpec extends RuleSpec {
 
-    RequestRuleSpec() {
-        super();
+    RequestRuleSpec(List<Rule> rules) {
+        super(rules);
     }
 
     public RequestRuleSpec withHeader(String name, Matcher<?> value) {

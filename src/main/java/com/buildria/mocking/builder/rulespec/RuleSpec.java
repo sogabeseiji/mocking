@@ -28,15 +28,18 @@ import com.buildria.mocking.stub.Call;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // CHECKSTYLE:OFF
 public abstract class RuleSpec {
 // CHECKSTYLE:ON
 
-    private final List<Rule> rules = new ArrayList<>();
+    private final List<Rule> rules;
 
-    public List<Rule> getRules() {
-        return rules;
+    public RuleSpec(List<Rule> rules) {
+        this.rules = Objects.requireNonNull(rules);
     }
 
     public void addRule(Rule rule) {
@@ -48,16 +51,21 @@ public abstract class RuleSpec {
         Iterator<Call> it = wrapped.iterator();
         while (it.hasNext()) {
             Call call = it.next();
+            LOG.debug("Call: {}", call.toString());
             for (Rule rule : rules) {
                 if (!rule.apply(call)) {
+                    LOG.debug("!!! unmatched: {}", rule.getDescription());
                     it.remove();
                     if (wrapped.isEmpty()) {
                         throw new AssertionError(rule.getDescription());
                     }
                     break;
+                } else {
+                    LOG.debug("*** matched: {}", rule.getDescription());
                 }
             }
         }
     }
 
+    private final Logger LOG = LoggerFactory.getLogger(RuleSpec.class);
 }

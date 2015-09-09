@@ -67,7 +67,7 @@ public class Call {
 
         call.method = req.getMethod().name();
         QueryStringDecoder decoder = new QueryStringDecoder(req.getUri());
-        call.path = decoder.path();
+        call.path = QueryStringDecoder.decodeComponent(decoder.path());
 
         Map<String, List<String>> params = decoder.parameters();
         for (String name : params.keySet()) {
