@@ -23,8 +23,6 @@
  */
 package com.buildria.mocking.builder.action;
 
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -49,7 +47,6 @@ public abstract class BaseAction implements Action {
     public boolean isApplicable(String path) {
         return this.path.equals(path);
     }
-
 
     @Override
     public String toString() {
