@@ -35,10 +35,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
-public class JacksonJsonSerializer extends ObjectSerializer {
+public class JacksonJsonSerializer implements ObjectSerializer {
+
+    private final ObjectSerializerContext ctx;
 
     public JacksonJsonSerializer(ObjectSerializerContext ctx) {
-        super(ctx);
+        this.ctx = Objects.requireNonNull(ctx);
     }
 
     @Override
@@ -46,12 +48,12 @@ public class JacksonJsonSerializer extends ObjectSerializer {
         Objects.requireNonNull(obj);
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        JsonEncoding encoding = mappingFrom(getCtx().getCharset());
+        JsonEncoding encoding = mappingFrom(ctx.getCharset());
         try (JsonGenerator g = new JsonFactory().createGenerator(out, encoding)) {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(g, obj);
         }
-        
+
         return out.toByteArray();
     }
 

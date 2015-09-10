@@ -31,10 +31,12 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-public class JAXBXmlSerializer extends ObjectSerializer {
+public class JAXBXmlSerializer implements ObjectSerializer {
+
+    private final ObjectSerializerContext ctx;
 
     public JAXBXmlSerializer(ObjectSerializerContext ctx) {
-        super(ctx);
+        this.ctx = Objects.requireNonNull(ctx);
     }
 
     @Override
@@ -45,7 +47,7 @@ public class JAXBXmlSerializer extends ObjectSerializer {
             Marshaller marshallerObj = contextObj.createMarshaller();
             marshallerObj.setProperty(
                     Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
-            marshallerObj.setProperty(Marshaller.JAXB_ENCODING, getCtx().getCharset().toString());
+            marshallerObj.setProperty(Marshaller.JAXB_ENCODING, ctx.getCharset().toString());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             marshallerObj.marshal(obj, baos);
             return baos.toByteArray();

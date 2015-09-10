@@ -32,10 +32,12 @@ import java.nio.charset.Charset;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
-public class GsonJsonSerializer extends ObjectSerializer {
+public class GsonJsonSerializer implements ObjectSerializer {
+
+    private final ObjectSerializerContext ctx;
 
     public GsonJsonSerializer(ObjectSerializerContext ctx) {
-        super(ctx);
+        this.ctx = Objects.requireNonNull(ctx);
     }
 
     @Override
@@ -46,7 +48,7 @@ public class GsonJsonSerializer extends ObjectSerializer {
         builder.disableHtmlEscaping();
         Gson gson = builder.create();
 
-        Charset charset = getCtx().getCharset();
+        Charset charset = ctx.getCharset();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try (OutputStreamWriter osw = new OutputStreamWriter(baos, charset)) {
             gson.toJson(obj, osw);
