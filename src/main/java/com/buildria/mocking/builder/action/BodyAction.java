@@ -29,17 +29,19 @@ import com.buildria.mocking.serializer.ObjectSerializerContext;
 import com.buildria.mocking.serializer.ObjectSerializerFactory;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.QueryStringDecoder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 
 /**
  * BodyAction.
  */
-public class BodyAction extends Action {
+public class BodyAction extends BaseAction {
 
     private final Object content;
 
@@ -70,6 +72,21 @@ public class BodyAction extends Action {
         } catch (IOException ex) {
             throw new MockingException("failed to serialize body.");
         }
+    }
+
+    @Nullable
+    private HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
+        QueryStringDecoder decoder = new QueryStringDecoder(uri);
+        String p = QueryStringDecoder.decodeComponent(decoder.path());
+        for (Action action : actions) {
+            if (action.isApplicable(p) && action instanceof HeaderAction) {
+                HeaderAction ha = (HeaderAction) action;
+                if (ha.getHeader().equalsIgnoreCase(headerName)) {
+                    return ha;
+                }
+            }
+        }
+        return null;
     }
 
 }

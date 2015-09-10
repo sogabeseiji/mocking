@@ -32,7 +32,7 @@ import javax.annotation.Nonnull;
 /**
  * StatusCodeAction.
  */
-public class StatusCodeAction extends Action {
+public class StatusCodeAction extends BaseAction {
 
     private final int code;
 

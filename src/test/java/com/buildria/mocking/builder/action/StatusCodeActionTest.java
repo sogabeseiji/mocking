@@ -49,7 +49,7 @@ public class StatusCodeActionTest {
     public void testConstructorPathNull() throws Exception {
         String path = null;
         int code = 200;
-        Action action = new StatusCodeAction(path, code);
+        BaseAction action = new StatusCodeAction(path, code);
     }
 
     @Test(expected = NullPointerException.class)

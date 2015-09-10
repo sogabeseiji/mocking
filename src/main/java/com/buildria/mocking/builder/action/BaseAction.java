@@ -25,16 +25,35 @@ package com.buildria.mocking.builder.action;
 
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import java.util.Objects;
 import javax.annotation.Nonnull;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public interface Action {
+// CHECKSTYLE:OFF
+public abstract class BaseAction implements Action {
+// CHECKSTYLE:ON
+
+    private final String path;
+
+    public BaseAction(@Nonnull String path) {
+        this.path = Objects.requireNonNull(path);
+    }
 
     @Nonnull
-    String getPath();
+    @Override
+    public String getPath() {
+        return path;
+    }
 
-    boolean isApplicable(String path);
+    @Override
+    public boolean isApplicable(String path) {
+        return this.path.equals(path);
+    }
 
-    @Nonnull
-    HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
 
 }

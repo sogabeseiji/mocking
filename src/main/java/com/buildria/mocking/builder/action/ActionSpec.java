@@ -50,7 +50,7 @@ public abstract class ActionSpec {
         return actions;
     }
 
-    public void addAction(Action action) {
+    public void addAction(BaseAction action) {
         actions.add(action);
     }
 

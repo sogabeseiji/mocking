@@ -29,7 +29,7 @@ import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DelayAction extends Action {
+public class DelayAction extends BaseAction {
 
     private final long wait;
 

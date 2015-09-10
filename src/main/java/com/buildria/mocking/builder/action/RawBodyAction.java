@@ -37,7 +37,7 @@ import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
 /**
  * RawBodyAction.
  */
-public class RawBodyAction extends Action {
+public class RawBodyAction extends BaseAction {
 
     private final byte[] content;
 
@@ -53,7 +53,8 @@ public class RawBodyAction extends Action {
         Objects.requireNonNull(res);
         ByteBuf buffer = ByteBufAllocator.DEFAULT.buffer(content.length);
         buffer.writeBytes(content);
-        HttpResponse r = new DefaultFullHttpResponse(res.getProtocolVersion(), res.getStatus(), buffer);
+        HttpResponse r = new DefaultFullHttpResponse(res.getProtocolVersion(),
+                res.getStatus(), buffer);
         for (Map.Entry<String, String> entry : res.headers()) {
             r.headers().add(entry.getKey(), entry.getValue());
         }

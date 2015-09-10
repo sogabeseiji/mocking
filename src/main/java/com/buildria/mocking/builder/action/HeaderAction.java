@@ -31,7 +31,7 @@ import javax.annotation.Nonnull;
 /**
  * HeaderAction.
  */
-public class HeaderAction extends Action {
+public class HeaderAction extends BaseAction {
 
     private final String header;
 

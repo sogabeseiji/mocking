@@ -50,7 +50,7 @@ public class HeaderActionTest {
         String path = null;
         String header = "Content-Type";
         String value = "application/xml";
-        Action action = new HeaderAction(path, header, value);
+        BaseAction action = new HeaderAction(path, header, value);
     }
 
     @Test(expected = NullPointerException.class)
@@ -58,7 +58,7 @@ public class HeaderActionTest {
         String path = "/api/p";
         String header = null;
         String value = "application/xml";
-        Action action = new HeaderAction(path, header, value);
+        BaseAction action = new HeaderAction(path, header, value);
     }
 
     @Test(expected = NullPointerException.class)
@@ -66,7 +66,7 @@ public class HeaderActionTest {
         String path = "/api/p";
         String header = "Content-Type";
         String value = null;
-        Action action = new HeaderAction(path, header, value);
+        BaseAction action = new HeaderAction(path, header, value);
     }
 
     @Test(expected = NullPointerException.class)
@@ -75,7 +75,7 @@ public class HeaderActionTest {
         String header = "Content-Type";
         String value = "application/xml";
 
-        Action action = new HeaderAction(path, header, value);
+        BaseAction action = new HeaderAction(path, header, value);
         action.apply(null, null);
     }
 
@@ -85,7 +85,7 @@ public class HeaderActionTest {
         String header = "Content-Type";
         String value = "application/xml";
 
-        Action action = new HeaderAction(path, header, value);
+        BaseAction action = new HeaderAction(path, header, value);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);

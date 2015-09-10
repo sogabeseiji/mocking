@@ -23,9 +23,6 @@
  */
 package com.buildria.mocking.builder.action;
 
-import com.buildria.mocking.builder.action.HeaderAction;
-import com.buildria.mocking.builder.action.Action;
-import com.buildria.mocking.builder.action.BodyAction;
 import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.serializer.ObjectSerializer;
