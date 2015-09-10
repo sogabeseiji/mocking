@@ -21,38 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec.action;
+package com.buildria.mocking.builder.action;
 
+import com.buildria.mocking.MockingException;
+import com.buildria.mocking.serializer.ObjectSerializer;
+import com.buildria.mocking.serializer.ObjectSerializerContext;
+import com.buildria.mocking.serializer.ObjectSerializerFactory;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 
+import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
+
 /**
- * HeaderAction.
+ * BodyAction.
  */
-public class HeaderAction extends Action {
+public class BodyAction extends Action {
 
-    private final String header;
+    private final Object content;
 
-    private final String value;
+    private final List<Action> actions;
 
-    @Nonnull
-    public HeaderAction(@Nonnull String path, @Nonnull String header,
-            @Nonnull String value) {
+    public BodyAction(@Nonnull String path, @Nonnull Object content,
+            @Nonnull List<Action> actions) {
         super(path);
-        this.header = Objects.requireNonNull(header);
-        this.value = Objects.requireNonNull(value);
-    }
-
-    @Nonnull
-    public String getHeader() {
-        return header;
-    }
-
-    @Nonnull
-    public String getValue() {
-        return value;
+        this.content = Objects.requireNonNull(content);
+        this.actions = Objects.requireNonNull(actions);
     }
 
     @Nonnull
@@ -60,8 +57,19 @@ public class HeaderAction extends Action {
     public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
         Objects.requireNonNull(req);
         Objects.requireNonNull(res);
-        res.headers().add(header, value);
-        return res;
+        HeaderAction contentType = getHeader(req.getUri(), CONTENT_TYPE, actions);
+        if (contentType == null) {
+            throw new MockingException("No Content-Type found.");
+        }
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(contentType.getValue());
+        ObjectSerializer os = ObjectSerializerFactory.create(ctx);
+        try {
+            return new RawBodyAction(getPath(),
+                    os.serialize(content)).apply(req, res);
+        } catch (IOException ex) {
+            throw new MockingException("failed to serialize body.");
+        }
     }
 
 }

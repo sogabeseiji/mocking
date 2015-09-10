@@ -21,57 +21,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec.action;
+package com.buildria.mocking.builder.action;
 
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.QueryStringDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.text.StrSubstitutor;
 
 // CHECKSTYLE:OFF
-public abstract class Action {
+public abstract class ActionSpec {
 // CHECKSTYLE:ON
 
-    private final String path;
+    private String path;
 
-    public Action(@Nonnull String path) {
+    private final List<Action> actions = new ArrayList<>();
+
+    public ActionSpec(String path) {
         this.path = Objects.requireNonNull(path);
     }
 
-    @Nonnull
     public String getPath() {
         return path;
     }
 
-    public boolean isApplicable(String path) {
-        return this.path.equals(path);
+    public List<Action> getActions() {
+        return actions;
     }
 
-    @Nullable
-    protected HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
-        QueryStringDecoder decoder = new QueryStringDecoder(uri);
-        String p = QueryStringDecoder.decodeComponent(decoder.path());
-        for (Action action : actions) {
-            if (action.isApplicable(p) && action instanceof HeaderAction) {
-                HeaderAction ha = (HeaderAction) action;
-                if (ha.getHeader().equalsIgnoreCase(headerName)) {
-                    return ha;
-                }
-            }
-        }
-        return null;
+    public void addAction(Action action) {
+        actions.add(action);
     }
 
-    @Nonnull
-    public abstract HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
+    protected void resolvePath(String name, String value) {
+        Map<String, String> map = new HashMap<>();
+        map.put(name, value);
+        this.path = StrSubstitutor.replace(path, map, "{", "}");
     }
-
 }

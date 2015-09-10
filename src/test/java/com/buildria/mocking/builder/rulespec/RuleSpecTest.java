@@ -23,11 +23,12 @@
  */
 package com.buildria.mocking.builder.rulespec;
 
+import com.buildria.mocking.builder.rule.MethodRule;
+import com.buildria.mocking.builder.rule.ParameterRule;
+import com.buildria.mocking.builder.rule.HeaderRule;
+import com.buildria.mocking.builder.rule.RuleSpec;
+import com.buildria.mocking.builder.rule.BodyRule;
 import com.buildria.mocking.TestNameRule;
-import com.buildria.mocking.builder.rulespec.rule.BodyRule;
-import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
-import com.buildria.mocking.builder.rulespec.rule.MethodRule;
-import com.buildria.mocking.builder.rulespec.rule.ParameterRule;
 import com.buildria.mocking.stub.Call;
 import com.buildria.mocking.stub.Pair;
 import com.google.common.net.MediaType;
@@ -231,7 +232,7 @@ public class RuleSpecTest {
     private static class RuleSpecImpl extends RuleSpec {
 
         public RuleSpecImpl() {
-            super(new ArrayList<com.buildria.mocking.builder.rulespec.rule.Rule>());
+            super(new ArrayList<com.buildria.mocking.builder.rule.Rule>());
         }
 
     }

@@ -21,13 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec;
+package com.buildria.mocking.builder.action;
 
-import com.buildria.mocking.builder.actionspec.action.BodyAction;
-import com.buildria.mocking.builder.actionspec.action.DelayAction;
-import com.buildria.mocking.builder.actionspec.action.HeaderAction;
-import com.buildria.mocking.builder.actionspec.action.RawBodyAction;
-import com.buildria.mocking.builder.actionspec.action.StatusCodeAction;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Resources;
 import java.io.IOException;

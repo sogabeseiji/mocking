@@ -23,8 +23,8 @@
  */
 package com.buildria.mocking;
 
-import com.buildria.mocking.builder.actionspec.ActionSpec;
-import com.buildria.mocking.builder.rulespec.RuleSpec;
+import com.buildria.mocking.builder.action.ActionSpec;
+import com.buildria.mocking.builder.rule.RuleSpec;
 import com.buildria.mocking.stub.StubHttpServer;
 import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;

@@ -22,6 +22,6 @@
  * SOFTWARE.
  */
 /**
- * Rule.
+ * ActionSpec.
  */
-package com.buildria.mocking.builder.rulespec.rule;
+package com.buildria.mocking.builder.action;

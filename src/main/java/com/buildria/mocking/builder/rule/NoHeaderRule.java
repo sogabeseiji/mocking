@@ -1,4 +1,4 @@
-package com.buildria.mocking.builder.rulespec.rule;
+package com.buildria.mocking.builder.rule;
 
 import com.buildria.mocking.stub.Call;
 import com.buildria.mocking.stub.Pair;

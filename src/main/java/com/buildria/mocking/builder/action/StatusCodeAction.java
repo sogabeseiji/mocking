@@ -21,7 +21,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+package com.buildria.mocking.builder.action;
+
+import io.netty.handler.codec.http.HttpRequest;
+import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import java.util.Objects;
+import javax.annotation.Nonnull;
+
 /**
- * ActionSpec.
+ * StatusCodeAction.
  */
-package com.buildria.mocking.builder.actionspec;
+public class StatusCodeAction extends Action {
+
+    private final int code;
+
+    public StatusCodeAction(@Nonnull String path, int code) {
+        super(path);
+        this.code = code;
+    }
+
+    @Nonnull
+    @Override
+    public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
+        Objects.requireNonNull(req);
+        Objects.requireNonNull(res);
+        res.setStatus(HttpResponseStatus.valueOf(code));
+        return res;
+    }
+
+}

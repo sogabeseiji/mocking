@@ -21,13 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.rulespec;
+package com.buildria.mocking.builder.rule;
 
-import com.buildria.mocking.builder.rulespec.rule.BodyRule;
-import com.buildria.mocking.builder.rulespec.rule.HeaderRule;
-import com.buildria.mocking.builder.rulespec.rule.NoHeaderRule;
-import com.buildria.mocking.builder.rulespec.rule.ParameterRule;
-import com.buildria.mocking.builder.rulespec.rule.Rule;
 import java.util.List;
 import org.hamcrest.Matcher;
 

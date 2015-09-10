@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec.action;
+package com.buildria.mocking.builder.action;
 
 import com.buildria.mocking.TestNameRule;
 import io.netty.handler.codec.http.DefaultHttpRequest;

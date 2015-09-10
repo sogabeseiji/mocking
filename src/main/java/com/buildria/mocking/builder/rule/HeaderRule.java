@@ -21,36 +21,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec.action;
+package com.buildria.mocking.builder.rule;
 
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponse;
+import com.buildria.mocking.stub.Call;
+import com.buildria.mocking.stub.Pair;
+import java.util.List;
+import java.util.Objects;
 import javax.annotation.Nonnull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.hamcrest.Matcher;
 
-public class DelayAction extends Action {
+public class HeaderRule implements Rule {
 
-    private final long wait;
+    private final String name;
 
-    public DelayAction(@Nonnull String path, long wait) {
-        super(path);
-        if (wait < 0) {
-            throw new IllegalArgumentException("wait should be non negative");
-        }
-        this.wait = wait;
+    private final Matcher<?> value;
+
+    public HeaderRule(@Nonnull String name, @Nonnull Matcher<?> value) {
+        super();
+        this.name = Objects.requireNonNull(name);
+        this.value = Objects.requireNonNull(value);
     }
 
     @Override
-    public HttpResponse apply(HttpRequest req, HttpResponse res) {
-        try {
-            Thread.sleep(wait);
-        } catch (InterruptedException e) {
-            LOG.warn("failed to delay {}ms", wait);
+    public boolean apply(@Nonnull Call call) {
+        Objects.requireNonNull(call);
+        List<Pair> headers = call.getHeaders();
+        for (Pair pair : headers) {
+            String n = pair.getName();
+            String v = pair.getValue();
+            if (name.equalsIgnoreCase(n) && value.matches(v)) {
+                return true;
+            }
         }
-
-        return res;
+        return false;
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(DelayAction.class);
+    @Override
+    public String getDescription() {
+        return String.format("(Header) name: [%s] value: [%s]", name, value.toString());
+    }
+
 }

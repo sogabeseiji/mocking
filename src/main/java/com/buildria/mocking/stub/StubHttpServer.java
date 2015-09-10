@@ -24,7 +24,7 @@
 package com.buildria.mocking.stub;
 
 import com.buildria.mocking.Mocking;
-import com.buildria.mocking.builder.actionspec.action.Action;
+import com.buildria.mocking.builder.action.Action;
 import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

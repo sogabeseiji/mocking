@@ -21,33 +21,57 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec.action;
+package com.buildria.mocking.builder.action;
 
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.codec.http.QueryStringDecoder;
+import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
-/**
- * StatusCodeAction.
- */
-public class StatusCodeAction extends Action {
+// CHECKSTYLE:OFF
+public abstract class Action {
+// CHECKSTYLE:ON
 
-    private final int code;
+    private final String path;
 
-    public StatusCodeAction(@Nonnull String path, int code) {
-        super(path);
-        this.code = code;
+    public Action(@Nonnull String path) {
+        this.path = Objects.requireNonNull(path);
     }
 
     @Nonnull
+    public String getPath() {
+        return path;
+    }
+
+    public boolean isApplicable(String path) {
+        return this.path.equals(path);
+    }
+
+    @Nullable
+    protected HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
+        QueryStringDecoder decoder = new QueryStringDecoder(uri);
+        String p = QueryStringDecoder.decodeComponent(decoder.path());
+        for (Action action : actions) {
+            if (action.isApplicable(p) && action instanceof HeaderAction) {
+                HeaderAction ha = (HeaderAction) action;
+                if (ha.getHeader().equalsIgnoreCase(headerName)) {
+                    return ha;
+                }
+            }
+        }
+        return null;
+    }
+
+    @Nonnull
+    public abstract HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
+
     @Override
-    public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
-        Objects.requireNonNull(req);
-        Objects.requireNonNull(res);
-        res.setStatus(HttpResponseStatus.valueOf(code));
-        return res;
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 
 }

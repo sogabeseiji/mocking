@@ -21,25 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec;
-
-public class RequestActionSpec extends ActionSpec {
-
-    private RequestActionSpec(String path) {
-        super(path);
-    }
-
-    public static RequestActionSpec when(String path) {
-        return new RequestActionSpec(path);
-    }
-
-    public RequestActionSpec withPathParam(String name, Object value) {
-        resolvePath(name, String.valueOf(value));
-        return this;
-    }
-
-    public ResponseActionSpec then() {
-        return new ResponseActionSpec(getPath());
-    }
-
-}
+/**
+ * RukeSpec.
+ */
+package com.buildria.mocking.builder.rule;

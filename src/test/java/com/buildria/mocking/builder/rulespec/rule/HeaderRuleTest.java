@@ -23,6 +23,7 @@
  */
 package com.buildria.mocking.builder.rulespec.rule;
 
+import com.buildria.mocking.builder.rule.HeaderRule;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.Call;
 import com.buildria.mocking.stub.Pair;

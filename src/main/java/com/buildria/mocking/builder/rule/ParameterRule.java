@@ -21,36 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.rulespec.rule;
+package com.buildria.mocking.builder.rule;
 
 import com.buildria.mocking.stub.Call;
 import com.buildria.mocking.stub.Pair;
+import com.google.common.base.Joiner;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import javax.annotation.Nonnull;
-import org.hamcrest.Matcher;
 
-public class HeaderRule implements Rule {
+public class ParameterRule implements Rule {
 
-    private final String name;
+    private final String key;
 
-    private final Matcher<?> value;
+    private final String[] values;
 
-    public HeaderRule(@Nonnull String name, @Nonnull Matcher<?> value) {
+    public ParameterRule(String key, @Nonnull String[] values) {
         super();
-        this.name = Objects.requireNonNull(name);
-        this.value = Objects.requireNonNull(value);
+        this.key = Objects.requireNonNull(key);
+        this.values = Objects.requireNonNull(values);
+        Arrays.sort(this.values);
     }
 
     @Override
     public boolean apply(@Nonnull Call call) {
         Objects.requireNonNull(call);
-        List<Pair> headers = call.getHeaders();
-        for (Pair pair : headers) {
-            String n = pair.getName();
-            String v = pair.getValue();
-            if (name.equalsIgnoreCase(n) && value.matches(v)) {
-                return true;
+        List<Pair> params = call.getParameters();
+        for (String value :values) {
+            for (Pair pair : params) {
+                if (key.equals(pair.getName()) &&
+                        value.equals(pair.getValue())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -58,7 +61,8 @@ public class HeaderRule implements Rule {
 
     @Override
     public String getDescription() {
-        return String.format("(Header) name: [%s] value: [%s]", name, value.toString());
+        return String.format("(Parameter) key: [%s] value: [%s]",
+                key, Joiner.on(",").join(values));
     }
 
 }

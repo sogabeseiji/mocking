@@ -40,9 +40,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.buildria.mocking.builder.actionspec.RequestActionSpec.when;
-import static com.buildria.mocking.builder.rulespec.MethodRuleSpec.get;
-import static com.buildria.mocking.builder.rulespec.MethodRuleSpec.put;
+import static com.buildria.mocking.builder.action.RequestActionSpec.when;
+import static com.buildria.mocking.builder.rule.MethodRuleSpec.get;
+import static com.buildria.mocking.builder.rule.MethodRuleSpec.put;
 import static com.buildria.mocking.http.MockingHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;

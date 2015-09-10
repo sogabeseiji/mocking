@@ -21,43 +21,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec;
+package com.buildria.mocking.builder.action;
 
-import com.buildria.mocking.builder.actionspec.action.Action;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import org.apache.commons.lang3.text.StrSubstitutor;
+public class RequestActionSpec extends ActionSpec {
 
-// CHECKSTYLE:OFF
-public abstract class ActionSpec {
-// CHECKSTYLE:ON
-
-    private String path;
-
-    private final List<Action> actions = new ArrayList<>();
-
-    public ActionSpec(String path) {
-        this.path = Objects.requireNonNull(path);
+    private RequestActionSpec(String path) {
+        super(path);
     }
 
-    public String getPath() {
-        return path;
+    public static RequestActionSpec when(String path) {
+        return new RequestActionSpec(path);
     }
 
-    public List<Action> getActions() {
-        return actions;
+    public RequestActionSpec withPathParam(String name, Object value) {
+        resolvePath(name, String.valueOf(value));
+        return this;
     }
 
-    public void addAction(Action action) {
-        actions.add(action);
+    public ResponseActionSpec then() {
+        return new ResponseActionSpec(getPath());
     }
 
-    protected void resolvePath(String name, String value) {
-        Map<String, String> map = new HashMap<>();
-        map.put(name, value);
-        this.path = StrSubstitutor.replace(path, map, "{", "}");
-    }
 }

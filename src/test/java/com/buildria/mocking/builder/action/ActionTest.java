@@ -21,8 +21,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.actionspec.action;
+package com.buildria.mocking.builder.action;
 
+import com.buildria.mocking.builder.action.HeaderAction;
+import com.buildria.mocking.builder.action.StatusCodeAction;
+import com.buildria.mocking.builder.action.Action;
 import com.buildria.mocking.Mocking;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.stub.StubHttpServer;

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.rulespec.rule;
+package com.buildria.mocking.builder.rule;
 
 import com.buildria.mocking.stub.Call;
 import com.google.common.base.Predicate;

@@ -21,10 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.rulespec;
+package com.buildria.mocking.builder.rule;
 
-import com.buildria.mocking.builder.rulespec.rule.MethodRule;
-import com.buildria.mocking.builder.rulespec.rule.Rule;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
