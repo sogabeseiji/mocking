@@ -39,12 +39,24 @@ public class Mocking extends ExternalResource {
 
     private StubHttpServer server;
 
-    private int port = PORT;
+    private final int port;
 
-    private boolean logging;
+    private final boolean logging;
 
     public Mocking() {
-        super();
+        this(PORT, true);
+    }
+
+    public Mocking(int port) {
+        this(port, true);
+    }
+
+    public Mocking(int port, boolean logging) {
+        if (port < PORT_MIN || port > PORT_MAX) {
+            throw new IllegalArgumentException("port should be between 0 and 65535");
+        }
+        this.port = port;
+        this.logging = logging;
     }
 
     // CHECKSTYLE:OFF
@@ -80,20 +92,5 @@ public class Mocking extends ExternalResource {
     @Nonnull
     public void $(RuleSpec spec) {
         spec.validate(server.getCalls());
-    }
-
-    @Nonnull
-    public Mocking port(int port) {
-        if (port < PORT_MIN || port > PORT_MAX) {
-            throw new IllegalArgumentException("port should be between 0 and 65535");
-        }
-        this.port = port;
-        return this;
-    }
-
-    @Nonnull
-    public Mocking logging(boolean logging) {
-        this.logging = logging;
-        return this;
     }
 }
