@@ -43,8 +43,6 @@ public class Mocking extends ExternalResource {
 
     private boolean logging;
 
-    private final Object lockObj = new Object();
-
     public Mocking() {
         super();
     }
@@ -54,18 +52,14 @@ public class Mocking extends ExternalResource {
     protected void before() throws Throwable {
         // CHECKSTYLE:ON
         super.before();
-        synchronized (lockObj) {
-            server = new StubHttpServer(this).run();
-        }
+        server = new StubHttpServer(this).run();
     }
 
     @Override
     protected void after() {
-        synchronized (lockObj) {
-            if (server != null) {
-                server.stop();
-                server = null;
-            }
+        if (server != null) {
+            server.stop();
+            server = null;
         }
         super.after();
     }
@@ -76,12 +70,6 @@ public class Mocking extends ExternalResource {
 
     public boolean isLogging() {
         return logging;
-    }
-
-    public boolean isSeverStarted() {
-        synchronized (lockObj) {
-            return server != null;
-        }
     }
 
     @Nonnull
@@ -96,9 +84,6 @@ public class Mocking extends ExternalResource {
 
     @Nonnull
     public Mocking port(int port) {
-        if (isSeverStarted()) {
-            throw new IllegalStateException("server already started.");
-        }
         if (port < PORT_MIN || port > PORT_MAX) {
             throw new IllegalArgumentException("port should be between 0 and 65535");
         }
@@ -108,9 +93,6 @@ public class Mocking extends ExternalResource {
 
     @Nonnull
     public Mocking logging(boolean logging) {
-        if (isSeverStarted()) {
-            throw new IllegalStateException("server already started.");
-        }
         this.logging = logging;
         return this;
     }
