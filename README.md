@@ -17,10 +17,8 @@ Mocking provides a DSL to:
 ``` java
 public class SampleCodeTest {
 
-    private static final int PORT = 8888;
-
     @Rule
-    public Mocking mocking = new Mocking(PORT, true);
+    public Mocking mocking = new Mocking();
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();

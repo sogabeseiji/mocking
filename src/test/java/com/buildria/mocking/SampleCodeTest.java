@@ -39,10 +39,8 @@ import static org.hamcrest.Matchers.is;
 
 public class SampleCodeTest {
 
-    private static final int PORT = 9999;
-
     @Rule
-    public Mocking mocking = new Mocking(PORT, true);
+    public Mocking mocking = new Mocking();
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();

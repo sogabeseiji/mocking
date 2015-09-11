@@ -26,12 +26,12 @@ package com.buildria.mocking;
 import com.buildria.mocking.builder.action.ActionSpec;
 import com.buildria.mocking.builder.rule.RuleSpec;
 import com.buildria.mocking.stub.StubHttpServer;
+import java.io.IOException;
+import java.net.ServerSocket;
 import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
 
 public class Mocking extends ExternalResource {
-
-    public static final int PORT = 8888;
 
     private static final int PORT_MIN = 0;
 
@@ -44,16 +44,19 @@ public class Mocking extends ExternalResource {
     private final boolean logging;
 
     public Mocking() {
-        this(PORT, true);
+        this(PORT_MIN, true);
     }
 
-    public Mocking(int port) {
-        this(port, true);
+    public Mocking(boolean logging) {
+        this(PORT_MIN, logging);
     }
 
     public Mocking(int port, boolean logging) {
         if (port < PORT_MIN || port > PORT_MAX) {
             throw new IllegalArgumentException("port should be between 0 and 65535");
+        }
+        if (port == PORT_MIN) {
+            port = availablePort();
         }
         this.port = port;
         this.logging = logging;
@@ -74,6 +77,16 @@ public class Mocking extends ExternalResource {
             server = null;
         }
         super.after();
+    }
+
+    private int availablePort() {
+        int availablePort;
+        try (ServerSocket socket = new ServerSocket(0)) {
+            availablePort = socket.getLocalPort();
+        } catch (IOException e) {
+            throw new MockingException("faield to assign a port.", e);
+        }
+        return availablePort;
     }
 
     public int getPort() {

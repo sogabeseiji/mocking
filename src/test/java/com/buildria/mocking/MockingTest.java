@@ -26,6 +26,9 @@ package com.buildria.mocking;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertThat;
+
 public class MockingTest {
 
     @Rule
@@ -35,12 +38,18 @@ public class MockingTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void  testConstructorNegativePort() throws Exception {
-        target = new Mocking(-1);
+        target = new Mocking(-1, true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void  testConstructorOverPort() throws Exception {
-        target = new Mocking(65536);
+        target = new Mocking(65536, false);
     }
-    
+
+    @Test
+    public void testAvailablePort() throws Exception {
+        target = new Mocking();
+        assertThat(target.getPort(), greaterThan(0));
+    }
+
 }
