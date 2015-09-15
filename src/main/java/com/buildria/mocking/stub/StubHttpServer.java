@@ -62,11 +62,6 @@ import static com.google.common.base.Stopwatch.createStarted;
  */
 public class StubHttpServer {
 
-    /**
-     * Default port.
-     */
-    public static final int DEFAULT_PORT = 8080;
-
     private static final int MAX_INITIALLINE_LENGH = 4096;
 
     private static final int MAX_HEADERS_SIZE = 8192;
