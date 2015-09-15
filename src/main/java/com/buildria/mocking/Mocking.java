@@ -55,10 +55,7 @@ public class Mocking extends ExternalResource {
         if (port < PORT_MIN || port > PORT_MAX) {
             throw new IllegalArgumentException("port should be between 0 and 65535");
         }
-        if (port == PORT_MIN) {
-            port = availablePort();
-        }
-        this.port = port;
+        this.port = (port != PORT_MIN) ? port : availablePort();
         this.logging = logging;
     }
 
