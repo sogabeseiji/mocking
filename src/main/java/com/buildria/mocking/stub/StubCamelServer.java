@@ -3,6 +3,7 @@ package com.buildria.mocking.stub;
 import com.buildria.mocking.Mocking;
 import com.buildria.mocking.MockingException;
 import com.buildria.mocking.builder.action.Action;
+import com.google.common.base.Stopwatch;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
@@ -17,6 +18,10 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.netty4.http.NettyHttpMessage;
 import org.apache.camel.main.Main;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.google.common.base.Stopwatch.createStarted;
 
 public class StubCamelServer implements StubServer {
 
@@ -66,6 +71,7 @@ public class StubCamelServer implements StubServer {
 
     @Override
     public StubCamelServer start() throws MockingException {
+        Stopwatch sw = createStarted();
         main = new Main();
         main.addRouteBuilder(new RouteBUider());
         try {
@@ -73,6 +79,9 @@ public class StubCamelServer implements StubServer {
         } catch (Exception ex) {
             throw new MockingException(ex);
         }
+        sw.stop();
+        LOG.debug("### StubCamelServer(port:{}) started. It took {}",
+                mocking.getPort(), sw);
         return this;
     }
 
@@ -89,31 +98,33 @@ public class StubCamelServer implements StubServer {
 
         @Override
         public void configure() throws Exception {
-            String url = "http://127.0.0.1:" + mocking.getPort() + "?matchOnUriPrefix=true";
-            from("netty4-http:" + url).process(new Processor() {
-                @Override
-                public void process(Exchange exchange) throws Exception {
-                    HttpRequest req = exchange.getIn(NettyHttpMessage.class).getHttpRequest();
-                    calls.add(Call.fromRequest(req));
-                    HttpResponse res = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                            HttpResponseStatus.OK);
-                    boolean proceed = false;
-                    String path = exchange.getIn().getHeader(Exchange.HTTP_PATH, String.class);
-                    for (Action action : actions) {
-                        if (action.isApplicable(path)) {
-                            proceed = true;
-                            res = action.apply(req, res);
+            fromF("netty4-http:http://127.0.0.1:%d?matchOnUriPrefix=true", mocking.getPort()).
+                    process(new Processor() {
+                        @Override
+                        public void process(Exchange exchange) throws Exception {
+                            HttpRequest req = exchange.getIn(NettyHttpMessage.class).getHttpRequest();
+                            calls.add(Call.fromRequest(req));
+                            HttpResponse res = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+                                    HttpResponseStatus.OK);
+                            boolean proceed = false;
+                            String path = exchange.getIn().getHeader(Exchange.HTTP_PATH, String.class);
+                            for (Action action : actions) {
+                                if (action.isApplicable(path)) {
+                                    proceed = true;
+                                    res = action.apply(req, res);
+                                }
+                            }
+                            if (!proceed) {
+                                exchange.getIn().setHeader(
+                                        Exchange.HTTP_RESPONSE_CODE, HttpResponseStatus.NOT_FOUND);
+                                return;
+                            }
+                            exchange.getIn().setBody(res);
                         }
-                    }
-                    if (!proceed) {
-                        exchange.getIn().setHeader(
-                                Exchange.HTTP_RESPONSE_CODE, HttpResponseStatus.NOT_FOUND);
-                        return;
-                    }
-                    exchange.getIn().setBody(res);
-                }
-            });
+                    });
         }
 
     }
+
+    private static final Logger LOG = LoggerFactory.getLogger(StubCamelServer.class);
 }
