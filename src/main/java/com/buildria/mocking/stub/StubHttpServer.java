@@ -24,8 +24,8 @@
 package com.buildria.mocking.stub;
 
 import com.buildria.mocking.Mocking;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.builder.action.Action;
-import com.buildria.mocking.builder.action.BaseAction;
 import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -60,7 +60,7 @@ import static com.google.common.base.Stopwatch.createStarted;
  *
  * @author Seiji Sogabe
  */
-public class StubHttpServer {
+public class StubHttpServer implements StubServer {
 
     private static final int MAX_INITIALLINE_LENGH = 4096;
 
@@ -88,7 +88,8 @@ public class StubHttpServer {
         this.mocking = mocking;
     }
 
-    public StubHttpServer run() throws InterruptedException {
+    @Override
+    public StubHttpServer start() throws MockingException {
         Stopwatch sw = createStarted();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
@@ -117,24 +118,39 @@ public class StubHttpServer {
 
         // Bind and start to accept incoming connections.
         int port = mocking.getPort();
-        ChannelFuture f = b.bind(port).sync();
+        ChannelFuture f;
+        try {
+            f = b.bind(port).sync();
+        } catch (InterruptedException ex) {
+            throw new MockingException(ex);
+        }
         f.awaitUninterruptibly();
         sw.stop();
         LOG.debug("### StubHttpServer(port:{}) started. It took {}", port, sw);
         return this;
     }
 
+    @Override
+    public void stop() {
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
+        LOG.debug("### StubHttpServer stopped.");
+    }
+
+    @Override
     public List<Call> getCalls() {
         return calls;
     }
 
-    public void addAction(BaseAction action) {
+    @Override
+    public void addAction(Action action) {
         Objects.requireNonNull(action);
         synchronized (lockObj) {
             actions.add(action);
         }
     }
 
+    @Override
     public void addActions(List<Action> actions) {
         Objects.requireNonNull(actions);
         synchronized (lockObj) {
@@ -144,16 +160,11 @@ public class StubHttpServer {
         }
     }
 
+    @Override
     public List<Action> getActions() {
         synchronized (lockObj) {
             return Collections.unmodifiableList(actions);
         }
-    }
-
-    public void stop() {
-        workerGroup.shutdownGracefully();
-        bossGroup.shutdownGracefully();
-        LOG.debug("### StubHttpServer stopped.");
     }
 
     private class Handler extends SimpleChannelInboundHandler<Object> {

@@ -26,6 +26,7 @@ package com.buildria.mocking;
 import com.buildria.mocking.builder.action.ActionSpec;
 import com.buildria.mocking.builder.rule.RuleSpec;
 import com.buildria.mocking.stub.StubHttpServer;
+import com.buildria.mocking.stub.StubServer;
 import java.io.IOException;
 import java.net.ServerSocket;
 import javax.annotation.Nonnull;
@@ -37,7 +38,7 @@ public class Mocking extends ExternalResource {
 
     private static final int PORT_MAX = 65535;
 
-    private StubHttpServer server;
+    private StubServer server;
 
     private final int port;
 
@@ -64,7 +65,8 @@ public class Mocking extends ExternalResource {
     protected void before() throws Throwable {
         // CHECKSTYLE:ON
         super.before();
-        server = new StubHttpServer(this).run();
+          server = new StubHttpServer(this).start();
+//        server = new StubCamelServer(this).start();
     }
 
     @Override
