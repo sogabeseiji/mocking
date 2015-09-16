@@ -24,8 +24,8 @@
 package com.buildria.mocking.stub;
 
 import com.buildria.mocking.Mocking;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.builder.action.Action;
-import com.buildria.mocking.builder.action.BaseAction;
 import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -88,7 +88,7 @@ public class StubHttpServer {
         this.mocking = mocking;
     }
 
-    public StubHttpServer run() throws InterruptedException {
+    public StubHttpServer start() throws MockingException {
         Stopwatch sw = createStarted();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
@@ -117,7 +117,12 @@ public class StubHttpServer {
 
         // Bind and start to accept incoming connections.
         int port = mocking.getPort();
-        ChannelFuture f = b.bind(port).sync();
+        ChannelFuture f;
+        try {
+            f = b.bind(port).sync();
+        } catch (InterruptedException ex) {
+            throw new MockingException(ex);
+        }
         f.awaitUninterruptibly();
         sw.stop();
         LOG.debug("### StubHttpServer(port:{}) started. It took {}", port, sw);
@@ -128,7 +133,7 @@ public class StubHttpServer {
         return calls;
     }
 
-    public void addAction(BaseAction action) {
+    public void addAction(Action action) {
         Objects.requireNonNull(action);
         synchronized (lockObj) {
             actions.add(action);

@@ -64,7 +64,7 @@ public class Mocking extends ExternalResource {
     protected void before() throws Throwable {
         // CHECKSTYLE:ON
         super.before();
-        server = new StubHttpServer(this).run();
+        server = new StubHttpServer(this).start();
     }
 
     @Override
