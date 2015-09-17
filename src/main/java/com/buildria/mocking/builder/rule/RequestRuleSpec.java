@@ -43,11 +43,11 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec withHeader(String name, String value) {
-        return RequestRuleSpec.this.withHeader(name, equalTo(value));
+        return withHeader(name, equalTo(value));
     }
 
     public RequestRuleSpec withContentType(Matcher<?> value) {
-        return RequestRuleSpec.this.withHeader(CONTENT_TYPE, value);
+        return withHeader(CONTENT_TYPE, value);
     }
 
     public RequestRuleSpec withContentType(String value) {
@@ -55,7 +55,7 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec withAccept(Matcher<?> value) {
-        return RequestRuleSpec.this.withHeader(ACCEPT, value);
+        return withHeader(ACCEPT, value);
     }
 
     public RequestRuleSpec withAccept(String value) {
