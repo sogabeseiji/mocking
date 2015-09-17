@@ -49,7 +49,6 @@ public abstract class RuleSpec {
         Iterator<Call> it = calls.iterator();
         while (it.hasNext()) {
             Call call = it.next();
-            LOG.debug("Call: {}", call.toString());
             if (!rule.apply(call)) {
                 LOG.debug("!!! unmatched: {}", rule.getDescription());
                 it.remove();

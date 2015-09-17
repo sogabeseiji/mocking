@@ -96,7 +96,6 @@ public class Call {
             }
         }
 
-        LOG.debug("### call: {}", call.toString());
         return call;
     }
 
