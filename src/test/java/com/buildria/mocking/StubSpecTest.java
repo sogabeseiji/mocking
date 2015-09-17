@@ -69,19 +69,17 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withRawBody(json, Charset.defaultCharset()).
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(json, Charset.defaultCharset()).
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
-         when().
+        when().
                 get("/api/p").
-         then().
+        then().
                 statusCode(200).
                 contentType(ContentType.JSON).
                 body("name", is("hoge")).
@@ -95,23 +93,19 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withRawBody(json, Charset.defaultCharset()).
-                        withHeader("X-header", "restmock1").
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(json, Charset.defaultCharset()).
+                withHeader("X-header", "restmock1").
+                withContentType("application/json; charset=UTF-8");
 
-        mocking.$(
-                when("/api/q").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withRawBody(json).
-                        withHeader("X-header", "restmock2").
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/q").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(json).
+                withHeader("X-header", "restmock2").
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
@@ -143,13 +137,11 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         byte[] json = mapper.writeValueAsString(p).getBytes(StandardCharsets.UTF_8);
 
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withRawBody(json).
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(json).
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
@@ -164,13 +156,11 @@ public class StubSpecTest {
 
     @Test
     public void testURIBody() throws Exception {
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withRawBody(Resources.getResource("com/buildria/mocking/person.json")).
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(Resources.getResource("com/buildria/mocking/person.json")).
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
@@ -185,13 +175,11 @@ public class StubSpecTest {
 
     @Test
     public void testStreamBody() throws Exception {
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withRawBody(Resources.getResource("com/buildria/mocking/person.json").openStream()).
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(Resources.getResource("com/buildria/mocking/person.json").openStream()).
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
@@ -209,13 +197,11 @@ public class StubSpecTest {
     public void testRequestBodyMultibytes() throws Exception {
         Person p = new Person("\u3042\u3044\u3046\u3048\u304a", 19);
 
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withBody(p).
-                        withContentType("application/xml; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withBody(p).
+                withContentType("application/xml; charset=UTF-8");
 
         Response r =
                 given().
@@ -234,28 +220,24 @@ public class StubSpecTest {
 
         LOG.debug("### body: {}", r.getBody().asString());
 
-        mocking.$(
-                put("/api/p").
-                then().
-                        withAccept(containsString("application/xml")).
-                        withContentType(containsString("application/xml")).
-                        withBody("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
-                        withBody("person.old", is("19"))
+        put("/api/p").
+        then().
+                withAccept(containsString("application/xml")).
+                withContentType(containsString("application/xml")).
+                withBody("person.name", is("\u3042\u3044\u3046\u3048\u304a")).
+                withBody("person.old", is("19"));
 
-        );
     }
 
     @Test
     public void testRequestXmlBody() throws Exception {
         Person p = new Person("あいうえお", 19);
 
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withBody(p).
-                        withContentType("application/xml; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withBody(p).
+                withContentType("application/xml; charset=UTF-8");
 
         given().
                 accept(ContentType.XML).
@@ -274,13 +256,11 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withRawBody(json, Charset.defaultCharset()).
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(json, Charset.defaultCharset()).
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
@@ -293,25 +273,21 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        mocking.$(
-                get("/api/p").
-                then().
-                        withAccept(containsString("application/json")).
-                        withQueryParam("name", "value 1")
-        );
+        get("/api/p").
+        then().
+                withAccept(containsString("application/json")).
+                withQueryParam("name", "value 1");
     }
 
     @Test
     public void testQueryParam2() throws Exception {
         Person p = new Person("hoge", 19);
 
-        mocking.$(
-                when("/api/p").
-                then().
-                        withStatusCode(SC_200_OK).
-                        withBody(p).
-                        withContentType("application/json; charset=UTF-8")
-        );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withBody(p).
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
@@ -324,12 +300,10 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        mocking.$(
-                get("/api/p").
-                then().
-                        withAccept(containsString("application/json")).
-                        withQueryParam("name", "value 1")
-        );
+        get("/api/p").
+        then().
+                withAccept(containsString("application/json")).
+                withQueryParam("name", "value 1");
     }
 
     @Test
@@ -338,13 +312,11 @@ public class StubSpecTest {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(p);
 
-       mocking.$(
-               when("/api/p").
-               then().
-                       withStatusCode(SC_200_OK).
-                       withRawBody(json, Charset.defaultCharset()).
-                       withContentType("application/json; charset=UTF-8")
-       );
+        when("/api/p").
+        then().
+                withStatusCode(SC_200_OK).
+                withRawBody(json, Charset.defaultCharset()).
+                withContentType("application/json; charset=UTF-8");
 
         given().
                 accept(ContentType.JSON).
@@ -358,13 +330,11 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        mocking.$(
-                get("/api/p").
-                then().
-                        withAccept(containsString("application/json")).
-                        withQueryParam("name", "value 1").
-                        withQueryParam("name", "value 2")
-        );
+         get("/api/p").
+         then().
+                 withAccept(containsString("application/json")).
+                 withQueryParam("name", "value 1").
+                 withQueryParam("name", "value 2");
     }
 
     @XmlRootElement(name = "person")

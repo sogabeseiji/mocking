@@ -55,14 +55,12 @@ public class SampleCodeTest {
         Person person = new Person("Bob", 20);
 
         // MockingTest
-        mocking.$(
-                when("/api/p/{id}").
-                        withPathParam("id", 5).
-                then().
-                        withStatusCode(SC_201_CREATED).
-                        withContentType("application/json; charset=UTF-8").
-                        withBody(person)
-        );
+        when("/api/p/{id}").
+            withPathParam("id", 5).
+        then().
+            withStatusCode(SC_201_CREATED).
+            withContentType("application/json; charset=UTF-8").
+            withBody(person);
 
         // Rest-assured
         given().
@@ -79,16 +77,14 @@ public class SampleCodeTest {
                 body("old", is(20));
 
         // MockingTest
-        mocking.$(
-                put("/api/p/{id}").
-                        withPathParam("id", 5).
-                then().
-                        withAccept("application/json").
-                        withContentType("application/json; charset=UTF-8").
+        put("/api/p/{id}").
+                withPathParam("id", 5).
+        then().
+                withAccept("application/json").
+                withContentType("application/json; charset=UTF-8").
                         withBody("name", is("Bob")).
-                        withBody("old", is(20)).
-                        withoutHeader("Referer")
-        );
+                withBody("old", is(20)).
+                withoutHeader("Referer");
     }
 
     @XmlRootElement(name = "person")

@@ -23,12 +23,9 @@
  */
 package com.buildria.mocking;
 
-import com.buildria.mocking.builder.action.ActionSpec;
-import com.buildria.mocking.builder.rule.RuleSpec;
 import com.buildria.mocking.stub.StubHttpServer;
 import java.io.IOException;
 import java.net.ServerSocket;
-import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
 
 public class Mocking extends ExternalResource {
@@ -42,6 +39,8 @@ public class Mocking extends ExternalResource {
     private final int port;
 
     private final boolean logging;
+
+    public static ThreadLocal<StubHttpServer> HOLDER = new ThreadLocal<>();
 
     public Mocking() {
         this(PORT_MIN, true);
@@ -65,10 +64,12 @@ public class Mocking extends ExternalResource {
         // CHECKSTYLE:ON
         super.before();
         server = new StubHttpServer(this).start();
+        HOLDER.set(server);
     }
 
     @Override
     protected void after() {
+        HOLDER.remove();
         if (server != null) {
             server.stop();
             server = null;
@@ -94,13 +95,4 @@ public class Mocking extends ExternalResource {
         return logging;
     }
 
-    @Nonnull
-    public void $(ActionSpec spec) {
-        server.addActions(spec.getActions());
-    }
-
-    @Nonnull
-    public void $(RuleSpec spec) {
-        spec.validate(server.getCalls());
-    }
 }

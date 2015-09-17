@@ -23,7 +23,7 @@
  */
 package com.buildria.mocking.builder.action;
 
-import java.util.ArrayList;
+import com.buildria.mocking.Mocking;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,8 +36,6 @@ public abstract class ActionSpec {
 
     private String path;
 
-    private final List<Action> actions = new ArrayList<>();
-
     public ActionSpec(String path) {
         this.path = Objects.requireNonNull(path);
     }
@@ -47,11 +45,11 @@ public abstract class ActionSpec {
     }
 
     public List<Action> getActions() {
-        return actions;
+        return Mocking.HOLDER.get().getActions();
     }
 
     public void addAction(Action action) {
-        actions.add(action);
+        Mocking.HOLDER.get().addAction(action);
     }
 
     protected void resolvePath(String name, String value) {

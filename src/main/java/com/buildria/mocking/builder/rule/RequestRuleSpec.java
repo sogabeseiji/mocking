@@ -23,6 +23,7 @@
  */
 package com.buildria.mocking.builder.rule;
 
+import com.buildria.mocking.stub.Call;
 import java.util.List;
 import org.hamcrest.Matcher;
 
@@ -32,12 +33,12 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class RequestRuleSpec extends RuleSpec {
 
-    RequestRuleSpec(List<Rule> rules) {
-        super(rules);
+    RequestRuleSpec(List<Call> calls) {
+        super(calls);
     }
 
     public RequestRuleSpec withHeader(String name, Matcher<?> value) {
-        addRule(new HeaderRule(name, value));
+        validate(new HeaderRule(name, value));
         return this;
     }
 
@@ -66,7 +67,7 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec withParameters(String key, String[] values) {
-        addRule(new ParameterRule(key, values));
+        validate(new ParameterRule(key, values));
         return this;
     }
 
@@ -79,12 +80,12 @@ public class RequestRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec withBody(String path, Matcher<?> matcher) {
-        addRule(new BodyRule(path, matcher));
+        validate(new BodyRule(path, matcher));
         return this;
     }
 
     public RequestRuleSpec withoutHeader(String name) {
-        addRule(new NoHeaderRule(name));
+        validate(new NoHeaderRule(name));
         return this;
     }
 }

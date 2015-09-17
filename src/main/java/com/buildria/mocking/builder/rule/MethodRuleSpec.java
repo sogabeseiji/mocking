@@ -23,9 +23,8 @@
  */
 package com.buildria.mocking.builder.rule;
 
-import java.util.ArrayList;
+import com.buildria.mocking.Mocking;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -37,7 +36,7 @@ public class MethodRuleSpec extends RuleSpec {
     private final String method;
 
     private MethodRuleSpec(String path, String method) {
-        super(new ArrayList<Rule>());
+        super(Mocking.HOLDER.get().getCalls());
         this.path = Objects.requireNonNull(path);
         this.method = Objects.requireNonNull(method);
     }
@@ -70,8 +69,7 @@ public class MethodRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec then() {
-        List<Rule> rules = new ArrayList<>();
-        rules.add(new MethodRule(path, method));
-        return new RequestRuleSpec(rules);
+        validate(new MethodRule(path, method));
+        return new RequestRuleSpec(getCalls());
     }
 }
