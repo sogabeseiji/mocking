@@ -60,7 +60,7 @@ import static com.google.common.base.Stopwatch.createStarted;
  *
  * @author Seiji Sogabe
  */
-public class StubHttpServer {
+public class StubHttpServer implements Server {
 
     private static final int MAX_INITIALLINE_LENGH = 4096;
 
@@ -88,7 +88,8 @@ public class StubHttpServer {
         this.mocking = mocking;
     }
 
-    public StubHttpServer start() throws MockingException {
+    @Override
+    public StubHttpServer start() {
         Stopwatch sw = createStarted();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
@@ -129,10 +130,12 @@ public class StubHttpServer {
         return this;
     }
 
+    @Override
     public List<Call> getCalls() {
         return calls;
     }
 
+    @Override
     public void addAction(Action action) {
         Objects.requireNonNull(action);
         synchronized (lockObj) {
@@ -140,6 +143,7 @@ public class StubHttpServer {
         }
     }
 
+    @Override
     public void addActions(List<Action> actions) {
         Objects.requireNonNull(actions);
         synchronized (lockObj) {
@@ -149,12 +153,14 @@ public class StubHttpServer {
         }
     }
 
+    @Override
     public List<Action> getActions() {
         synchronized (lockObj) {
             return Collections.unmodifiableList(actions);
         }
     }
 
+    @Override
     public void stop() {
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();

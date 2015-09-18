@@ -23,6 +23,7 @@
  */
 package com.buildria.mocking;
 
+import com.buildria.mocking.stub.Server;
 import com.buildria.mocking.stub.StubHttpServer;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -34,13 +35,13 @@ public class Mocking extends ExternalResource {
 
     private static final int PORT_MAX = 65535;
 
-    private StubHttpServer server;
+    private Server server;
 
     private final int port;
 
     private final boolean logging;
 
-    public static ThreadLocal<StubHttpServer> HOLDER = new ThreadLocal<>();
+    public static ThreadLocal<Server> HOLDER = new ThreadLocal<>();
 
     public Mocking() {
         this(PORT_MIN, true);

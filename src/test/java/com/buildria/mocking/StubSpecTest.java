@@ -23,7 +23,6 @@
  */
 package com.buildria.mocking;
 
-import com.buildria.mocking.stub.StubHttpServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.io.Resources;
 import com.jayway.restassured.RestAssured;
@@ -49,8 +48,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 
 public class StubSpecTest {
-
-    private StubHttpServer server;
 
     @Rule
     public Mocking mocking = new Mocking();
