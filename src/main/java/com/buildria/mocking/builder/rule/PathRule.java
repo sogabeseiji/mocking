@@ -23,51 +23,28 @@
  */
 package com.buildria.mocking.builder.rule;
 
-import com.buildria.mocking.Mocking;
-import java.util.HashMap;
-import java.util.Map;
+import com.buildria.mocking.stub.Call;
 import java.util.Objects;
-import org.apache.commons.lang3.text.StrSubstitutor;
+import javax.annotation.Nonnull;
 
-public class MethodRuleSpec extends RuleSpec {
+public class PathRule implements Rule {
 
-    private String path;
+    private final String path;
 
-    public MethodRuleSpec(String path) {
-        super(Mocking.HOLDER.get().getCalls());
+    public PathRule(@Nonnull String path) {
+        super();
         this.path = Objects.requireNonNull(path);
     }
 
-    private MethodRuleSpec method(String method) {
-        validate(new MethodRule(method));
-        return this;
+    @Override
+    public boolean apply(@Nonnull Call call) {
+        Objects.requireNonNull(call);
+        return call.getPath().equalsIgnoreCase(path);
     }
 
-    public MethodRuleSpec withGet() {
-        return method("get");
+    @Override
+    public String getDescription() {
+        return String.format("(Path) path: [%s]", path);
     }
 
-    public MethodRuleSpec withPost() {
-        return method("post");
-    }
-
-    public MethodRuleSpec withPut() {
-        return method("put");
-    }
-
-    public MethodRuleSpec withDelete() {
-        return method("delete");
-    }
-
-    public MethodRuleSpec withPathParam(String name, Object value) {
-        Map<String, String> map = new HashMap<>();
-        map.put(name, String.valueOf(value));
-        this.path = StrSubstitutor.replace(path, map, "{", "}");
-        return this;
-    }
-
-    public RequestRuleSpec then() {
-        validate(new PathRule(path));
-        return new RequestRuleSpec(getCalls());
-    }
 }

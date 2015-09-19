@@ -33,23 +33,23 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MethodRuleTest {
+public class PathRuleTest {
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    private MethodRule target;
+    private PathRule target;
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorMethodNull() throws Exception {
-        String method = null;
-        target = new MethodRule(method);
+    public void testConstructorPathNull() throws Exception {
+        String path = null;
+        target = new PathRule(path);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyCallNull() throws Exception {
-        String method = "get";
-        target = new MethodRule(method);
+        String path = "/api/p";
+        target = new PathRule(path);
 
         Call call = null;
         boolean actual = target.apply(call);
@@ -57,11 +57,11 @@ public class MethodRuleTest {
 
     @Test
     public void testApplyTrue() throws Exception {
-        String method = "get";
-        target = new MethodRule(method);
+        String path = "/api/p";
+        target = new PathRule(path);
 
         Call call = mock(Call.class);
-        when(call.getMethod()).thenReturn("get");
+        when(call.getPath()).thenReturn("/api/p");
 
         boolean actual = target.apply(call);
 
@@ -70,11 +70,11 @@ public class MethodRuleTest {
 
     @Test
     public void testApplyMethodUnmatch() throws Exception {
-        String method = "get";
-        target = new MethodRule(method);
+        String path = "/api/p";
+        target = new PathRule(path);
 
         Call call = mock(Call.class);
-        when(call.getMethod()).thenReturn("post");
+        when(call.getPath()).thenReturn("/api/q");
 
         boolean actual = target.apply(call);
 

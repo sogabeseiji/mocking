@@ -34,11 +34,11 @@ public class SampleCodeTest {
 
         // MockingTest
         when("/api/p/{id}").
-            withPathParam("id", 5).
+                withPathParam("id", 5).
         then().
-            withStatusCode(SC_201_CREATED).
-            withContentType("application/json; charset=UTF-8").
-            withBody(person);
+                withStatusCode(SC_201_CREATED).
+                withContentType("application/json; charset=UTF-8").
+                withBody(person);
 
         // Rest-assured
         given().
@@ -55,7 +55,8 @@ public class SampleCodeTest {
                 body("old", is(20));
 
         // MockingTest
-        put("/api/p/{id}").
+        verifyWhen("/api/p/{id}").
+                withPut().
                 withPathParam("id", 5).
         then().
                 withAccept("application/json").

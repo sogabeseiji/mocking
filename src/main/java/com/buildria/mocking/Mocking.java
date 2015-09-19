@@ -23,10 +23,12 @@
  */
 package com.buildria.mocking;
 
+import com.buildria.mocking.builder.rule.MethodRuleSpec;
 import com.buildria.mocking.stub.Server;
 import com.buildria.mocking.stub.StubHttpServer;
 import java.io.IOException;
 import java.net.ServerSocket;
+import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
 
 public class Mocking extends ExternalResource {
@@ -92,6 +94,11 @@ public class Mocking extends ExternalResource {
 
     public boolean isLogging() {
         return logging;
+    }
+
+    @Nonnull
+    public static MethodRuleSpec verifyWhen(@Nonnull String path) {
+        return new MethodRuleSpec(path);
     }
 
 }

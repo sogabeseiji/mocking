@@ -39,9 +39,8 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.buildria.mocking.Mocking.verifyWhen;
 import static com.buildria.mocking.builder.action.RequestActionSpec.when;
-import static com.buildria.mocking.builder.rule.MethodRuleSpec.get;
-import static com.buildria.mocking.builder.rule.MethodRuleSpec.put;
 import static com.buildria.mocking.http.MockingHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
@@ -217,7 +216,8 @@ public class StubSpecTest {
 
         LOG.debug("### body: {}", r.getBody().asString());
 
-        put("/api/p").
+        verifyWhen("/api/p")
+                .withPut().
         then().
                 withAccept(containsString("application/xml")).
                 withContentType(containsString("application/xml")).
@@ -270,7 +270,8 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        get("/api/p").
+        verifyWhen("/api/p").
+                withGet().
         then().
                 withAccept(containsString("application/json")).
                 withQueryParam("name", "value 1");
@@ -297,7 +298,8 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-        get("/api/p").
+        verifyWhen("/api/p").
+                withGet().
         then().
                 withAccept(containsString("application/json")).
                 withQueryParam("name", "value 1");
@@ -327,7 +329,8 @@ public class StubSpecTest {
                 body("name", is("hoge")).
                 body("old", is(19));
 
-         get("/api/p").
+         verifyWhen("/api/p").
+                 withGet().
          then().
                  withAccept(containsString("application/json")).
                  withQueryParam("name", "value 1").
