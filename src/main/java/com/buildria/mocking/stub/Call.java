@@ -38,8 +38,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 
@@ -134,5 +132,4 @@ public class Call {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    private static final Logger LOG = LoggerFactory.getLogger(Call.class);
 }
