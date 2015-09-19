@@ -38,6 +38,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
@@ -107,6 +108,7 @@ public class StubHttpServer implements Server {
                                 new HttpRequestDecoder(MAX_INITIALLINE_LENGH, MAX_HEADERS_SIZE, MAX_CHUNK_SIZE));
                         ch.pipeline().addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
                         ch.pipeline().addLast("encoder", new HttpResponseEncoder());
+                        ch.pipeline().addLast("deflater", new HttpContentCompressor());
                         if (mocking.isLogging()) {
                             ch.pipeline().addLast("logging", new LoggingHandler(StubHttpServer.class));
                         }
