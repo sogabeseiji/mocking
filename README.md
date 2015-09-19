@@ -11,6 +11,15 @@ Mocking provides a DSL to:
  * Perform verification against happened calls 
  * Automatic serialization
 
+## Static import
+ 
+In order to use Mocking effectively, it's recommended to statically import methods from the following classes:
+
+``` java
+import static com.buildria.mocking.Mocking.when;
+import static com.buildria.mocking.Mocking.verifyWhen;
+```
+
 ## Quick example
 
 

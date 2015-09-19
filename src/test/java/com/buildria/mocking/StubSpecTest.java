@@ -40,7 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.buildria.mocking.Mocking.verifyWhen;
-import static com.buildria.mocking.builder.action.RequestActionSpec.when;
+import static com.buildria.mocking.Mocking.when;
 import static com.buildria.mocking.http.MockingHttpStatus.SC_200_OK;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;

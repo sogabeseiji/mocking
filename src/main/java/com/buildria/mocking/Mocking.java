@@ -23,6 +23,7 @@
  */
 package com.buildria.mocking;
 
+import com.buildria.mocking.builder.action.RequestActionSpec;
 import com.buildria.mocking.builder.rule.MethodRuleSpec;
 import com.buildria.mocking.stub.Server;
 import com.buildria.mocking.stub.StubHttpServer;
@@ -94,6 +95,11 @@ public class Mocking extends ExternalResource {
 
     public boolean isLogging() {
         return logging;
+    }
+
+    @Nonnull
+    public static RequestActionSpec when(@Nonnull String path) {
+        return new RequestActionSpec(path);
     }
 
     @Nonnull

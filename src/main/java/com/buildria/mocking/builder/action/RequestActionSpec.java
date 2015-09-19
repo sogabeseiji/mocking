@@ -25,12 +25,8 @@ package com.buildria.mocking.builder.action;
 
 public class RequestActionSpec extends ActionSpec {
 
-    private RequestActionSpec(String path) {
+    public RequestActionSpec(String path) {
         super(path);
-    }
-
-    public static RequestActionSpec when(String path) {
-        return new RequestActionSpec(path);
     }
 
     public RequestActionSpec withPathParam(String name, Object value) {

@@ -31,8 +31,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import static com.buildria.mocking.Mocking.when;
 import static com.buildria.mocking.Mocking.verifyWhen;
-import static com.buildria.mocking.builder.action.RequestActionSpec.when;
 import static com.buildria.mocking.http.MockingHttpStatus.SC_201_CREATED;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
