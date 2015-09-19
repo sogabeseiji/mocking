@@ -35,8 +35,6 @@ public class Mocking extends ExternalResource {
 
     private static final int PORT_MAX = 65535;
 
-    private Server server;
-
     private final int port;
 
     private final boolean logging;
@@ -64,17 +62,17 @@ public class Mocking extends ExternalResource {
     protected void before() throws Throwable {
         // CHECKSTYLE:ON
         super.before();
-        server = new StubHttpServer(this).start();
+        Server server = new StubHttpServer(this).start();
         HOLDER.set(server);
     }
 
     @Override
     protected void after() {
-        HOLDER.remove();
+        Server server = HOLDER.get();
         if (server != null) {
             server.stop();
-            server = null;
         }
+        HOLDER.remove();
         super.after();
     }
 
