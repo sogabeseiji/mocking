@@ -42,7 +42,7 @@ public class Mocking extends ExternalResource {
 
     private final boolean logging;
 
-    public static ThreadLocal<Server> HOLDER = new ThreadLocal<>();
+    public static final ThreadLocal<Server> HOLDER = new ThreadLocal<>();
 
     public Mocking() {
         this(PORT_MIN, true);
