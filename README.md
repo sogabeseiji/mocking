@@ -70,7 +70,7 @@ public class SampleCodeTest {
         then().
                 withAccept("application/json").
                 withContentType("application/json; charset=UTF-8").
-                        withBody("name", is("Bob")).
+                withBody("name", is("Bob")).
                 withBody("old", is(20)).
                 withoutHeader("Referer");
     }
