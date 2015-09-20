@@ -5,7 +5,7 @@
 
     <groupId>com.buildria.mocking</groupId>
     <artifactId>mocking</artifactId>
-    <version>0.4</version>
+    <version>0.5-SNAPSHOT</version>
 
     <name>Mocking</name>
 
