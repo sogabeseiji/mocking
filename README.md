@@ -79,3 +79,24 @@ public class SampleCodeTest {
     
 }
 ```
+
+## Maven instructions
+
+``` xml
+    <dependencies>
+        <dependency>
+            <groupId>com.buildria.mocking</groupId>
+            <artifactId>mocking</artifactId>
+            <version>0.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>buildria.com</id>
+            <name>buildria.com Maven2 Repository</name>
+            <url>http://ci.buildria.com/plugin/repository/everything/</url>
+        </repository>
+    </repositories>
+```
