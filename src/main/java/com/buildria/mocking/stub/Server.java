@@ -21,21 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.action;
+package com.buildria.mocking.stub;
 
-public class RequestActionSpec extends ActionSpec {
+import com.buildria.mocking.builder.action.Action;
+import java.util.List;
 
-    public RequestActionSpec(String path) {
-        super(path);
-    }
+public interface Server {
 
-    public RequestActionSpec withPathParam(String name, Object value) {
-        resolvePath(name, String.valueOf(value));
-        return this;
-    }
+    void addAction(Action action);
 
-    public ResponseActionSpec then() {
-        return new ResponseActionSpec(getPath());
-    }
+    void addActions(List<Action> actions);
+
+    List<Action> getActions();
+
+    List<Call> getCalls();
+
+    Server start();
+
+    void stop();
 
 }

@@ -35,33 +35,28 @@ import org.slf4j.LoggerFactory;
 public abstract class RuleSpec {
 // CHECKSTYLE:ON
 
-    private final List<Rule> rules;
+    private final List<Call> calls;
 
-    public RuleSpec(List<Rule> rules) {
-        this.rules = Objects.requireNonNull(rules);
+    public RuleSpec(List<Call> calls) {
+        this.calls = new ArrayList<>(Objects.requireNonNull(calls));
     }
 
-    public void addRule(Rule rule) {
-        rules.add(rule);
+    protected List<Call> getCalls() {
+        return calls;
     }
 
-    public void validate(List<Call> calls) {
-        List<Call> wrapped = new ArrayList<>(calls);
-        Iterator<Call> it = wrapped.iterator();
+    public void validate(Rule rule) {
+        Iterator<Call> it = calls.iterator();
         while (it.hasNext()) {
             Call call = it.next();
-            LOG.debug("Call: {}", call.toString());
-            for (Rule rule : rules) {
-                if (!rule.apply(call)) {
-                    LOG.debug("!!! unmatched: {}", rule.getDescription());
-                    it.remove();
-                    if (wrapped.isEmpty()) {
-                        throw new AssertionError(rule.getDescription());
-                    }
-                    break;
-                } else {
-                    LOG.debug("*** matched: {}", rule.getDescription());
+            if (!rule.apply(call)) {
+                LOG.debug("!!! unmatched: {}", rule.getDescription());
+                it.remove();
+                if (calls.isEmpty()) {
+                    throw new AssertionError(rule.getDescription());
                 }
+            } else {
+                LOG.debug("*** matched: {}", rule.getDescription());
             }
         }
     }

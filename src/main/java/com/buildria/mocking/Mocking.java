@@ -23,8 +23,9 @@
  */
 package com.buildria.mocking;
 
-import com.buildria.mocking.builder.action.ActionSpec;
-import com.buildria.mocking.builder.rule.RuleSpec;
+import com.buildria.mocking.builder.action.RequestActionSpec;
+import com.buildria.mocking.builder.rule.MethodRuleSpec;
+import com.buildria.mocking.stub.Server;
 import com.buildria.mocking.stub.StubHttpServer;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -37,11 +38,11 @@ public class Mocking extends ExternalResource {
 
     private static final int PORT_MAX = 65535;
 
-    private StubHttpServer server;
-
     private final int port;
 
     private final boolean logging;
+
+    public static final ThreadLocal<Server> HOLDER = new ThreadLocal<>();
 
     public Mocking() {
         this(PORT_MIN, true);
@@ -55,10 +56,7 @@ public class Mocking extends ExternalResource {
         if (port < PORT_MIN || port > PORT_MAX) {
             throw new IllegalArgumentException("port should be between 0 and 65535");
         }
-        if (port == PORT_MIN) {
-            port = availablePort();
-        }
-        this.port = port;
+        this.port = (port != PORT_MIN) ? port : availablePort();
         this.logging = logging;
     }
 
@@ -67,15 +65,17 @@ public class Mocking extends ExternalResource {
     protected void before() throws Throwable {
         // CHECKSTYLE:ON
         super.before();
-        server = new StubHttpServer(this).run();
+        Server server = new StubHttpServer(this).start();
+        HOLDER.set(server);
     }
 
     @Override
     protected void after() {
+        Server server = HOLDER.get();
         if (server != null) {
             server.stop();
-            server = null;
         }
+        HOLDER.remove();
         super.after();
     }
 
@@ -98,12 +98,13 @@ public class Mocking extends ExternalResource {
     }
 
     @Nonnull
-    public void $(ActionSpec spec) {
-        server.addActions(spec.getActions());
+    public static RequestActionSpec when(@Nonnull String path) {
+        return new RequestActionSpec(path);
     }
 
     @Nonnull
-    public void $(RuleSpec spec) {
-        spec.validate(server.getCalls());
+    public static MethodRuleSpec verifyWhen(@Nonnull String path) {
+        return new MethodRuleSpec(path);
     }
+
 }

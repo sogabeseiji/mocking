@@ -11,6 +11,15 @@ Mocking provides a DSL to:
  * Perform verification against happened calls 
  * Automatic serialization
 
+## Static import
+ 
+In order to use Mocking effectively, it's recommended to statically import methods from the following classes:
+
+``` java
+import static com.buildria.mocking.Mocking.when;
+import static com.buildria.mocking.Mocking.verifyWhen;
+```
+
 ## Quick example
 
 
@@ -32,15 +41,13 @@ public class SampleCodeTest {
     public void testReadMeSampleCode() {
         Person person = new Person("Bob", 20);
 
-        // Mocking
-        mocking.$(
-                when("/api/p/{id}").
-                        withPathParam("id", 5).
-                then().
-                        withStatusCode(SC_201_CREATED).
-                        withContentType("application/json; charset=UTF-8").
-                        withBody(person)
-        );
+        // MockingTest
+        when("/api/p/{id}").
+                withPathParam("id", 5).
+        then().
+                withStatusCode(SC_201_CREATED).
+                withContentType("application/json; charset=UTF-8").
+                withBody(person);
 
         // Rest-assured
         given().
@@ -56,20 +63,40 @@ public class SampleCodeTest {
                 body("name", is("Bob")).
                 body("old", is(20));
 
-        // Mocking
-        mocking.$(
-                put("/api/p/{id}").
-                        withPathParam("id", 5).
-                then().
-                        withAccept("application/json").
-                        withContentType("application/json; charset=UTF-8").
-                        withBody("name", is("Bob")).
-                        withBody("old", is(20)).
-                        withoutHeader("Referer")
-        );
+        // MockingTest
+        verifyWhen("/api/p/{id}").
+                withPut().
+                withPathParam("id", 5).
+        then().
+                withAccept("application/json").
+                withContentType("application/json; charset=UTF-8").
+                withBody("name", is("Bob")).
+                withBody("old", is(20)).
+                withoutHeader("Referer");
     }
     
 (snip)
     
 }
+```
+
+## Maven instructions
+
+``` xml
+    <dependencies>
+        <dependency>
+            <groupId>com.buildria.mocking</groupId>
+            <artifactId>mocking</artifactId>
+            <version>0.4</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>buildria.com</id>
+            <name>buildria.com Maven2 Repository</name>
+            <url>http://ci.buildria.com/plugin/repository/everything/</url>
+        </repository>
+    </repositories>
 ```

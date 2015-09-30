@@ -31,8 +31,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import static com.buildria.mocking.builder.action.RequestActionSpec.when;
-import static com.buildria.mocking.builder.rule.MethodRuleSpec.put;
+import static com.buildria.mocking.Mocking.verifyWhen;
+import static com.buildria.mocking.Mocking.when;
 import static com.buildria.mocking.http.MockingHttpStatus.SC_201_CREATED;
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
@@ -55,14 +55,12 @@ public class SampleCodeTest {
         Person person = new Person("Bob", 20);
 
         // MockingTest
-        mocking.$(
-                when("/api/p/{id}").
-                        withPathParam("id", 5).
-                then().
-                        withStatusCode(SC_201_CREATED).
-                        withContentType("application/json; charset=UTF-8").
-                        withBody(person)
-        );
+        when("/api/p/{id}").
+                withPathParam("id", 5).
+        then().
+                withStatusCode(SC_201_CREATED).
+                withContentType("application/json; charset=UTF-8").
+                withBody(person);
 
         // Rest-assured
         given().
@@ -79,16 +77,15 @@ public class SampleCodeTest {
                 body("old", is(20));
 
         // MockingTest
-        mocking.$(
-                put("/api/p/{id}").
-                        withPathParam("id", 5).
-                then().
-                        withAccept("application/json").
-                        withContentType("application/json; charset=UTF-8").
-                        withBody("name", is("Bob")).
-                        withBody("old", is(20)).
-                        withoutHeader("Referer")
-        );
+        verifyWhen("/api/p/{id}").
+                withPut().
+                withPathParam("id", 5).
+        then().
+                withAccept("application/json").
+                withContentType("application/json; charset=UTF-8").
+                withBody("name", is("Bob")).
+                withBody("old", is(20)).
+                withoutHeader("Referer");
     }
 
     @XmlRootElement(name = "person")

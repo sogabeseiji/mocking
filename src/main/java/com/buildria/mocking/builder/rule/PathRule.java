@@ -21,21 +21,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.buildria.mocking.builder.action;
+package com.buildria.mocking.builder.rule;
 
-public class RequestActionSpec extends ActionSpec {
+import com.buildria.mocking.stub.Call;
+import java.util.Objects;
+import javax.annotation.Nonnull;
 
-    public RequestActionSpec(String path) {
-        super(path);
+public class PathRule implements Rule {
+
+    private final String path;
+
+    public PathRule(@Nonnull String path) {
+        super();
+        this.path = Objects.requireNonNull(path);
     }
 
-    public RequestActionSpec withPathParam(String name, Object value) {
-        resolvePath(name, String.valueOf(value));
-        return this;
+    @Override
+    public boolean apply(@Nonnull Call call) {
+        Objects.requireNonNull(call);
+        return call.getPath().equalsIgnoreCase(path);
     }
 
-    public ResponseActionSpec then() {
-        return new ResponseActionSpec(getPath());
+    @Override
+    public String getDescription() {
+        return String.format("(Path) path: [%s]", path);
     }
 
 }

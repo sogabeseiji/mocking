@@ -24,8 +24,8 @@
 package com.buildria.mocking.stub;
 
 import com.buildria.mocking.Mocking;
+import com.buildria.mocking.MockingException;
 import com.buildria.mocking.builder.action.Action;
-import com.buildria.mocking.builder.action.BaseAction;
 import com.google.common.base.Stopwatch;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -38,6 +38,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
+import io.netty.handler.codec.http.HttpContentCompressor;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpRequestDecoder;
@@ -60,12 +61,7 @@ import static com.google.common.base.Stopwatch.createStarted;
  *
  * @author Seiji Sogabe
  */
-public class StubHttpServer {
-
-    /**
-     * Default port.
-     */
-    public static final int DEFAULT_PORT = 8080;
+public class StubHttpServer implements Server {
 
     private static final int MAX_INITIALLINE_LENGH = 4096;
 
@@ -91,7 +87,8 @@ public class StubHttpServer {
         this.mocking = mocking;
     }
 
-    public StubHttpServer run() throws InterruptedException {
+    @Override
+    public StubHttpServer start() {
         Stopwatch sw = createStarted();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
@@ -109,6 +106,7 @@ public class StubHttpServer {
                                 new HttpRequestDecoder(MAX_INITIALLINE_LENGH, MAX_HEADERS_SIZE, MAX_CHUNK_SIZE));
                         ch.pipeline().addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
                         ch.pipeline().addLast("encoder", new HttpResponseEncoder());
+                        ch.pipeline().addLast("deflater", new HttpContentCompressor());
                         if (mocking.isLogging()) {
                             ch.pipeline().addLast("logging", new LoggingHandler(StubHttpServer.class));
                         }
@@ -120,22 +118,30 @@ public class StubHttpServer {
 
         // Bind and start to accept incoming connections.
         int port = mocking.getPort();
-        ChannelFuture f = b.bind(port).sync();
+        ChannelFuture f;
+        try {
+            f = b.bind(port).sync();
+        } catch (InterruptedException ex) {
+            throw new MockingException(ex);
+        }
         f.awaitUninterruptibly();
         sw.stop();
         LOG.debug("### StubHttpServer(port:{}) started. It took {}", port, sw);
         return this;
     }
 
+    @Override
     public List<Call> getCalls() {
         return calls;
     }
 
-    public void addAction(BaseAction action) {
+    @Override
+    public void addAction(Action action) {
         Objects.requireNonNull(action);
         actions.add(action);
     }
 
+    @Override
     public void addActions(List<Action> actions) {
         Objects.requireNonNull(actions);
         for (Action action : actions) {
@@ -143,10 +149,12 @@ public class StubHttpServer {
         }
     }
 
+    @Override
     public List<Action> getActions() {
         return Collections.unmodifiableList(actions);
     }
 
+    @Override
     public void stop() {
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();

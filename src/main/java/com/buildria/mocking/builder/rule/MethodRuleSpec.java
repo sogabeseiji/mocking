@@ -23,9 +23,8 @@
  */
 package com.buildria.mocking.builder.rule;
 
-import java.util.ArrayList;
+import com.buildria.mocking.Mocking;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -34,32 +33,30 @@ public class MethodRuleSpec extends RuleSpec {
 
     private String path;
 
-    private final String method;
-
-    private MethodRuleSpec(String path, String method) {
-        super(new ArrayList<Rule>());
+    public MethodRuleSpec(String path) {
+        super(Mocking.HOLDER.get().getCalls());
         this.path = Objects.requireNonNull(path);
-        this.method = Objects.requireNonNull(method);
     }
 
-    private static MethodRuleSpec method(String path, String method) {
-        return new MethodRuleSpec(path, method);
+    private MethodRuleSpec method(String method) {
+        validate(new MethodRule(method));
+        return this;
     }
 
-    public static MethodRuleSpec get(String path) {
-        return method(path, "get");
+    public MethodRuleSpec withGet() {
+        return method("get");
     }
 
-    public static MethodRuleSpec post(String path) {
-        return method(path, "post");
+    public MethodRuleSpec withPost() {
+        return method("post");
     }
 
-    public static MethodRuleSpec put(String path) {
-        return method(path, "put");
+    public MethodRuleSpec withPut() {
+        return method("put");
     }
 
-    public static MethodRuleSpec delete(String path) {
-        return method(path, "delete");
+    public MethodRuleSpec withDelete() {
+        return method("delete");
     }
 
     public MethodRuleSpec withPathParam(String name, Object value) {
@@ -70,8 +67,7 @@ public class MethodRuleSpec extends RuleSpec {
     }
 
     public RequestRuleSpec then() {
-        List<Rule> rules = new ArrayList<>();
-        rules.add(new MethodRule(path, method));
-        return new RequestRuleSpec(rules);
+        validate(new PathRule(path));
+        return new RequestRuleSpec(getCalls());
     }
 }
