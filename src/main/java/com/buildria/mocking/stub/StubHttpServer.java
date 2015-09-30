@@ -85,8 +85,6 @@ public class StubHttpServer {
 
     private final List<Call> calls = new CopyOnWriteArrayList<>();
 
-    private final Object lockObj = new Object();
-
     private final Mocking mocking;
 
     public StubHttpServer(Mocking mocking) {
@@ -135,24 +133,18 @@ public class StubHttpServer {
 
     public void addAction(BaseAction action) {
         Objects.requireNonNull(action);
-        synchronized (lockObj) {
-            actions.add(action);
-        }
+        actions.add(action);
     }
 
     public void addActions(List<Action> actions) {
         Objects.requireNonNull(actions);
-        synchronized (lockObj) {
-            for (Action action : actions) {
-                this.actions.add(action);
-            }
+        for (Action action : actions) {
+           this.actions.add(action);
         }
     }
 
     public List<Action> getActions() {
-        synchronized (lockObj) {
-            return Collections.unmodifiableList(actions);
-        }
+        return Collections.unmodifiableList(actions);
     }
 
     public void stop() {
