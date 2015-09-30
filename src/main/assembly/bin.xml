@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly>
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    
+   <fileSets>
+        <fileSet>
+            <directory>.</directory>
+            <outputDirectory>/</outputDirectory>
+            <includes>
+                <include>LICENSE</include>
+                <include>*.md</include>
+            </includes>
+        </fileSet>
+    </fileSets> 
+       
+    <includeBaseDirectory>true</includeBaseDirectory>
+    
+    <dependencySets>
+        <dependencySet />
+    </dependencySets>
+    
+</assembly>
