@@ -107,6 +107,7 @@
                         </goals>
                         <configuration>
                             <finalName>${archive.name}</finalName>
+                            <attach>false</attach>
                             <descriptors>
                                 <descriptor>src/main/assembly/bin.xml</descriptor>
                             </descriptors>
