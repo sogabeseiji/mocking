@@ -42,7 +42,7 @@ public class Mocking extends ExternalResource {
 
     private final boolean logging;
 
-    public static final ThreadLocal<Server> HOLDER = new ThreadLocal<>();
+    public static final ThreadLocal<StubHttpServer> HOLDER = new ThreadLocal<>();
 
     public Mocking() {
         this(PORT_MIN, true);
@@ -65,7 +65,7 @@ public class Mocking extends ExternalResource {
     protected void before() throws Throwable {
         // CHECKSTYLE:ON
         super.before();
-        Server server = new StubHttpServer(this).start();
+        StubHttpServer server = new StubHttpServer(this).start();
         HOLDER.set(server);
     }
 

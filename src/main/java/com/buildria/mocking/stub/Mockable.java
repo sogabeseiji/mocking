@@ -23,14 +23,12 @@
  */
 package com.buildria.mocking.stub;
 
+import com.buildria.mocking.builder.action.Action;
 import java.util.List;
 
-public interface Server {
+public interface Mockable {
 
-    List<Call> getCalls();
+    void addAction(Action action);
 
-    Server start();
-
-    void stop();
-
+    List<Action> getActions();
 }
