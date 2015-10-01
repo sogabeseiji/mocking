@@ -30,8 +30,6 @@ public interface Server {
 
     void addAction(Action action);
 
-    void addActions(List<Action> actions);
-
     List<Action> getActions();
 
     List<Call> getCalls();

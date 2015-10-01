@@ -142,14 +142,6 @@ public class StubHttpServer implements Server {
     }
 
     @Override
-    public void addActions(List<Action> actions) {
-        Objects.requireNonNull(actions);
-        for (Action action : actions) {
-           this.actions.add(action);
-        }
-    }
-
-    @Override
     public List<Action> getActions() {
         return Collections.unmodifiableList(actions);
     }
