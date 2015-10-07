@@ -23,7 +23,7 @@
  */
 package com.buildria.mocking.stub;
 
-import com.buildria.mocking.Mocking;
+import com.buildria.mocking.Config;
 import com.buildria.mocking.MockingException;
 import com.buildria.mocking.builder.action.Action;
 import com.google.common.base.Stopwatch;
@@ -81,10 +81,10 @@ public class StubHttpServer implements Server, Mockable {
 
     private final List<Call> calls = new CopyOnWriteArrayList<>();
 
-    private final Mocking mocking;
+    private final Config config;
 
-    public StubHttpServer(Mocking mocking) {
-        this.mocking = mocking;
+    public StubHttpServer(Config config) {
+        this.config = config;
     }
 
     @Override
@@ -107,7 +107,7 @@ public class StubHttpServer implements Server, Mockable {
                         ch.pipeline().addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
                         ch.pipeline().addLast("encoder", new HttpResponseEncoder());
                         ch.pipeline().addLast("deflater", new HttpContentCompressor());
-                        if (mocking.isLogging()) {
+                        if (config.isLogging()) {
                             ch.pipeline().addLast("logging", new LoggingHandler(StubHttpServer.class));
                         }
                         ch.pipeline().addLast("handler", new Handler());
@@ -117,7 +117,7 @@ public class StubHttpServer implements Server, Mockable {
                 .childOption(ChannelOption.SO_KEEPALIVE, true);
 
         // Bind and start to accept incoming connections.
-        int port = mocking.getPort();
+        int port = config.getPort();
         ChannelFuture f;
         try {
             f = b.bind(port).sync();

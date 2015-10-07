@@ -32,7 +32,7 @@ import java.net.ServerSocket;
 import javax.annotation.Nonnull;
 import org.junit.rules.ExternalResource;
 
-public class Mocking extends ExternalResource {
+public class Mocking extends ExternalResource implements Config {
 
     private static final int PORT_MIN = 0;
 
@@ -89,10 +89,12 @@ public class Mocking extends ExternalResource {
         return availablePort;
     }
 
+    @Override
     public int getPort() {
         return port;
     }
 
+    @Override
     public boolean isLogging() {
         return logging;
     }
