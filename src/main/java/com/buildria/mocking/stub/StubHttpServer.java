@@ -186,7 +186,7 @@ public class StubHttpServer implements Server, Actionable {
             
             HttpResponse res = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             String path = call.getPath();
-            if (actions.get(path).isEmpty()) {
+            if (actions.get(path) == null || actions.get(path).isEmpty()) {
                 res.setStatus(HttpResponseStatus.NOT_FOUND);
             } else {
                 for (Action action : actions.get(path)) {
