@@ -41,15 +41,14 @@ import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
 /**
  * BodyAction.
  */
-public class BodyAction extends BaseAction {
+public class BodyAction implements Action {
 
     private final Object content;
 
     private final List<Action> actions;
 
-    public BodyAction(@Nonnull String path, @Nonnull Object content,
-            @Nonnull List<Action> actions) {
-        super(path);
+    public BodyAction(@Nonnull Object content, @Nonnull List<Action> actions) {
+        super();
         this.content = Objects.requireNonNull(content);
         this.actions = Objects.requireNonNull(actions);
     }
@@ -67,8 +66,7 @@ public class BodyAction extends BaseAction {
                 = new ObjectSerializerContext(contentType.getValue());
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         try {
-            return new RawBodyAction(getPath(),
-                    os.serialize(content)).apply(req, res);
+            return new RawBodyAction(os.serialize(content)).apply(req, res);
         } catch (IOException ex) {
             throw new MockingException("failed to serialize body.");
         }
@@ -79,7 +77,7 @@ public class BodyAction extends BaseAction {
         QueryStringDecoder decoder = new QueryStringDecoder(uri);
         String p = QueryStringDecoder.decodeComponent(decoder.path());
         for (Action action : actions) {
-            if (action.isApplicable(p) && action instanceof HeaderAction) {
+            if (action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;
                 if (ha.getHeader().equalsIgnoreCase(headerName)) {
                     return ha;

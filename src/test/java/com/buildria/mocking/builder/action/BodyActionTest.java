@@ -60,47 +60,35 @@ public class BodyActionTest {
     private final Person person = new Person("Bob", 20);
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorPathNull() throws Exception {
-        String path = null;
-        Object content = person;
-        List<Action> actions = Collections.<Action>emptyList();
-        Action action = new BodyAction(path, content, actions);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void testConstructorContentNull() throws Exception {
-        String path = "/api/p";
         Object content = null;
         List<Action> actions = Collections.<Action>emptyList();
-        Action action = new BodyAction(path, content, actions);
+        Action action = new BodyAction(content, actions);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorActionsNull() throws Exception {
-        String path = "/api/p";
         Object content = person;
         List<Action> actions = null;
-        Action action = new BodyAction(path, content, actions);
+        Action action = new BodyAction(content, actions);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        String path = "/api/p";
         Object content = person;
         List<Action> actions = Collections.<Action>emptyList();
-        Action action = new BodyAction(path, content, actions);
+        Action action = new BodyAction(content, actions);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponseUTF8() throws Exception {
-        String path = "/api/p";
         Object content = person;
 
         List<Action> actions = new ArrayList<>();
-        actions.add(new HeaderAction("/api/p", "Content-Type", "application/json; charset=UTF-8"));
+        actions.add(new HeaderAction("Content-Type", "application/json; charset=UTF-8"));
 
-        Action action = new BodyAction(path, content, actions);
+        Action action = new BodyAction(content, actions);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -124,13 +112,12 @@ public class BodyActionTest {
 
     @Test
     public void testApplyResponseUTF16BE() throws Exception {
-        String path = "/api/p";
         Object content = person;
 
         List<Action> actions = new ArrayList<>();
-        actions.add(new HeaderAction("/api/p", "Content-Type", "application/json; charset=UTF-16BE"));
+        actions.add(new HeaderAction("Content-Type", "application/json; charset=UTF-16BE"));
 
-        Action action = new BodyAction(path, content, actions);
+        Action action = new BodyAction(content, actions);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);
@@ -154,10 +141,9 @@ public class BodyActionTest {
 
     @Test(expected = MockingException.class)
     public void testApplyResponseNoContentType() throws Exception {
-        String path = "/api/p";
         Object content = person;
 
-        Action action = new BodyAction(path, content, Collections.<Action>emptyList());
+        Action action = new BodyAction(content, Collections.<Action>emptyList());
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);

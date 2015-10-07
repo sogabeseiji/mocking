@@ -46,27 +46,18 @@ public class StatusCodeActionTest {
     private StatusCodeAction target;
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorPathNull() throws Exception {
-        String path = null;
-        int code = 200;
-        BaseAction action = new StatusCodeAction(path, code);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        String path = "/api/p";
         int code = 200;
 
-        StatusCodeAction action = new StatusCodeAction(path, code);
+        StatusCodeAction action = new StatusCodeAction(code);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
-        String path = "/api/p";
         int code = 404;
 
-        StatusCodeAction action = new StatusCodeAction(path, code);
+        StatusCodeAction action = new StatusCodeAction(code);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);

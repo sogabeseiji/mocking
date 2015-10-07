@@ -40,7 +40,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec withStatusCode(int code) {
-        addAction(new StatusCodeAction(getPath(), code));
+        addAction(new StatusCodeAction(code));
         return this;
     }
 
@@ -49,7 +49,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec withHeader(String name, String value) {
-        addAction(new HeaderAction(getPath(), name, value));
+        addAction(new HeaderAction(name, value));
         return this;
     }
 
@@ -62,7 +62,7 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec withRawBody(byte[] content) {
-        addAction(new RawBodyAction(getPath(), content));
+        addAction(new RawBodyAction(content));
         return this;
     }
 
@@ -75,12 +75,12 @@ public class ResponseActionSpec extends ActionSpec {
     }
 
     public ResponseActionSpec withBody(Object content) {
-        addAction(new BodyAction(getPath(), content, getActions()));
+        addAction(new BodyAction(content, getActions()));
         return this;
     }
 
     public ResponseActionSpec withDelay(long wait) {
-        addAction(new DelayAction(getPath(), wait));
+        addAction(new DelayAction(wait));
         return this;
     }
 
