@@ -26,7 +26,7 @@ package com.buildria.mocking.stub;
 import com.buildria.mocking.builder.action.Action;
 import java.util.List;
 
-public interface Mockable {
+public interface Actionable {
 
     void addAction(Action action);
 

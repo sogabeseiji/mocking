@@ -61,7 +61,7 @@ import static com.google.common.base.Stopwatch.createStarted;
  *
  * @author Seiji Sogabe
  */
-public class StubHttpServer implements Server, Mockable {
+public class StubHttpServer implements Server, Actionable {
 
     private static final int MAX_INITIALLINE_LENGH = 4096;
 
