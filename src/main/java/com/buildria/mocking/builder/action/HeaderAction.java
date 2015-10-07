@@ -31,16 +31,15 @@ import javax.annotation.Nonnull;
 /**
  * HeaderAction.
  */
-public class HeaderAction extends BaseAction {
+public class HeaderAction implements Action {
 
     private final String header;
 
     private final String value;
 
     @Nonnull
-    public HeaderAction(@Nonnull String path, @Nonnull String header,
-            @Nonnull String value) {
-        super(path);
+    public HeaderAction(@Nonnull String header, @Nonnull String value) {
+        super();
         this.header = Objects.requireNonNull(header);
         this.value = Objects.requireNonNull(value);
     }

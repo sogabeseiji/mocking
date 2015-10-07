@@ -46,46 +46,34 @@ public class HeaderActionTest {
     private HeaderAction target;
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorPathNull() throws Exception {
-        String path = null;
-        String header = "Content-Type";
-        String value = "application/xml";
-        BaseAction action = new HeaderAction(path, header, value);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void testConstructorHeaderNull() throws Exception {
-        String path = "/api/p";
         String header = null;
         String value = "application/xml";
-        BaseAction action = new HeaderAction(path, header, value);
+        Action action = new HeaderAction(header, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testConstructorValueNull() throws Exception {
-        String path = "/api/p";
         String header = "Content-Type";
         String value = null;
-        BaseAction action = new HeaderAction(path, header, value);
+        Action action = new HeaderAction(header, value);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        String path = "/api/p";
         String header = "Content-Type";
         String value = "application/xml";
 
-        BaseAction action = new HeaderAction(path, header, value);
+        Action action = new HeaderAction(header, value);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
-        String path = "/api/p";
         String header = "Content-Type";
         String value = "application/xml";
 
-        BaseAction action = new HeaderAction(path, header, value);
+        Action action = new HeaderAction(header, value);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         HttpResponse out = action.apply(req, res);

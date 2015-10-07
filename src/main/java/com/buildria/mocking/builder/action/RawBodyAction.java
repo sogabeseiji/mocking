@@ -37,12 +37,12 @@ import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_LENGTH;
 /**
  * RawBodyAction.
  */
-public class RawBodyAction extends BaseAction {
+public class RawBodyAction implements Action {
 
     private final byte[] content;
 
-    public RawBodyAction(@Nonnull String path, @Nonnull byte[] content) {
-        super(path);
+    public RawBodyAction(@Nonnull byte[] content) {
+        super();
         this.content = Objects.requireNonNull(content);
     }
 

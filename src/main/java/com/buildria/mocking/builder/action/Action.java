@@ -30,11 +30,6 @@ import javax.annotation.Nonnull;
 public interface Action {
 
     @Nonnull
-    String getPath();
-
-    boolean isApplicable(String path);
-
-    @Nonnull
     HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res);
 
 }

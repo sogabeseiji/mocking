@@ -25,16 +25,15 @@ package com.buildria.mocking.builder.action;
 
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
-import javax.annotation.Nonnull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DelayAction extends BaseAction {
+public class DelayAction implements Action {
 
     private final long wait;
 
-    public DelayAction(@Nonnull String path, long wait) {
-        super(path);
+    public DelayAction(long wait) {
+        super();
         if (wait < 0) {
             throw new IllegalArgumentException("wait should be non negative");
         }

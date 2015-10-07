@@ -32,12 +32,12 @@ import javax.annotation.Nonnull;
 /**
  * StatusCodeAction.
  */
-public class StatusCodeAction extends BaseAction {
+public class StatusCodeAction implements Action {
 
     private final int code;
 
-    public StatusCodeAction(@Nonnull String path, int code) {
-        super(path);
+    public StatusCodeAction(int code) {
+        super();
         this.code = code;
     }
 

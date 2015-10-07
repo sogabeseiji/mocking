@@ -45,25 +45,16 @@ public class DelayActionTest {
 
     private DelayAction target;
 
-    @Test(expected = NullPointerException.class)
-    public void testConstructorPathIsNull() throws Exception {
-        String path = null;
-        long wait = 1000;
-        target = new DelayAction(path, wait);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testConstructorWaitNegative() {
-        String path = "/api/p";
         long wait = -100;
-        target = new DelayAction(path, wait);
+        target = new DelayAction(wait);
     }
 
     @Test
     public void testApply() throws Exception {
-        String path = "/api/p";
         long wait = 500;
-        target = new DelayAction(path, wait);
+        target = new DelayAction(wait);
 
         HttpRequest req
                 = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");

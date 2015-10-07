@@ -23,34 +23,11 @@
  */
 package com.buildria.mocking.builder.action;
 
-import java.util.Objects;
-import javax.annotation.Nonnull;
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import java.util.List;
 
-// CHECKSTYLE:OFF
-public abstract class BaseAction implements Action {
-// CHECKSTYLE:ON
+public interface Actionable {
 
-    private final String path;
+    void addAction(String path, Action action);
 
-    public BaseAction(@Nonnull String path) {
-        this.path = Objects.requireNonNull(path);
-    }
-
-    @Nonnull
-    @Override
-    public String getPath() {
-        return path;
-    }
-
-    @Override
-    public boolean isApplicable(String path) {
-        return this.path.equals(path);
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this);
-    }
-
+    List<Action> getActions(String path);
 }

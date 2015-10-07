@@ -51,36 +51,25 @@ public class RawBodyActionTest {
     private RawBodyAction target;
 
     @Test(expected = NullPointerException.class)
-    public void testConstructorPathNull() throws Exception {
-        String path = null;
-        byte[] content = "content".getBytes();
-
-        BaseAction action = new RawBodyAction(path, content);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void testConstructorContentNull() throws Exception {
-        String path = "/api/p";
         byte[] content = null;
 
-        BaseAction action = new RawBodyAction(path, content);
+        Action action = new RawBodyAction(content);
     }
 
     @Test(expected = NullPointerException.class)
     public void testApplyResponseNull() throws Exception {
-        String path = "/api/p";
         byte[] content = "content".getBytes();
 
-        BaseAction action = new RawBodyAction(path, content);
+        Action action = new RawBodyAction(content);
         action.apply(null, null);
     }
 
     @Test
     public void testApplyResponse() throws Exception {
-        String path = "/api/p";
         byte[] content = "content".getBytes();
 
-        BaseAction action = new RawBodyAction(path, content);
+        Action action = new RawBodyAction(content);
         HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/api/p");
         HttpResponse res = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
         res.headers().add(ACCEPT, "application/xml");

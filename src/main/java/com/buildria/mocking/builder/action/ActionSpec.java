@@ -45,11 +45,11 @@ public abstract class ActionSpec {
     }
 
     public List<Action> getActions() {
-        return Mocking.HOLDER.get().getActions();
+        return Mocking.HOLDER.get().getActions(path);
     }
 
     public void addAction(Action action) {
-        Mocking.HOLDER.get().addAction(action);
+        Mocking.HOLDER.get().addAction(path, action);
     }
 
     protected void resolvePath(String name, String value) {
