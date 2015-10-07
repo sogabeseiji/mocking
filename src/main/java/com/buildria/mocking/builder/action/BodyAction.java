@@ -29,7 +29,6 @@ import com.buildria.mocking.serializer.ObjectSerializerContext;
 import com.buildria.mocking.serializer.ObjectSerializerFactory;
 import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponse;
-import io.netty.handler.codec.http.QueryStringDecoder;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -58,7 +57,7 @@ public class BodyAction implements Action {
     public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
         Objects.requireNonNull(req);
         Objects.requireNonNull(res);
-        HeaderAction contentType = getHeader(req.getUri(), CONTENT_TYPE, actions);
+        HeaderAction contentType = getHeader(CONTENT_TYPE, actions);
         if (contentType == null) {
             throw new MockingException("No Content-Type found.");
         }
@@ -73,9 +72,7 @@ public class BodyAction implements Action {
     }
 
     @Nullable
-    private HeaderAction getHeader(String uri, String headerName, List<Action> actions) {
-        QueryStringDecoder decoder = new QueryStringDecoder(uri);
-        String p = QueryStringDecoder.decodeComponent(decoder.path());
+    private HeaderAction getHeader(String headerName, List<Action> actions) {
         for (Action action : actions) {
             if (action instanceof HeaderAction) {
                 HeaderAction ha = (HeaderAction) action;
