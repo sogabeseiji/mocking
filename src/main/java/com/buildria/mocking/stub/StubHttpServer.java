@@ -23,11 +23,12 @@
  */
 package com.buildria.mocking.stub;
 
-import com.buildria.mocking.builder.action.Actionable;
 import com.buildria.mocking.Config;
 import com.buildria.mocking.MockingException;
 import com.buildria.mocking.builder.action.Action;
+import com.buildria.mocking.builder.action.Actionable;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -49,16 +50,15 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.logging.LoggingHandler;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Stopwatch.createStarted;
-import com.google.common.collect.Lists;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * StubHttpServer
@@ -66,39 +66,39 @@ import java.util.Map;
  * @author Seiji Sogabe
  */
 public class StubHttpServer implements Server, Actionable {
-    
+
     private static final int MAX_INITIALLINE_LENGH = 4096;
-    
+
     private static final int MAX_HEADERS_SIZE = 8192;
-    
+
     private static final int MAX_CHUNK_SIZE = 8192;
-    
+
     private static final int MAX_CONTENT_LENGTH = 8192;
-    
+
     private static final int SO_BACKLOG = 128;
-    
+
     private EventLoopGroup bossGroup;
-    
+
     private EventLoopGroup workerGroup;
-    
+
     private final Map<String, List<Action>> actions = new HashMap<>();
-    
+
     private final List<Call> calls = new CopyOnWriteArrayList<>();
-    
+
     private final Config config;
-    
+
     private final Object lockObj = new Object();
-    
+
     public StubHttpServer(Config config) {
         this.config = config;
     }
-    
+
     @Override
     public StubHttpServer start() {
         Stopwatch sw = createStarted();
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
-        
+
         ServerBootstrap b = new ServerBootstrap();
         b.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
@@ -135,12 +135,12 @@ public class StubHttpServer implements Server, Actionable {
         LOG.debug("### StubHttpServer(port:{}) started. It took {}", port, sw);
         return this;
     }
-    
+
     @Override
     public List<Call> getCalls() {
         return calls;
     }
-    
+
     @Override
     public void addAction(String path, Action action) {
         Objects.requireNonNull(path);
@@ -152,9 +152,9 @@ public class StubHttpServer implements Server, Actionable {
             } else {
                 list.add(action);
             }
-        }        
+        }
     }
-    
+
     @Override
     public List<Action> getActions(String path) {
         Objects.requireNonNull(path);
@@ -162,14 +162,14 @@ public class StubHttpServer implements Server, Actionable {
             return Collections.unmodifiableList(actions.get(path));
         }
     }
-    
+
     @Override
     public void stop() {
         workerGroup.shutdownGracefully();
         bossGroup.shutdownGracefully();
         LOG.debug("### StubHttpServer stopped.");
     }
-    
+
     private class Handler extends SimpleChannelInboundHandler<Object> {
 
         // CHECKSTYLE:OFF
@@ -179,11 +179,11 @@ public class StubHttpServer implements Server, Actionable {
             if (!(msg instanceof HttpRequest)) {
                 return;
             }
-            
+
             HttpRequest req = (HttpRequest) msg;
             Call call = Call.fromRequest(req);
             calls.add(call);
-            
+
             HttpResponse res = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
             String path = call.getPath();
             if (actions.get(path) == null || actions.get(path).isEmpty()) {
@@ -193,15 +193,19 @@ public class StubHttpServer implements Server, Actionable {
                     res = action.apply(req, res);
                 }
             }
-            
+
             final HttpResponse r = res;
             ctx.channel().eventLoop().execute(new Runnable() {
                 @Override
                 public void run() {
-                    ctx.writeAndFlush(r);
+                    try {
+                        ctx.writeAndFlush(r);
+                    } finally {
+                        ctx.close();
+                    }
                 }
             });
-            
+
         }
 
         // CHECKSTYLE:OFF
@@ -210,8 +214,8 @@ public class StubHttpServer implements Server, Actionable {
             // CHECKSTYLE:ON
             super.exceptionCaught(ctx, cause);
         }
-        
+
     }
-    
+
     private static final Logger LOG = LoggerFactory.getLogger(StubHttpServer.class);
 }
