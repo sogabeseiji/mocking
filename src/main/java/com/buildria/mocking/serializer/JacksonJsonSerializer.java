@@ -51,7 +51,8 @@ public class JacksonJsonSerializer implements ObjectSerializer {
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         JsonEncoding encoding = mappingFrom(ctx.getCharset());
-        try (JsonGenerator g = new JsonFactory().createGenerator(out, encoding)) {
+        try (JsonGenerator g
+                = new JsonFactory().createGenerator(out, encoding)) {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(g, obj);
         }
@@ -60,12 +61,14 @@ public class JacksonJsonSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> T deserialize(InputStream src, Class<T> type) throws IOException {
+    public <T> T deserialize(InputStream src, Class<T> type)
+            throws IOException {
         Objects.requireNonNull(src);
         Objects.requireNonNull(type);
 
         ObjectMapper mapper = new ObjectMapper();
-        try (InputStreamReader is = new InputStreamReader(src, ctx.getCharset())) {
+        try (InputStreamReader is
+                = new InputStreamReader(src, ctx.getCharset())) {
             return mapper.readValue(is, type);
         }
     }

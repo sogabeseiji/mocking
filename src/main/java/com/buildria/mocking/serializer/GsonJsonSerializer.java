@@ -59,7 +59,8 @@ public class GsonJsonSerializer implements ObjectSerializer {
     }
 
     @Override
-    public <T> T deserialize(@Nonnull InputStream src, @Nonnull Class<T> type) throws IOException {
+    public <T> T deserialize(@Nonnull InputStream src, @Nonnull Class<T> type)
+            throws IOException {
         Objects.requireNonNull(src);
         Objects.requireNonNull(type);
 

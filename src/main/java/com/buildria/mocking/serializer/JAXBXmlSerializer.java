@@ -50,7 +50,8 @@ public class JAXBXmlSerializer implements ObjectSerializer {
             Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(
                     Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
-            marshaller.setProperty(Marshaller.JAXB_ENCODING, ctx.getCharset().toString());
+            marshaller.setProperty(
+                    Marshaller.JAXB_ENCODING, ctx.getCharset().toString());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             marshaller.marshal(obj, baos);
             return baos.toByteArray();
@@ -68,7 +69,8 @@ public class JAXBXmlSerializer implements ObjectSerializer {
         try {
             JAXBContext context = JAXBContext.newInstance(type);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-            try (InputStreamReader is = new InputStreamReader(src, ctx.getCharset())) {
+            try (InputStreamReader is 
+                    = new InputStreamReader(src, ctx.getCharset())) {
                 Object obj = unmarshaller.unmarshal(is);
                 return type.cast(obj);
             }

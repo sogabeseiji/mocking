@@ -50,7 +50,8 @@ public class ObjectSerializerContext {
         this(type, StandardCharsets.UTF_8);
     }
 
-    public ObjectSerializerContext(@Nonnull SubType type, @Nonnull Charset charset) {
+    public ObjectSerializerContext(@Nonnull SubType type, 
+            @Nonnull Charset charset) {
         this.type = Objects.requireNonNull(type);
         this.charset = Objects.requireNonNull(charset);
     }
