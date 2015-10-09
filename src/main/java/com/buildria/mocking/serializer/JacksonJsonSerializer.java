@@ -30,6 +30,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -55,6 +57,17 @@ public class JacksonJsonSerializer implements ObjectSerializer {
         }
 
         return out.toByteArray();
+    }
+
+    @Override
+    public <T> T deserialize(InputStream src, Class<T> type) throws IOException {
+        Objects.requireNonNull(src);
+        Objects.requireNonNull(type);
+
+        ObjectMapper mapper = new ObjectMapper();
+        try (InputStreamReader is = new InputStreamReader(src, ctx.getCharset())) {
+            return mapper.readValue(is, type);
+        }
     }
 
     private JsonEncoding mappingFrom(Charset charset) {

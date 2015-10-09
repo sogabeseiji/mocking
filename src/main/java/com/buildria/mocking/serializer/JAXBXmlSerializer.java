@@ -25,11 +25,14 @@ package com.buildria.mocking.serializer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 public class JAXBXmlSerializer implements ObjectSerializer {
 
@@ -43,18 +46,35 @@ public class JAXBXmlSerializer implements ObjectSerializer {
     public byte[] serialize(@Nonnull Object obj) throws IOException {
         Objects.requireNonNull(obj);
         try {
-            JAXBContext contextObj = JAXBContext.newInstance(obj.getClass());
-            Marshaller marshallerObj = contextObj.createMarshaller();
-            marshallerObj.setProperty(
+            JAXBContext context = JAXBContext.newInstance(obj.getClass());
+            Marshaller marshaller = context.createMarshaller();
+            marshaller.setProperty(
                     Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.FALSE);
-            marshallerObj.setProperty(Marshaller.JAXB_ENCODING, ctx.getCharset().toString());
+            marshaller.setProperty(Marshaller.JAXB_ENCODING, ctx.getCharset().toString());
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            marshallerObj.marshal(obj, baos);
+            marshaller.marshal(obj, baos);
             return baos.toByteArray();
         } catch (JAXBException ex) {
             throw new IOException(ex);
         }
 
+    }
+
+    @Override
+    public <T> T deserialize(@Nonnull InputStream src, @Nonnull Class<T> type)
+            throws IOException {
+        Objects.requireNonNull(src);
+        Objects.requireNonNull(type);
+        try {
+            JAXBContext context = JAXBContext.newInstance(type);
+            Unmarshaller unmarshaller = context.createUnmarshaller();
+            try (InputStreamReader is = new InputStreamReader(src, ctx.getCharset())) {
+                Object obj = unmarshaller.unmarshal(is);
+                return type.cast(obj);
+            }
+        } catch (JAXBException ex) {
+            throw new IOException(ex);
+        }
     }
 
 }

@@ -27,6 +27,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Objects;
@@ -53,7 +55,19 @@ public class GsonJsonSerializer implements ObjectSerializer {
         try (OutputStreamWriter osw = new OutputStreamWriter(baos, charset)) {
             gson.toJson(obj, osw);
         }
-       return baos.toByteArray();
+        return baos.toByteArray();
+    }
+
+    @Override
+    public <T> T deserialize(@Nonnull InputStream src, @Nonnull Class<T> type) throws IOException {
+        Objects.requireNonNull(src);
+        Objects.requireNonNull(type);
+
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        try (InputStreamReader is = new InputStreamReader(src, ctx.getCharset())) {
+            return gson.fromJson(is, type);
+        }
     }
 
 }

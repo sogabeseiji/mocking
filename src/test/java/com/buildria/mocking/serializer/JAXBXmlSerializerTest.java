@@ -26,7 +26,10 @@ package com.buildria.mocking.serializer;
 import com.buildria.mocking.TestNameRule;
 import com.google.common.net.MediaType;
 import com.jayway.restassured.path.xml.XmlPath;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -40,6 +43,9 @@ import static org.junit.Assert.assertThat;
  * @author Seiji Sogabe
  */
 public class JAXBXmlSerializerTest {
+
+    private static final String PERSON_XML
+            = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?><person><name>Bob</name><old>20</old></person>";
 
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
@@ -99,6 +105,43 @@ public class JAXBXmlSerializerTest {
         XmlPath xp = new XmlPath(xml);
         assertThat(xp.getString("person.name"), is("\u3042\u3044\u3046\u3048\u304a"));
         assertThat(xp.getInt("person.old"), is(20));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDesrializeSrcNull() throws Exception {
+        InputStream src = null;
+        Class<Person> type = Person.class;
+
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext("application/xml; charset=UTF-8");
+        target = new JAXBXmlSerializer(ctx);
+        Person person = target.deserialize(src, type);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDesrializeTypeNull() throws Exception {
+        InputStream src = new ByteArrayInputStream(
+                "{\"name\":\"Bob\",\"old\":20}".getBytes(StandardCharsets.UTF_8));
+        Class<Person> type = null;
+
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext("application/xml; charset=UTF-8");
+        target = new JAXBXmlSerializer(ctx);
+        Person person = target.deserialize(src, type);
+    }
+
+    @Test
+    public void testDesrialize() throws Exception {
+        InputStream src = new ByteArrayInputStream(PERSON_XML.getBytes(StandardCharsets.UTF_8));
+        Class<Person> type = Person.class;
+
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext("application/xml; charset=UTF-8");
+        target = new JAXBXmlSerializer(ctx);
+        Person person = target.deserialize(src, type);
+
+        assertThat(person.getName(), is("Bob"));
+        assertThat(person.getOld(), is(20));
     }
 
     /**

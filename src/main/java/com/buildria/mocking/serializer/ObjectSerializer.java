@@ -24,10 +24,12 @@
 package com.buildria.mocking.serializer;
 
 import java.io.IOException;
+import java.io.InputStream;
 import javax.annotation.Nonnull;
 
 public interface ObjectSerializer {
 
     byte[] serialize(@Nonnull Object obj) throws IOException;
 
+    <T> T deserialize(InputStream src, Class<T> type) throws IOException;
 }

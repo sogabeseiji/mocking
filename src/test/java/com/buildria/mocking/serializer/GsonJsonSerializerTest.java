@@ -26,6 +26,9 @@ package com.buildria.mocking.serializer;
 import com.buildria.mocking.TestNameRule;
 import com.google.common.net.MediaType;
 import com.jayway.restassured.path.json.JsonPath;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -105,5 +108,42 @@ public class GsonJsonSerializerTest {
         assertThat(js.getInt("old"), is(20));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testDesrializeSrcNull() throws Exception {
+        InputStream src = null;
+        Class<Person> type = Person.class;
+
+        ObjectSerializerContext ctx =
+                new ObjectSerializerContext("application/json; charset=UTF-8");
+        target = new GsonJsonSerializer(ctx);
+        Person person = target.deserialize(src, type);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testDesrializeTypeNull() throws Exception {
+        InputStream src = new ByteArrayInputStream(
+                "{\"name\":\"Bob\",\"old\":20}".getBytes(StandardCharsets.UTF_8));
+        Class<Person> type = null;
+
+        ObjectSerializerContext ctx =
+                new ObjectSerializerContext("application/json; charset=UTF-8");
+        target = new GsonJsonSerializer(ctx);
+        Person person = target.deserialize(src, type);
+    }
+
+    @Test
+    public void testDesrialize() throws Exception {
+        InputStream src = new ByteArrayInputStream(
+                "{\"name\":\"\u3042\u3044\u3046\u3048\u304a\",\"old\":20}".getBytes(StandardCharsets.UTF_8));
+        Class<Person> type = Person.class;
+
+        ObjectSerializerContext ctx =
+                new ObjectSerializerContext("application/json; charset=UTF-8");
+        target = new GsonJsonSerializer(ctx);
+        Person person = target.deserialize(src, type);
+
+        assertThat(person.getName(), is("\u3042\u3044\u3046\u3048\u304a"));
+        assertThat(person.getOld(), is(20));
+    }
 
 }
