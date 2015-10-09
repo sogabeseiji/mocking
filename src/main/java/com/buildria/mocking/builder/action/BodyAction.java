@@ -67,10 +67,10 @@ public class BodyAction implements Action {
             throw new MockingException("No Content-Type found.");
         }
         MediaType mediaType = MediaType.parse(contentType.getValue());
-        SubType type = getSubType(mediaType);
+        SubType subType = getSubType(mediaType);
         Charset charset = getCharsetOrUTF8(mediaType);
         
-        ObjectSerializerContext ctx = new ObjectSerializerContext(type, charset);
+        ObjectSerializerContext ctx = new ObjectSerializerContext(subType, charset);
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         try {
             return new RawBodyAction(os.serialize(content)).apply(req, res);
