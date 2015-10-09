@@ -80,9 +80,9 @@ public class BodyAction implements Action {
     }
     
     private SubType getSubType(MediaType mediaType) {
-        if (mediaType.subtype().equalsIgnoreCase("xml")) {
+        if ("xml".equalsIgnoreCase(mediaType.subtype())) {
             return SubType.XML;
-        } else if (mediaType.subtype().equalsIgnoreCase("json")) {
+        } else if ("json".equalsIgnoreCase(mediaType.subtype())) {
             return SubType.JSON;
         } else {
             throw new MockingException("Not supported Content-Type.");
