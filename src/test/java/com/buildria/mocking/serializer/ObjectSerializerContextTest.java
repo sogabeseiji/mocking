@@ -25,7 +25,8 @@ package com.buildria.mocking.serializer;
 
 import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
-import com.google.common.net.MediaType;
+import com.buildria.mocking.serializer.ObjectSerializerContext.SubType;
+import java.nio.charset.StandardCharsets;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -39,38 +40,18 @@ public class ObjectSerializerContextTest {
     @Rule
     public TestNameRule testNameRule = new TestNameRule();
 
-    @Test(expected = MockingException.class)
-    public void testCreateInvalidContentType() {
-        Person person = new Person("Bob", 20);
-        ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.JPEG.toString());
-        ObjectSerializerFactory.create(ctx);
-    }
-
     @Test
     public void testContentTypeWithCharset() {
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
-        assertThat(ctx.getContentType(), is(MediaType.APPLICATION_XML_UTF_8.toString()));
-        assertThat(ctx.getType(), is("application"));
-        assertThat(ctx.getSubtype(), is("xml"));
-        assertThat(ctx.getCharset().name(), is("UTF-8"));
-    }
-
-    @Test
-    public void testContentTypeWithNoCharset() {
-        ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/json");
-        assertThat(ctx.getContentType(), is("application/json"));
-        assertThat(ctx.getType(), is("application"));
-        assertThat(ctx.getSubtype(), is("json"));
+                 = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
+        assertThat(ctx.getSubType(), is(SubType.XML));
         assertThat(ctx.getCharset().name(), is("UTF-8"));
     }
 
     @Test
     public void testCreateJAXB() {
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
+                = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JAXBXmlSerializer.class));
@@ -79,7 +60,7 @@ public class ObjectSerializerContextTest {
     @Test
     public void testCreateJackson() {
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         assertThat(os, notNullValue());
         assertThat(os, instanceOf(JacksonJsonSerializer.class));
@@ -88,7 +69,7 @@ public class ObjectSerializerContextTest {
     @Test
     public void testCreateGson() {
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString()) {
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8) {
                     @Override
                     protected boolean isJacksonEnabled() {
                         return false;
@@ -102,7 +83,7 @@ public class ObjectSerializerContextTest {
     @Test(expected = MockingException.class)
     public void testCreateNoJsonFound() throws Exception {
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString()) {
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8) {
                     @Override
                     protected boolean isGsonEnabled() {
                         return false;

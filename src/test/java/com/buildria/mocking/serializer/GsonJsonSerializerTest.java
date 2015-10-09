@@ -24,7 +24,7 @@
 package com.buildria.mocking.serializer;
 
 import com.buildria.mocking.TestNameRule;
-import com.google.common.net.MediaType;
+import com.buildria.mocking.serializer.ObjectSerializerContext.SubType;
 import com.jayway.restassured.path.json.JsonPath;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -56,8 +56,8 @@ public class GsonJsonSerializerTest {
     @Test(expected = NullPointerException.class)
     public void testSerializeObjectNull() throws Exception {
         Person person = null;
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new GsonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "UTF-8");
@@ -66,8 +66,8 @@ public class GsonJsonSerializerTest {
     @Test
     public void testSerialize() throws Exception {
         Person person = new Person("Bob", 20);
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new GsonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "UTF-8");
@@ -81,8 +81,8 @@ public class GsonJsonSerializerTest {
     @Test
     public void testSerializeMultibytes() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new GsonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "UTF-8");
@@ -96,8 +96,8 @@ public class GsonJsonSerializerTest {
     @Test
     public void testSerializeUTF16BE() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext("application/json; charset=UTF-16BE");
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_16BE);
         target = new GsonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "UTF-16BE");
@@ -113,8 +113,8 @@ public class GsonJsonSerializerTest {
         InputStream src = null;
         Class<Person> type = Person.class;
 
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext("application/json; charset=UTF-8");
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new GsonJsonSerializer(ctx);
         Person person = target.deserialize(src, type);
     }
@@ -125,8 +125,8 @@ public class GsonJsonSerializerTest {
                 "{\"name\":\"Bob\",\"old\":20}".getBytes(StandardCharsets.UTF_8));
         Class<Person> type = null;
 
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext("application/json; charset=UTF-8");
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new GsonJsonSerializer(ctx);
         Person person = target.deserialize(src, type);
     }
@@ -137,8 +137,8 @@ public class GsonJsonSerializerTest {
                 "{\"name\":\"\u3042\u3044\u3046\u3048\u304a\",\"old\":20}".getBytes(StandardCharsets.UTF_8));
         Class<Person> type = Person.class;
 
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext("application/json; charset=UTF-8");
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new GsonJsonSerializer(ctx);
         Person person = target.deserialize(src, type);
 

@@ -25,7 +25,6 @@ package com.buildria.mocking.serializer;
 
 import com.buildria.mocking.MockingException;
 import com.google.common.io.Resources;
-import com.google.common.net.MediaType;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -38,35 +37,27 @@ public class ObjectSerializerContext {
 
     private static final String GSON_CLASS = "com/google/gson/Gson.class";
 
-    private final String contentType;
-
-    private final String type;
-
-    private final String subtype;
+    private final SubType type;
 
     private final Charset charset;
 
-    public ObjectSerializerContext(String contentType) {
-        this.contentType = Objects.requireNonNull(contentType);
-        MediaType mt = MediaType.parse(contentType);
-        this.type = mt.type();
-        this.subtype = mt.subtype();
-        this.charset = mt.charset().or(StandardCharsets.UTF_8);
+    public enum SubType {
+
+        XML, JSON
+    }
+
+    public ObjectSerializerContext(@Nonnull SubType type) {
+        this(type, StandardCharsets.UTF_8);
+    }
+
+    public ObjectSerializerContext(@Nonnull SubType type, @Nonnull Charset charset) {
+        this.type = Objects.requireNonNull(type);
+        this.charset = Objects.requireNonNull(charset);
     }
 
     @Nonnull
-    public String getContentType() {
-        return contentType;
-    }
-
-    @Nonnull
-    public String getType() {
+    public SubType getSubType() {
         return type;
-    }
-
-    @Nonnull
-    public String getSubtype() {
-        return subtype;
     }
 
     @Nonnull
@@ -75,14 +66,14 @@ public class ObjectSerializerContext {
     }
 
     protected ObjectSerializer createObjectSerializer() {
-        if ("json".equalsIgnoreCase(subtype)) {
+        if (SubType.JSON.equals(type)) {
             if (isJacksonEnabled()) {
                 return new JacksonJsonSerializer(this);
             } else if (isGsonEnabled()) {
                 return new GsonJsonSerializer(this);
             }
             throw new MockingException("No Json library found.");
-        } else if ("xml".equalsIgnoreCase(subtype)) {
+        } else if (SubType.XML.equals(type)) {
             return new JAXBXmlSerializer(this);
         }
 

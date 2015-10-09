@@ -36,6 +36,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import static com.buildria.mocking.http.MockingHttpHeaders.CONTENT_TYPE;
+import com.buildria.mocking.serializer.ObjectSerializerContext.SubType;
+import com.google.common.net.MediaType;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * BodyAction.
@@ -57,18 +61,36 @@ public class BodyAction implements Action {
     public HttpResponse apply(@Nonnull HttpRequest req, @Nonnull HttpResponse res) {
         Objects.requireNonNull(req);
         Objects.requireNonNull(res);
+        
         HeaderAction contentType = getHeader(CONTENT_TYPE, actions);
         if (contentType == null) {
             throw new MockingException("No Content-Type found.");
         }
-        ObjectSerializerContext ctx
-                = new ObjectSerializerContext(contentType.getValue());
+        MediaType mediaType = MediaType.parse(contentType.getValue());
+        SubType type = getSubType(mediaType);
+        Charset charset = getCharsetOrUTF8(mediaType);
+        
+        ObjectSerializerContext ctx = new ObjectSerializerContext(type, charset);
         ObjectSerializer os = ObjectSerializerFactory.create(ctx);
         try {
             return new RawBodyAction(os.serialize(content)).apply(req, res);
         } catch (IOException ex) {
             throw new MockingException("failed to serialize body.");
         }
+    }
+    
+    private SubType getSubType(MediaType mediaType) {
+        if (mediaType.subtype().equalsIgnoreCase("xml")) {
+            return SubType.XML;
+        } else if (mediaType.subtype().equalsIgnoreCase("json")) {
+            return SubType.JSON;
+        } else {
+            throw new MockingException("Not supported Content-Type.");
+        }
+    }
+    
+    private Charset getCharsetOrUTF8(MediaType mediaType) {
+        return mediaType.charset().or(StandardCharsets.UTF_8);
     }
 
     @Nullable

@@ -25,11 +25,11 @@ package com.buildria.mocking.serializer;
 
 import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
-import com.google.common.net.MediaType;
-import com.jayway.restassured.http.ContentType;
+import com.buildria.mocking.serializer.ObjectSerializerContext.SubType;
 import com.jayway.restassured.path.json.JsonPath;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class JacksonJsonSerializerTest {
     public void testSerializeObjectNull() throws Exception {
         Person person = null;
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(ContentType.JSON.toString());
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new JacksonJsonSerializer(ctx);
 
         target.serialize(person);
@@ -69,7 +69,7 @@ public class JacksonJsonSerializerTest {
     public void testSerialize() throws Exception {
         Person person = new Person("Bob", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new JacksonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), StandardCharsets.UTF_8);
@@ -84,7 +84,7 @@ public class JacksonJsonSerializerTest {
     public void testSerializeMultibytes() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.JSON_UTF_8.toString());
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new JacksonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), StandardCharsets.UTF_8);
@@ -99,7 +99,7 @@ public class JacksonJsonSerializerTest {
     public void testSerializeUTF16LE() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/json; charset=UTF-16LE");
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_16LE);
         target = new JacksonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "UTF-16LE");
@@ -114,7 +114,7 @@ public class JacksonJsonSerializerTest {
     public void testSerializeUTF32LE() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/json; charset=UTF-32LE");
+                = new ObjectSerializerContext(SubType.JSON, Charset.forName("UTF_32LE"));
         target = new JacksonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "UTF-32LE");
@@ -129,7 +129,7 @@ public class JacksonJsonSerializerTest {
     public void testSerializeUTF32BE() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/json; charset=UTF-32BE");
+                = new ObjectSerializerContext(SubType.JSON, Charset.forName("UTF_32BE"));
         target = new JacksonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "UTF-32BE");
@@ -144,7 +144,7 @@ public class JacksonJsonSerializerTest {
     public void testSerializeNonSupportedCharset() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/json; charset=EUC-JP");
+                = new ObjectSerializerContext(SubType.JSON, Charset.forName("EUC-JP"));
         target = new JacksonJsonSerializer(ctx);
 
         String json = new String(target.serialize(person), "EUC-JP");
@@ -155,8 +155,8 @@ public class JacksonJsonSerializerTest {
         InputStream src = null;
         Class<Person> type = Person.class;
 
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext("application/json; charset=UTF-8");
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new JacksonJsonSerializer(ctx);
         Person person = target.deserialize(src, type);
     }
@@ -167,8 +167,8 @@ public class JacksonJsonSerializerTest {
                 "{\"name\":\"Bob\",\"old\":20}".getBytes(StandardCharsets.UTF_8));
         Class<Person> type = null;
 
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext("application/json; charset=UTF-8");
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new JacksonJsonSerializer(ctx);
         Person person = target.deserialize(src, type);
     }
@@ -179,8 +179,8 @@ public class JacksonJsonSerializerTest {
                 "{\"name\":\"\u3042\u3044\u3046\u3048\u304a\",\"old\":20}".getBytes(StandardCharsets.UTF_8));
         Class<Person> type = Person.class;
 
-        ObjectSerializerContext ctx =
-                new ObjectSerializerContext("application/json; charset=UTF-8");
+        ObjectSerializerContext ctx
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         target = new JacksonJsonSerializer(ctx);
         Person person = target.deserialize(src, type);
 

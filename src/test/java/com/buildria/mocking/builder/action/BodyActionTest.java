@@ -27,6 +27,7 @@ import com.buildria.mocking.MockingException;
 import com.buildria.mocking.TestNameRule;
 import com.buildria.mocking.serializer.ObjectSerializer;
 import com.buildria.mocking.serializer.ObjectSerializerContext;
+import com.buildria.mocking.serializer.ObjectSerializerContext.SubType;
 import com.buildria.mocking.serializer.ObjectSerializerFactory;
 import com.buildria.mocking.serializer.Person;
 import io.netty.buffer.ByteBuf;
@@ -103,7 +104,7 @@ public class BodyActionTest {
         assertThat(Integer.valueOf(out.headers().get("Content-Length")), is(json.length));
 
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/json; charset=UTF-8");
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_8);
         ObjectSerializer serializer = ObjectSerializerFactory.create(ctx);
         byte[] expected = serializer.serialize(person);
 
@@ -132,7 +133,7 @@ public class BodyActionTest {
         assertThat(Integer.valueOf(out.headers().get("Content-Length")), is(json.length));
 
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/json; charset=UTF-16BE");
+                = new ObjectSerializerContext(SubType.JSON, StandardCharsets.UTF_16BE);
         ObjectSerializer serializer = ObjectSerializerFactory.create(ctx);
         byte[] expected = serializer.serialize(person);
 

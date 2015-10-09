@@ -24,11 +24,12 @@
 package com.buildria.mocking.serializer;
 
 import com.buildria.mocking.TestNameRule;
-import com.google.common.net.MediaType;
+import com.buildria.mocking.serializer.ObjectSerializerContext.SubType;
 import com.jayway.restassured.path.xml.XmlPath;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import org.junit.Rule;
 import org.junit.Test;
@@ -61,7 +62,7 @@ public class JAXBXmlSerializerTest {
     public void testSerializeObjectNull() throws Exception {
         Person person = null;
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
+                = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
         target = new JAXBXmlSerializer(ctx);
 
         String xml = new String(target.serialize(person), "UTF-8");
@@ -71,7 +72,7 @@ public class JAXBXmlSerializerTest {
     public void testSerialize() throws Exception {
         Person person = new Person("Bob", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
+                = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
         target = new JAXBXmlSerializer(ctx);
 
         String xml = new String(target.serialize(person), "UTF-8");
@@ -86,7 +87,7 @@ public class JAXBXmlSerializerTest {
     public void testSerializeNoAnnotation() throws Exception {
         Animal animal = new Animal("Pooh");
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext(MediaType.APPLICATION_XML_UTF_8.toString());
+                = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
         target = new JAXBXmlSerializer(ctx);
 
         target.serialize(animal);
@@ -96,7 +97,7 @@ public class JAXBXmlSerializerTest {
     public void testSerializeEUCJP() throws Exception {
         Person person = new Person("\u3042\u3044\u3046\u3048\u304a", 20);
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/xml; charset=EUC-JP");
+                = new ObjectSerializerContext(SubType.XML, Charset.forName("EUC-JP"));
         target = new JAXBXmlSerializer(ctx);
 
         String xml = new String(target.serialize(person), "EUC-JP");
@@ -113,7 +114,7 @@ public class JAXBXmlSerializerTest {
         Class<Person> type = Person.class;
 
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/xml; charset=UTF-8");
+                = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
         target = new JAXBXmlSerializer(ctx);
         Person person = target.deserialize(src, type);
     }
@@ -125,7 +126,7 @@ public class JAXBXmlSerializerTest {
         Class<Person> type = null;
 
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/xml; charset=UTF-8");
+                = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
         target = new JAXBXmlSerializer(ctx);
         Person person = target.deserialize(src, type);
     }
@@ -136,7 +137,7 @@ public class JAXBXmlSerializerTest {
         Class<Person> type = Person.class;
 
         ObjectSerializerContext ctx
-                = new ObjectSerializerContext("application/xml; charset=UTF-8");
+                = new ObjectSerializerContext(SubType.XML, StandardCharsets.UTF_8);
         target = new JAXBXmlSerializer(ctx);
         Person person = target.deserialize(src, type);
 
